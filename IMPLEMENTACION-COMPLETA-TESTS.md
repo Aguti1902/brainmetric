@@ -92,7 +92,7 @@ Se ha completado **EXITOSAMENTE** la implementación de todas las mejoras solici
 - ✅ Acceso Premium
 
 ### 7. ✅ Adaptación de Checkout por Tipo
-**Archivo:** `app/[lang]/checkout/checkout-sipay.tsx`
+**Archivo:** `app/[lang]/checkout/checkout-router.tsx`
 
 **Títulos Dinámicos:**
 - CI: "Desbloquea tu Resultado de CI"
@@ -262,7 +262,7 @@ const testConfig = {
 4. `app/[lang]/tests/personality/page.tsx`
 5. `lib/depression-questions.ts`
 6. `app/[lang]/resultado-estimado/page.tsx`
-7. `app/[lang]/checkout/checkout-sipay.tsx`
+7. `app/[lang]/checkout/checkout-router.tsx`
 8. `app/[lang]/page.tsx` (homepage - actualizado tiempo ansiedad)
 
 ---

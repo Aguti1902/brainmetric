@@ -51,7 +51,7 @@ export default function CancelarSuscripcionPage() {
         <Header />
         <div className="min-h-screen flex items-center justify-center">
           <div className="text-center">
-            <div className="w-16 h-16 border-4 border-[#07C59A] border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
+            <div className="w-16 h-16 border-4 border-[#6366F1] border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
             <p className="text-gray-600">Loading...</p>
           </div>
         </div>
@@ -119,7 +119,7 @@ export default function CancelarSuscripcionPage() {
                     required
                     value={formData.fullName}
                     onChange={handleChange}
-                    className="block w-full pl-10 pr-3 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#07C59A] focus:border-transparent"
+                    className="block w-full pl-10 pr-3 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#6366F1] focus:border-transparent"
                     placeholder={t.cancel.fullNamePlaceholder}
                   />
                 </div>
@@ -141,7 +141,7 @@ export default function CancelarSuscripcionPage() {
                     required
                     value={formData.email}
                     onChange={handleChange}
-                    className="block w-full pl-10 pr-3 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#07C59A] focus:border-transparent"
+                    className="block w-full pl-10 pr-3 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#6366F1] focus:border-transparent"
                     placeholder={t.cancel.emailPlaceholder}
                   />
                 </div>
@@ -161,7 +161,7 @@ export default function CancelarSuscripcionPage() {
                   rows={4}
                   value={formData.reason}
                   onChange={handleChange}
-                  className="block w-full px-3 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#07C59A] focus:border-transparent"
+                  className="block w-full px-3 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#6366F1] focus:border-transparent"
                   placeholder={t.cancel.reasonPlaceholder}
                 />
               </div>
@@ -189,7 +189,7 @@ export default function CancelarSuscripcionPage() {
               <p className="text-gray-600 mb-2">
                 {t.cancel.helpTitle}
               </p>
-              <a href={`/${lang}/contacto`} className="text-[#07C59A] hover:text-[#069e7b] font-medium">
+              <a href={`/${lang}/contacto`} className="text-[#6366F1] hover:text-[#4F46E5] font-medium">
                 {t.cancel.contactUs}
               </a>
             </div>

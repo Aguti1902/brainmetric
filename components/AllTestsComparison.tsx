@@ -28,7 +28,7 @@ export default function AllTestsComparison() {
           results.push({
             name: 'CI',
             value: latestCI,
-            color: '#07C59A'
+            color: '#6366F1'
           })
         }
       }
@@ -136,7 +136,7 @@ export default function AllTestsComparison() {
           />
           <Bar 
             dataKey="value" 
-            fill="#07C59A"
+            fill="#6366F1"
             radius={[8, 8, 0, 0]}
             animationDuration={1000}
           >

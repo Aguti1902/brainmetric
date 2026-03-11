@@ -18,7 +18,7 @@ function getPool() {
 }
 
 async function chargeUser(user: { email: string }, amount: number, description: string): Promise<{ ok: boolean; data: any }> {
-  const url = `${process.env.NEXT_PUBLIC_APP_URL || 'https://mindmetric.io'}/api/sipay/recurring-payment`
+  const url = `${process.env.NEXT_PUBLIC_APP_URL || 'https://mindmetric.io'}/api/recurring-payment`
   const response = await fetch(url, {
     method: 'POST',
     headers: {

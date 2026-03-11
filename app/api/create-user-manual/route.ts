@@ -71,7 +71,7 @@ export async function POST(request: NextRequest) {
                   <table role="presentation" style="max-width: 600px; background-color: #ffffff; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
                     <!-- Header -->
                     <tr>
-                      <td style="background: linear-gradient(135deg, #113240 0%, #07C59A 100%); padding: 40px 30px; text-align: center;">
+                      <td style="background: linear-gradient(135deg, #0F172A 0%, #6366F1 100%); padding: 40px 30px; text-align: center;">
                         <h1 style="color: #ffffff; margin: 0; font-size: 32px; font-weight: 700;">
                           🧠 MindMetric
                         </h1>
@@ -81,7 +81,7 @@ export async function POST(request: NextRequest) {
                     <!-- Content -->
                     <tr>
                       <td style="padding: 40px 30px; text-align: center;">
-                        <h2 style="color: #113240; margin: 0 0 20px 0; font-size: 28px; font-weight: 600;">
+                        <h2 style="color: #0F172A; margin: 0 0 20px 0; font-size: 28px; font-weight: 600;">
                           ¡Bienvenido a MindMetric!
                         </h2>
                         
@@ -94,7 +94,7 @@ export async function POST(request: NextRequest) {
                         </p>
                         
                         <div style="background-color: #f7fafc; border: 1px solid #e2e8f0; border-radius: 8px; padding: 20px; margin: 30px 0; text-align: left;">
-                          <h3 style="color: #113240; margin: 0 0 15px 0; font-size: 18px; font-weight: 600;">
+                          <h3 style="color: #0F172A; margin: 0 0 15px 0; font-size: 18px; font-weight: 600;">
                             🎯 Tu Resultado de CI: ${iq}
                           </h3>
                           <p style="color: #4a5568; font-size: 14px; margin: 0; line-height: 1.6;">
@@ -117,7 +117,7 @@ export async function POST(request: NextRequest) {
                           </p>
                         </div>
                         
-                        <a href="https://mindmetric.io/es/login" style="display: inline-block; background: linear-gradient(135deg, #113240 0%, #07C59A 100%); color: #ffffff; text-decoration: none; padding: 16px 40px; border-radius: 8px; font-weight: 600; font-size: 16px; margin: 20px 0;">
+                        <a href="https://mindmetric.io/es/login" style="display: inline-block; background: linear-gradient(135deg, #0F172A 0%, #6366F1 100%); color: #ffffff; text-decoration: none; padding: 16px 40px; border-radius: 8px; font-weight: 600; font-size: 16px; margin: 20px 0;">
                           Acceder a mi Dashboard
                         </a>
                         

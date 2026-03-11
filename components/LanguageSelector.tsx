@@ -63,7 +63,7 @@ export default function LanguageSelector() {
                 key={locale}
                 onClick={() => handleLanguageChange(locale)}
                 className={`w-full text-left px-4 py-2 hover:bg-gray-100 transition-colors flex items-center gap-3 ${
-                  currentLocale === locale ? 'bg-[#e6f5f5] text-[#07C59A] font-medium' : 'text-gray-700'
+                  currentLocale === locale ? 'bg-[#e6f5f5] text-[#6366F1] font-medium' : 'text-gray-700'
                 }`}
               >
                 <span className="text-xl">{flag}</span>

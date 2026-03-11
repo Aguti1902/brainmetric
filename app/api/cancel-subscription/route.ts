@@ -1,18 +1,10 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { getSipayClient } from '@/lib/sipay-client'
 import { db } from '@/lib/database-postgres'
 import { sendEmail, emailTemplates } from '@/lib/email-service'
 import { verifyToken } from '@/lib/auth'
 
 export const dynamic = 'force-dynamic'
 
-/**
- * Cancelar suscripción (Sipay)
- *
- * - Elimina el token de tarjeta en Sipay (impide futuros cobros)
- * - Mantiene acceso hasta el final del periodo pagado (accessUntil)
- * - Envía email de confirmación de cancelación
- */
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json()
@@ -46,18 +38,6 @@ export async function POST(request: NextRequest) {
         { error: 'No hay suscripción activa para cancelar' },
         { status: 400 }
       )
-    }
-
-    const cardToken = user.subscriptionId
-
-    if (cardToken) {
-      try {
-        const sipay = getSipayClient()
-        await sipay.deleteCardToken(cardToken)
-        console.log('✅ [cancel] Token eliminado de Sipay:', cardToken.slice(0, 10) + '...')
-      } catch (sipayErr: any) {
-        console.error('⚠️ [cancel] Error eliminando token en Sipay (continuamos):', sipayErr.message)
-      }
     }
 
     const accessUntil = user.accessUntil || user.trialEndDate || new Date().toISOString()

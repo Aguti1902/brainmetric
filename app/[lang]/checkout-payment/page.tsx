@@ -2,20 +2,16 @@
 
 import { useEffect, useState, Suspense } from 'react'
 import { useSearchParams, useRouter } from 'next/navigation'
-import SipayInline from '@/components/SipayInline'
-import GooglePayButton from '@/components/GooglePayButton'
-import ApplePayButton from '@/components/ApplePayButton'
+import { FaLock, FaBrain, FaChartLine, FaCertificate, FaUsers, FaShieldAlt, FaCreditCard, FaStar } from 'react-icons/fa'
 
-// Reseñas de usuarios
 const reviews = [
   { name: 'María G.', rating: 5, text: 'Muy profesional y detallado. Me ayudó a entenderme mejor.', country: '🇪🇸' },
   { name: 'Carlos R.', rating: 5, text: 'Resultados precisos y el certificado es muy útil.', country: '🇲🇽' },
   { name: 'Ana P.', rating: 5, text: 'Excelente experiencia, lo recomiendo totalmente.', country: '🇦🇷' },
   { name: 'David M.', rating: 5, text: 'El análisis por categorías es muy completo.', country: '🇨🇴' },
-  { name: 'Laura S.', rating: 5, text: 'Rápido, fácil y muy informativo. ¡Gracias!', country: '🇨🇱' },
+  { name: 'Laura S.', rating: 5, text: 'Rápido, fácil y muy informativo.', country: '🇨🇱' },
 ]
 
-// Deshabilitar pre-rendering estático
 export const dynamic = 'force-dynamic'
 
 function CheckoutPaymentContent() {
@@ -24,14 +20,10 @@ function CheckoutPaymentContent() {
   const [email, setEmail] = useState('')
   const [testType, setTestType] = useState('iq')
   const [lang, setLang] = useState('es')
-  const [paymentData, setPaymentData] = useState<any>(null)
-  const [isLoading, setIsLoading] = useState(true)
+  const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState('')
   const [currentReview, setCurrentReview] = useState(0)
-  const [paymentMethod, setPaymentMethod] = useState<'none' | 'card' | 'google' | 'apple'>('none')
-  const [isProcessing, setIsProcessing] = useState(false)
 
-  // Auto-rotar reseñas
   useEffect(() => {
     const interval = setInterval(() => {
       setCurrentReview((prev) => (prev + 1) % reviews.length)
@@ -40,37 +32,13 @@ function CheckoutPaymentContent() {
   }, [])
 
   const testConfig: any = {
-  'iq': {
-    title: 'Desbloquea tu Resultado de CI',
-    subtitle: 'Acceso completo a tu análisis de CI',
-    icon: '🧠'
-  },
-  'personality': {
-    title: 'Desbloquea tu Perfil de Personalidad',
-    subtitle: 'Descubre los 5 rasgos de tu personalidad',
-    icon: '🎯'
-  },
-  'adhd': {
-    title: 'Desbloquea tu Evaluación de TDAH',
-    subtitle: 'Análisis completo de síntomas de TDAH',
-    icon: '🎯'
-  },
-  'anxiety': {
-    title: 'Desbloquea tu Evaluación de Ansiedad',
-    subtitle: 'Evaluación de niveles de ansiedad',
-    icon: '💙'
-  },
-  'depression': {
-    title: 'Desbloquea tu Evaluación de Depresión',
-    subtitle: 'Evaluación de síntomas depresivos',
-    icon: '🌟'
-  },
-  'eq': {
-    title: 'Desbloquea tu Inteligencia Emocional',
-    subtitle: 'Descubre tu inteligencia emocional',
-    icon: '❤️'
+    'iq': { title: 'Desbloquea tu Resultado de CI', subtitle: 'Acceso completo a tu análisis de CI', icon: <FaBrain className="text-4xl" /> },
+    'personality': { title: 'Desbloquea tu Perfil de Personalidad', subtitle: 'Descubre los 5 rasgos de tu personalidad', icon: <FaUsers className="text-4xl" /> },
+    'adhd': { title: 'Desbloquea tu Evaluación de TDAH', subtitle: 'Análisis completo de síntomas de TDAH', icon: <FaBrain className="text-4xl" /> },
+    'anxiety': { title: 'Desbloquea tu Evaluación de Ansiedad', subtitle: 'Evaluación de niveles de ansiedad', icon: <FaChartLine className="text-4xl" /> },
+    'depression': { title: 'Desbloquea tu Evaluación de Depresión', subtitle: 'Evaluación de síntomas depresivos', icon: <FaStar className="text-4xl" /> },
+    'eq': { title: 'Desbloquea tu Inteligencia Emocional', subtitle: 'Descubre tu inteligencia emocional', icon: <FaChartLine className="text-4xl" /> },
   }
-}
 
   useEffect(() => {
     const emailParam = searchParams.get('email') || ''
@@ -83,314 +51,160 @@ function CheckoutPaymentContent() {
 
     if (!emailParam) {
       setError('Email no proporcionado')
-      setIsLoading(false)
-      return
     }
-
-    createPaymentSession(emailParam, testTypeParam, langParam)
   }, [searchParams])
 
-  const createPaymentSession = async (email: string, testType: string, lang: string) => {
-    try {
-      console.log('💳 Creando sesión de pago...')
-  
-  // Obtener datos del test desde localStorage
-      let testData: any = {}
-  const testResultsStr = localStorage.getItem('testResults')
-  if (testResultsStr) {
-    try {
-      const testResults = JSON.parse(testResultsStr)
-      testData = {
-        answers: testResults.answers || [],
-        timeElapsed: testResults.timeElapsed || 0,
-        correctAnswers: testResults.correctAnswers || 0,
-        categoryScores: testResults.categoryScores || {}
-      }
-    } catch (error) {
-      console.error('Error parseando testResults:', error)
-    }
-  }
-
-    const response = await fetch('/api/sipay/create-payment', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        email: email,
-        userName: email.split('@')[0],
-        amount: 0.50,
-        userIQ: localStorage.getItem('userIQ') || 100,
-        lang: lang,
-        testData: testData,
-      }),
-    })
-
-      const data = await response.json()
-
-    if (!response.ok) {
-        throw new Error(data.error || 'Error creando el pago')
-      }
-
-      console.log('✅ Sesión de pago creada:', data)
-      setPaymentData(data)
-      setIsLoading(false)
-
-    } catch (error: any) {
-      console.error('❌ Error:', error)
-      setError(error.message || 'Error cargando el formulario de pago')
-      setIsLoading(false)
-    }
-  }
-
-  const handlePaymentSuccess = async (response: any) => {
-    console.log('💳 Pago completado! request_id:', response.request_id)
-    setIsProcessing(true)
+  const handleStripeCheckout = async () => {
+    setIsLoading(true)
     setError('')
-    
+
     try {
-      // Paso 1: Iniciar autorización con Sipay
-      const result = await fetch('/api/sipay/process-payment', {
+      let testData: any = {}
+      const testResultsStr = localStorage.getItem('testResults')
+      if (testResultsStr) {
+        try {
+          const testResults = JSON.parse(testResultsStr)
+          testData = {
+            answers: testResults.answers || [],
+            timeElapsed: testResults.timeElapsed || 0,
+            correctAnswers: testResults.correctAnswers || 0,
+            categoryScores: testResults.categoryScores || {}
+          }
+        } catch (e) {
+          console.error('Error parsing testResults:', e)
+        }
+      }
+
+      const response = await fetch('/api/stripe/create-checkout', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          orderId: paymentData.orderId,
-          requestId: response.request_id,
-          email: email,
-          amount: 0.50,
-          lang: lang,
-          testType: testType,
-        }),
-      })
-
-      const data = await result.json()
-      console.log('📡 Respuesta backend:', data)
-      
-      if (!result.ok) {
-        console.error('❌ Backend error:', data)
-        setError(data.error || 'Error procesando el pago. Por favor, intenta de nuevo.')
-        setIsProcessing(false)
-        return
-      }
-      
-      // Si requiere 3DS, redirigir a la URL de autenticación
-      if (data.requires3DS && data.threeDSUrl) {
-        console.log('🔐 Redirigiendo a 3DS:', data.threeDSUrl)
-        window.location.href = data.threeDSUrl
-        return
-      }
-      
-      // Si no requiere 3DS (frictionless), el backend ya confirmó el pago
-      if (data.success) {
-        console.log('🎉 Pago frictionless completado! Redirigiendo a resultados...')
-        router.push('/' + lang + '/resultado?order_id=' + paymentData.orderId + '&payment=success')
-        return
-      }
-
-      // Si llegamos aquí, algo inesperado pasó
-      setError('Respuesta inesperada del servidor. Por favor, intenta de nuevo.')
-      setIsProcessing(false)
-      
-    } catch (error: any) {
-      console.error('❌ Error en el proceso de pago:', error)
-      setError('Error de conexión. Por favor, verifica tu conexión e intenta de nuevo.')
-      setIsProcessing(false)
-    }
-  }
-
-  const handlePaymentError = (error: any) => {
-    console.error('❌ Error en el pago:', error)
-    setError(error.description || 'Error procesando el pago. Por favor, intenta de nuevo.')
-  }
-
-  // Handler para Google Pay - devuelve Promise<boolean> para que el botón espere
-  const handleGooglePayProcess = async (token: string): Promise<boolean> => {
-    console.log('🔍 Google Pay: procesando pago en backend...')
-    try {
-      const response = await fetch('/api/sipay/google-pay', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          googlePayToken: token,
           email,
-          userName: email.split('@')[0],
-          amount: 0.50,
-          userIQ: localStorage.getItem('userIQ') || 100,
           lang,
           testType,
+          userName: email.split('@')[0],
+          userIQ: localStorage.getItem('userIQ') || 100,
+          testData,
         }),
       })
 
       const data = await response.json()
 
       if (!response.ok) {
-        setError(data.error || 'Error en Google Pay')
-        return false
+        throw new Error(data.error || 'Error creando la sesión de pago')
       }
 
-      console.log('✅ Google Pay exitoso:', data)
-      router.push('/' + lang + '/resultado?order_id=' + data.orderId + '&payment=success')
-      return true
-    } catch (error: any) {
-      console.error('❌ Error Google Pay:', error)
-      setError(error.message || 'Error con Google Pay')
-      return false
-    }
-  }
-
-  // Handler para Apple Pay - devuelve Promise<boolean> para que el botón espere
-  const handleApplePayProcess = async (applePayToken: any, requestId: string): Promise<boolean> => {
-    console.log('🍎 Apple Pay: procesando pago en backend...')
-    try {
-      const response = await fetch('/api/sipay/apple-pay', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          applePayToken,
-          requestId,
-          email,
-          userName: email.split('@')[0],
-          amount: 0.50,
-          userIQ: localStorage.getItem('userIQ') || 100,
-          lang,
-          testType,
-        }),
-      })
-
-      const data = await response.json()
-
-      if (!response.ok) {
-        setError(data.error || 'Error en Apple Pay')
-        return false
+      if (data.url) {
+        window.location.href = data.url
+      } else {
+        throw new Error('No se recibió URL de checkout')
       }
-
-      console.log('✅ Apple Pay exitoso:', data)
-      router.push('/' + lang + '/resultado?order_id=' + data.orderId + '&payment=success')
-      return true
     } catch (error: any) {
-      console.error('❌ Error Apple Pay:', error)
-      setError(error.message || 'Error con Apple Pay')
-      return false
+      console.error('Stripe checkout error:', error)
+      setError(error.message || 'Error al iniciar el pago. Inténtalo de nuevo.')
+      setIsLoading(false)
     }
   }
 
   const config = testConfig[testType] || testConfig['iq']
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-50 to-white">
+    <div className="min-h-screen bg-secondary-950 neural-bg">
       {/* Header */}
-      <header className="bg-white shadow-sm py-4 px-6">
+      <header className="bg-secondary-900/80 backdrop-blur-xl border-b border-white/10 py-4 px-6">
         <div className="max-w-6xl mx-auto flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <img src="/images/FAVICON2.png" alt="MindMetric" className="h-10 w-10" />
-            <h1 className="text-2xl font-bold text-gray-900">MindMetric</h1>
+            <div className="w-9 h-9 bg-gradient-to-br from-primary-500 to-accent-500 rounded-lg flex items-center justify-center">
+              <svg className="w-5 h-5 text-white" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
+              </svg>
+            </div>
+            <span className="text-xl font-bold">
+              <span className="text-white">Brain</span>
+              <span className="bg-clip-text text-transparent bg-gradient-to-r from-primary-400 to-accent-400"> Metric</span>
+            </span>
           </div>
-          <div className="text-sm text-gray-600">{email}</div>
+          <div className="text-sm text-gray-400">{email}</div>
         </div>
       </header>
 
-      {/* Main Content */}
+      {/* Main */}
       <div className="py-12 px-4">
         <div className="max-w-6xl mx-auto">
           {/* Hero */}
           <div className="text-center mb-12">
-            <div className="inline-block p-4 bg-yellow-100 rounded-full mb-4 text-5xl">
+            <div className="inline-block p-5 bg-gradient-to-br from-primary-500/20 to-accent-500/20 rounded-2xl mb-4 text-primary-400 border border-primary-500/20">
               {config.icon}
             </div>
-            <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
+            <h1 className="text-4xl md:text-5xl font-bold text-white mb-4">
               {config.title}
             </h1>
-            <p className="text-xl text-gray-600">
+            <p className="text-xl text-gray-400">
               {config.subtitle}
             </p>
           </div>
 
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-            {/* Left Column - Info */}
+            {/* Left - Info */}
             <div className="space-y-6 order-2 lg:order-1">
-              {/* Pricing */}
-              <div className="bg-white rounded-2xl shadow-xl p-8 border-4 border-[#07C59A]">
+              {/* Pricing card */}
+              <div className="bg-white/5 backdrop-blur-xl rounded-2xl border-2 border-primary-500/30 p-8">
                 <div className="text-center mb-6">
-                  <h3 className="text-2xl font-bold text-gray-900 mb-2">
+                  <h3 className="text-2xl font-bold text-white mb-2">
                     Desbloquea tu Resultado Completo
                   </h3>
                   <div className="flex items-baseline justify-center gap-2 mb-4">
                     <span className="text-gray-500 line-through text-2xl">19,99€</span>
-                    <span className="text-6xl font-bold text-[#07C59A]">0,50€</span>
+                    <span className="text-6xl font-bold text-gradient">0,50€</span>
                   </div>
-                  <div className="inline-block bg-green-100 text-green-800 px-4 py-2 rounded-full font-semibold mb-4">
+                  <div className="inline-block bg-primary-500/20 text-primary-300 px-4 py-2 rounded-full font-semibold border border-primary-500/30">
                     ¡Ahorra 97%!
                   </div>
                 </div>
 
-                <div className="bg-blue-50 border-2 border-blue-200 rounded-xl p-6 mb-6">
-                  <h4 className="font-bold text-blue-900 mb-3 flex items-center gap-2">
-                    <i className="fas fa-check-circle text-blue-600"></i>
+                <div className="bg-primary-500/10 border border-primary-500/20 rounded-xl p-6 mb-6">
+                  <h4 className="font-bold text-white mb-3 flex items-center gap-2">
+                    <FaStar className="text-primary-400" />
                     Incluye Trial Premium de 2 Días
                   </h4>
-                  <p className="text-blue-800 text-sm mb-2">
-                    ✅ Acceso completo a todos los tests<br />
-                    ✅ Análisis detallado y comparativas<br />
-                    ✅ Certificado descargable<br />
-                    ✅ Después solo <strong>9,99€/mes</strong>
-                  </p>
-                  <p className="text-xs text-blue-700 mt-3">
+                  <div className="text-gray-300 text-sm space-y-1">
+                    <p>✅ Acceso completo a todos los tests</p>
+                    <p>✅ Análisis detallado y comparativas</p>
+                    <p>✅ Certificado descargable</p>
+                    <p>✅ Después solo <strong className="text-white">9,99€/mes</strong></p>
+                  </div>
+                  <p className="text-xs text-gray-400 mt-3">
                     Cancela en cualquier momento durante el trial
                   </p>
                 </div>
               </div>
 
               {/* Features */}
-              <div className="bg-white rounded-2xl shadow-xl p-6">
-                <h3 className="text-xl font-bold text-gray-900 mb-4">
-                  ¿Qué Obtienes?
-                </h3>
+              <div className="bg-white/5 backdrop-blur-xl rounded-2xl border border-white/10 p-6">
+                <h3 className="text-xl font-bold text-white mb-4">¿Qué Obtienes?</h3>
                 <div className="space-y-4">
-                  <div className="flex items-start gap-3">
-                    <div className="w-10 h-10 bg-[#07C59A] rounded-full flex items-center justify-center flex-shrink-0">
-                      <i className="fas fa-brain text-white"></i>
+                  {[
+                    { icon: <FaBrain />, title: 'Resultado Completo', desc: 'Tu puntuación exacta y análisis detallado' },
+                    { icon: <FaChartLine />, title: 'Análisis por Categorías', desc: 'Gráficos y comparativas detalladas' },
+                    { icon: <FaCertificate />, title: 'Certificado Oficial', desc: 'Descargable y compartible' },
+                    { icon: <FaUsers />, title: 'Comparación Mundial', desc: 'Ve cómo te comparas con otros usuarios' },
+                  ].map((feature, idx) => (
+                    <div key={idx} className="flex items-start gap-3">
+                      <div className="w-10 h-10 bg-gradient-to-br from-primary-500 to-accent-500 rounded-xl flex items-center justify-center flex-shrink-0 text-white">
+                        {feature.icon}
+                      </div>
+                      <div>
+                        <h4 className="font-semibold text-white">{feature.title}</h4>
+                        <p className="text-sm text-gray-400">{feature.desc}</p>
+                      </div>
                     </div>
-                    <div>
-                      <h4 className="font-semibold text-gray-900">Resultado Completo</h4>
-                      <p className="text-sm text-gray-600">Tu puntuación exacta y análisis detallado</p>
-                    </div>
-                  </div>
-
-                  <div className="flex items-start gap-3">
-                    <div className="w-10 h-10 bg-[#07C59A] rounded-full flex items-center justify-center flex-shrink-0">
-                      <i className="fas fa-chart-line text-white"></i>
-                    </div>
-                    <div>
-                      <h4 className="font-semibold text-gray-900">Análisis por Categorías</h4>
-                      <p className="text-sm text-gray-600">Gráficos y comparativas detalladas</p>
-                    </div>
-                  </div>
-
-                  <div className="flex items-start gap-3">
-                    <div className="w-10 h-10 bg-[#07C59A] rounded-full flex items-center justify-center flex-shrink-0">
-                      <i className="fas fa-certificate text-white"></i>
-                    </div>
-                    <div>
-                      <h4 className="font-semibold text-gray-900">Certificado Oficial</h4>
-                      <p className="text-sm text-gray-600">Descargable y compartible</p>
-                    </div>
-                  </div>
-
-                  <div className="flex items-start gap-3">
-                    <div className="w-10 h-10 bg-[#07C59A] rounded-full flex items-center justify-center flex-shrink-0">
-                      <i className="fas fa-users text-white"></i>
-                    </div>
-                    <div>
-                      <h4 className="font-semibold text-gray-900">Comparación Mundial</h4>
-                      <p className="text-sm text-gray-600">Ve cómo te comparas con otros usuarios</p>
-                    </div>
-                  </div>
+                  ))}
                 </div>
               </div>
 
-              {/* Reviews Slider */}
-              <div className="bg-white rounded-2xl shadow-xl p-6">
-                <h3 className="text-xl font-bold text-gray-900 mb-4 flex items-center gap-2">
+              {/* Reviews */}
+              <div className="bg-white/5 backdrop-blur-xl rounded-2xl border border-white/10 p-6">
+                <h3 className="text-lg font-bold text-white mb-4 flex items-center gap-2">
                   <span>⭐</span> Lo que dicen nuestros usuarios
                 </h3>
                 <div className="relative overflow-hidden">
@@ -401,30 +215,27 @@ function CheckoutPaymentContent() {
                     <div className="flex">
                       {reviews.map((review, index) => (
                         <div key={index} className="w-full flex-shrink-0 px-1">
-                          <div className="bg-gray-50 rounded-xl p-4">
+                          <div className="bg-white/5 rounded-xl p-4 border border-white/5">
                             <div className="flex items-center gap-2 mb-2">
-                              <div className="flex text-yellow-400">
-                                {[...Array(review.rating)].map((_, i) => (
-                                  <span key={i}>★</span>
-                                ))}
+                              <div className="flex text-yellow-400 text-sm">
+                                {[...Array(review.rating)].map((_, i) => <span key={i}>★</span>)}
                               </div>
                               <span className="text-lg">{review.country}</span>
                             </div>
-                            <p className="text-gray-700 text-sm mb-2 italic">"{review.text}"</p>
+                            <p className="text-gray-300 text-sm mb-2 italic">&ldquo;{review.text}&rdquo;</p>
                             <p className="text-gray-500 text-xs font-semibold">— {review.name}</p>
                           </div>
                         </div>
                       ))}
                     </div>
                   </div>
-                  {/* Dots */}
                   <div className="flex justify-center gap-2 mt-4">
                     {reviews.map((_, index) => (
                       <button
                         key={index}
                         onClick={() => setCurrentReview(index)}
                         className={`w-2 h-2 rounded-full transition-colors ${
-                          index === currentReview ? 'bg-[#07C59A]' : 'bg-gray-300'
+                          index === currentReview ? 'bg-primary-500' : 'bg-gray-600'
                         }`}
                       />
                     ))}
@@ -433,174 +244,97 @@ function CheckoutPaymentContent() {
               </div>
             </div>
 
-            {/* Right Column - Payment Form */}
+            {/* Right - Payment */}
             <div className="lg:sticky lg:top-8 h-fit order-1 lg:order-2">
-              <div className="bg-white rounded-2xl shadow-2xl p-8">
-                <h3 className="text-2xl font-bold text-gray-900 mb-6 text-center">
-                  Pago Seguro
+              <div className="bg-white/5 backdrop-blur-xl rounded-2xl border border-white/10 p-8 shadow-2xl">
+                <h3 className="text-2xl font-bold text-white mb-6 text-center flex items-center justify-center gap-2">
+                  <FaLock className="text-primary-400" /> Pago Seguro
                 </h3>
 
                 {error && (
-                  <div className="bg-red-50 border-2 border-red-200 text-red-800 px-4 py-3 rounded-lg text-sm mb-6">
+                  <div className="bg-red-500/10 border border-red-500/30 text-red-300 px-4 py-3 rounded-xl text-sm mb-6">
                     {error}
                   </div>
                 )}
 
-                {isProcessing ? (
-                  <div className="text-center py-12">
-                    <div className="w-16 h-16 border-4 border-[#07C59A] border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
-                    <p className="text-gray-600 mb-2">Procesando pago...</p>
-                    <p className="text-xs text-gray-500">Serás redirigido a la verificación de tu banco</p>
+                {/* Order Summary */}
+                <div className="bg-white/5 rounded-xl p-5 mb-6 border border-white/5">
+                  <h4 className="font-bold text-white mb-3 text-sm">Resumen del Pedido</h4>
+                  <div className="space-y-3">
+                    <div className="flex justify-between text-sm">
+                      <span className="text-gray-400">Resultado del Test</span>
+                      <span className="font-semibold text-white">0,50€</span>
+                    </div>
+                    <div className="flex justify-between text-sm">
+                      <div>
+                        <span className="text-gray-400 block">Trial Premium (2 días)</span>
+                        <span className="text-xs text-gray-500">Después 9,99€/mes</span>
+                      </div>
+                      <span className="font-semibold text-primary-400">GRATIS</span>
+                    </div>
+                    <div className="border-t border-white/10 pt-3 flex justify-between items-center">
+                      <span className="font-bold text-white">Total Hoy</span>
+                      <span className="text-3xl font-bold text-gradient">0,50€</span>
+                    </div>
                   </div>
-                ) : isLoading ? (
-                  <div className="text-center py-12">
-                    <div className="w-16 h-16 border-4 border-[#07C59A] border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
-                    <p className="text-gray-600 mb-2">Inicializando pago...</p>
+                </div>
+
+                {/* Stripe Checkout Button */}
+                <button
+                  onClick={handleStripeCheckout}
+                  disabled={isLoading || !email}
+                  className={`w-full py-4 px-6 rounded-xl font-bold text-lg text-white transition-all duration-300 flex items-center justify-center gap-3 ${
+                    isLoading || !email
+                      ? 'bg-gray-600 cursor-not-allowed'
+                      : 'bg-gradient-to-r from-primary-500 to-accent-500 hover:from-primary-600 hover:to-accent-600 shadow-lg shadow-primary-500/25 hover:shadow-xl hover:shadow-primary-500/40 hover:-translate-y-0.5'
+                  }`}
+                >
+                  {isLoading ? (
+                    <>
+                      <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+                      Redirigiendo a Stripe...
+                    </>
+                  ) : (
+                    <>
+                      <FaCreditCard />
+                      Pagar 0,50€ de forma segura
+                    </>
+                  )}
+                </button>
+
+                <p className="text-center text-xs text-gray-500 mt-3">
+                  Serás redirigido a la pasarela segura de Stripe
+                </p>
+
+                {/* Security Badges */}
+                <div className="flex items-center justify-center gap-5 pt-5 mt-5 border-t border-white/5">
+                  <div className="flex items-center gap-1.5 text-xs text-gray-400">
+                    <FaLock className="text-primary-400" />
+                    <span>Pago Seguro</span>
                   </div>
-                ) : paymentData ? (
-                  <>
-                    {/* Email Display */}
-                    <div className="mb-4">
-                      <label className="block text-gray-700 font-semibold mb-1 text-sm">
-                        Email
-                      </label>
-                      <input
-                        type="email"
-                        value={email}
-                        readOnly
-                        className="w-full px-3 py-2 border-2 border-gray-300 rounded-lg bg-gray-50 text-sm"
-                      />
-                    </div>
+                  <div className="flex items-center gap-1.5 text-xs text-gray-400">
+                    <FaShieldAlt className="text-primary-400" />
+                    <span>SSL Encriptado</span>
+                  </div>
+                  <div className="flex items-center gap-1.5 text-xs text-gray-400">
+                    <FaCreditCard className="text-primary-400" />
+                    <span>PCI DSS</span>
+                  </div>
+                </div>
 
-                    {/* Order Summary */}
-                    <div className="bg-gray-50 rounded-xl p-4 mb-4">
-                      <h4 className="font-bold text-gray-900 mb-2 text-sm">Resumen del Pedido</h4>
-                      <div className="space-y-2">
-                        <div className="flex justify-between text-sm">
-                          <span className="text-gray-700">Resultado del Test</span>
-                          <span className="font-semibold">0,50€</span>
-                        </div>
-                        <div className="flex justify-between text-sm">
-                          <div>
-                            <span className="text-gray-700 block">Trial Premium (2 días)</span>
-                            <span className="text-xs text-gray-500">Después 9,99€/mes</span>
-                          </div>
-                          <span className="font-semibold text-green-600">GRATIS</span>
-                        </div>
-                        <div className="border-t-2 pt-2 flex justify-between items-center">
-                          <span className="font-bold text-gray-900">Total Hoy</span>
-                          <span className="text-2xl font-bold text-[#07C59A]">0,50€</span>
-                        </div>
-                      </div>
-                    </div>
-
-                    {/* Método de pago */}
-                    <div className="mb-4">
-                      <label className="block text-gray-700 font-semibold mb-3 text-sm">
-                        Selecciona tu método de pago
-                      </label>
-                      
-                      <div className="space-y-2">
-                        {/* Google Pay */}
-                        <GooglePayButton
-                          amount={0.50}
-                          currency="EUR"
-                          onProcessPayment={handleGooglePayProcess}
-                          onError={handlePaymentError}
-                          env={paymentData.sipayConfig?.endpoint?.includes('live') ? 'live' : 'sandbox'}
-                          gatewayMerchantId={paymentData.sipayConfig?.key || 'clicklabsdigital'}
-                        />
-
-                        {/* Apple Pay */}
-                        <ApplePayButton
-                          amount={0.50}
-                          currency="EUR"
-                          onProcessPayment={handleApplePayProcess}
-                          onError={handlePaymentError}
-                        />
-
-                        {/* Separador */}
-                        <div className="flex items-center gap-3 py-2">
-                          <div className="flex-1 h-px bg-gray-300"></div>
-                          <span className="text-xs text-gray-500">o paga con tarjeta</span>
-                          <div className="flex-1 h-px bg-gray-300"></div>
-                        </div>
-
-                        {/* Opción Tarjeta */}
-                        <button
-                          type="button"
-                          onClick={() => setPaymentMethod(paymentMethod === 'card' ? 'none' : 'card')}
-                          className={`w-full flex items-center justify-between p-3 sm:p-4 rounded-xl border-2 transition-all ${
-                            paymentMethod === 'card' 
-                              ? 'border-[#07C59A] bg-green-50' 
-                              : 'border-gray-200 hover:border-gray-300 bg-white'
-                          }`}
-                        >
-                          <div className="flex items-center gap-2 sm:gap-3">
-                            <div className={`w-4 h-4 sm:w-5 sm:h-5 rounded-full border-2 flex items-center justify-center flex-shrink-0 ${
-                              paymentMethod === 'card' ? 'border-[#07C59A]' : 'border-gray-300'
-                            }`}>
-                              {paymentMethod === 'card' && (
-                                <div className="w-2 h-2 sm:w-3 sm:h-3 rounded-full bg-[#07C59A]" />
-                              )}
-                            </div>
-                            <i className="fas fa-credit-card text-gray-600 text-sm sm:text-lg"></i>
-                            <span className="font-medium text-gray-900 text-sm sm:text-base">Tarjeta</span>
-                          </div>
-                          <div className="flex gap-1 sm:gap-2 flex-shrink-0">
-                            <img src="https://upload.wikimedia.org/wikipedia/commons/5/5e/Visa_Inc._logo.svg" alt="Visa" className="h-3 sm:h-5" />
-                            <img src="https://upload.wikimedia.org/wikipedia/commons/2/2a/Mastercard-logo.svg" alt="Mastercard" className="h-3 sm:h-5" />
-                          </div>
-                        </button>
-
-                        {/* Formulario de tarjeta desplegable */}
-                        <div className={`overflow-hidden transition-all duration-300 ease-in-out ${
-                          paymentMethod === 'card' ? 'max-h-[600px] opacity-100' : 'max-h-0 opacity-0'
-                        }`}>
-                          <div className="pt-2">
-                            <SipayInline
-                              merchantKey={paymentData.sipayConfig?.key || 'clicklabsdigital'}
-                              amount={50}
-                              currency="EUR"
-                              template="v4"
-                              lang={lang}
-                              env={paymentData.sipayConfig?.endpoint?.includes('live') ? 'live' : 'sandbox'}
-                              onRequestId={(requestId, payload) => {
-                                console.log('🎉 Payment success! request_id:', requestId)
-                                handlePaymentSuccess({ request_id: requestId, ...(typeof payload === 'object' && payload !== null ? payload : {}) })
-                              }}
-                              height={450}
-                            />
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-
-                    {/* Security Badges */}
-                    <div className="flex items-center justify-center gap-4 pt-4 border-t border-gray-200">
-                      <div className="flex items-center gap-1 text-xs text-gray-600">
-                        <i className="fas fa-lock text-green-500"></i>
-                        <span>Pago 100% Seguro</span>
-                      </div>
-                      <div className="flex items-center gap-1 text-xs text-gray-600">
-                        <i className="fas fa-shield-alt text-green-500"></i>
-                        <span>SSL Encriptado</span>
-                      </div>
-                      <div className="flex items-center gap-1 text-xs text-gray-600">
-                        <i className="fas fa-credit-card text-green-500"></i>
-                        <span>PCI DSS</span>
-                      </div>
-                    </div>
-                  </>
-                ) : null}
+                {/* Stripe badge */}
+                <div className="text-center mt-4">
+                  <span className="text-xs text-gray-500">Powered by</span>
+                  <span className="text-sm font-bold text-gray-400 ml-1">Stripe</span>
+                </div>
               </div>
 
               {/* Guarantee */}
-              <div className="mt-4 bg-yellow-50 border border-yellow-200 rounded-lg p-3 text-center">
+              <div className="mt-4 bg-yellow-500/10 border border-yellow-500/20 rounded-xl p-3 text-center">
                 <div className="flex items-center justify-center gap-2">
-                  <span className="text-xl">🛡️</span>
-                  <span className="font-semibold text-yellow-900 text-sm">Garantía de Devolución</span>
-                  <a href={`/${lang}/reembolso`} className="text-xs text-yellow-700 underline">Ver política</a>
+                  <span className="text-lg">🛡️</span>
+                  <span className="font-semibold text-yellow-300 text-sm">Garantía de Devolución</span>
+                  <a href={`/${lang}/reembolso`} className="text-xs text-yellow-400/70 underline">Ver política</a>
                 </div>
               </div>
             </div>
@@ -609,14 +343,11 @@ function CheckoutPaymentContent() {
       </div>
 
       {/* Footer */}
-      <footer className="bg-gray-900 text-white py-8 px-4 mt-12">
+      <footer className="bg-secondary-950 border-t border-white/5 text-white py-8 px-4 mt-12">
         <div className="max-w-6xl mx-auto text-center">
-          <p className="text-gray-400">© 2026 MindMetric. Todos los derechos reservados.</p>
+          <p className="text-gray-500 text-sm">© 2026 Brain Metric. Todos los derechos reservados.</p>
         </div>
       </footer>
-
-      {/* Font Awesome */}
-      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
     </div>
   )
 }
@@ -624,11 +355,10 @@ function CheckoutPaymentContent() {
 export default function CheckoutPayment() {
   return (
     <Suspense fallback={
-      <div className="min-h-screen bg-gradient-to-br from-gray-50 to-white flex items-center justify-center">
+      <div className="min-h-screen bg-secondary-950 flex items-center justify-center">
         <div className="text-center">
-          <div className="w-16 h-16 border-4 border-[#07C59A] border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
-          <p className="text-gray-600 mb-2">Cargando checkout...</p>
-          <p className="text-xs text-gray-500">Por favor espera</p>
+          <div className="w-16 h-16 border-4 border-primary-500 border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
+          <p className="text-gray-400 mb-2">Cargando checkout...</p>
         </div>
       </div>
     }>

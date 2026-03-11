@@ -46,7 +46,7 @@ export async function POST(request: NextRequest) {
                 <table role="presentation" style="max-width: 600px; background-color: #ffffff; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
                   <!-- Header -->
                   <tr>
-                    <td style="background: linear-gradient(135deg, #113240 0%, #07C59A 100%); padding: 30px; text-align: center;">
+                    <td style="background: linear-gradient(135deg, #0F172A 0%, #6366F1 100%); padding: 30px; text-align: center;">
                       <img src="https://www.mindmetric.io/images/MINDMETRIC/Logo_blanco.png" alt="MindMetric" style="height: 40px; width: auto; margin: 0 auto; display: block;" />
                       <h1 style="color: #ffffff; margin: 20px 0 0 0; font-size: 24px; font-weight: 700;">
                         📬 Nuevo Mensaje de Contacto
@@ -57,8 +57,8 @@ export async function POST(request: NextRequest) {
                   <!-- Content -->
                   <tr>
                     <td style="padding: 40px 30px;">
-                      <div style="background-color: #f7fafc; border-left: 4px solid #07C59A; border-radius: 8px; padding: 20px; margin-bottom: 30px;">
-                        <h2 style="color: #113240; margin: 0 0 10px 0; font-size: 18px; font-weight: 600;">
+                      <div style="background-color: #f7fafc; border-left: 4px solid #6366F1; border-radius: 8px; padding: 20px; margin-bottom: 30px;">
+                        <h2 style="color: #0F172A; margin: 0 0 10px 0; font-size: 18px; font-weight: 600;">
                           Información del Contacto:
                         </h2>
                         <table style="width: 100%; border-collapse: collapse;">
@@ -75,7 +75,7 @@ export async function POST(request: NextRequest) {
                               📧 Email:
                             </td>
                             <td style="padding: 8px 0; color: #1a202c;">
-                              <a href="mailto:${email}" style="color: #07C59A; text-decoration: none;">
+                              <a href="mailto:${email}" style="color: #6366F1; text-decoration: none;">
                                 ${email}
                               </a>
                             </td>
@@ -100,7 +100,7 @@ export async function POST(request: NextRequest) {
                       </div>
 
                       <div style="background-color: #ffffff; border: 1px solid #e2e8f0; border-radius: 8px; padding: 20px;">
-                        <h3 style="color: #113240; margin: 0 0 15px 0; font-size: 16px; font-weight: 600;">
+                        <h3 style="color: #0F172A; margin: 0 0 15px 0; font-size: 16px; font-weight: 600;">
                           💬 Mensaje:
                         </h3>
                         <p style="color: #4a5568; font-size: 15px; line-height: 1.6; margin: 0; white-space: pre-wrap;">
@@ -113,7 +113,7 @@ ${message}
                           💡 <strong>Tip:</strong> Puedes responder directamente a este email para contactar con el usuario
                         </p>
                         <a href="mailto:${email}?subject=Re: ${encodeURIComponent(subject)}" 
-                           style="display: inline-block; background: linear-gradient(135deg, #113240 0%, #07C59A 100%); color: #ffffff; text-decoration: none; padding: 12px 30px; border-radius: 8px; font-weight: 600; font-size: 14px;">
+                           style="display: inline-block; background: linear-gradient(135deg, #0F172A 0%, #6366F1 100%); color: #ffffff; text-decoration: none; padding: 12px 30px; border-radius: 8px; font-weight: 600; font-size: 14px;">
                           📧 Responder a ${name}
                         </a>
                       </div>

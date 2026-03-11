@@ -81,7 +81,7 @@ export default function ReembolsoPage() {
                   {/* Indisponibilidad del servicio */}
                   <div className="bg-gray-50 rounded-lg p-6">
                     <h4 className="font-bold text-gray-900 mb-3 flex items-center gap-2">
-                      <span className="text-[#07C59A]">→</span>
+                      <span className="text-[#6366F1]">→</span>
                       Indisponibilidad del servicio
                     </h4>
                     <p className="text-gray-700 text-sm">
@@ -92,7 +92,7 @@ export default function ReembolsoPage() {
                   {/* Problemas técnicos */}
                   <div className="bg-gray-50 rounded-lg p-6">
                     <h4 className="font-bold text-gray-900 mb-3 flex items-center gap-2">
-                      <span className="text-[#07C59A]">→</span>
+                      <span className="text-[#6366F1]">→</span>
                       Problemas técnicos
                     </h4>
                     <p className="text-gray-700 text-sm">
@@ -103,7 +103,7 @@ export default function ReembolsoPage() {
                   {/* Errores de facturación */}
                   <div className="bg-gray-50 rounded-lg p-6">
                     <h4 className="font-bold text-gray-900 mb-3 flex items-center gap-2">
-                      <span className="text-[#07C59A]">→</span>
+                      <span className="text-[#6366F1]">→</span>
                       Errores de facturación
                     </h4>
                     <p className="text-gray-700 text-sm">
@@ -114,7 +114,7 @@ export default function ReembolsoPage() {
                   {/* Requisitos legales */}
                   <div className="bg-gray-50 rounded-lg p-6">
                     <h4 className="font-bold text-gray-900 mb-3 flex items-center gap-2">
-                      <span className="text-[#07C59A]">→</span>
+                      <span className="text-[#6366F1]">→</span>
                       Requisitos legales
                     </h4>
                     <p className="text-gray-700 text-sm">
@@ -177,8 +177,8 @@ export default function ReembolsoPage() {
                       <span className="text-blue-600">•</span>
                     <div>
                         <strong>Correo electrónico:</strong>{' '}
-                        <a href="mailto:support@mindmetric.io" className="text-blue-600 underline hover:text-blue-800">
-                          support@mindmetric.io
+                        <a href="mailto:support@brainmetric.io" className="text-blue-600 underline hover:text-blue-800">
+                          support@brainmetric.io
                         </a>
                     </div>
                   </li>
@@ -189,25 +189,25 @@ export default function ReembolsoPage() {
                   <h4 className="font-bold text-gray-900 mb-4">7.4.2 Incluir:</h4>
                   <ul className="space-y-2 text-gray-700 text-sm">
                     <li className="flex items-center gap-2">
-                      <span className="text-[#07C59A]">✓</span>
+                      <span className="text-[#6366F1]">✓</span>
                       <span>Correo electrónico de la cuenta</span>
                 </li>
                     <li className="flex items-center gap-2">
-                      <span className="text-[#07C59A]">✓</span>
+                      <span className="text-[#6366F1]">✓</span>
                       <span>Detalles de la transacción</span>
                   </li>
                     <li className="flex items-center gap-2">
-                      <span className="text-[#07C59A]">✓</span>
+                      <span className="text-[#6366F1]">✓</span>
                       <span>Motivo del reembolso</span>
                   </li>
                     <li className="flex items-center gap-2">
-                      <span className="text-[#07C59A]">✓</span>
+                      <span className="text-[#6366F1]">✓</span>
                       <span>Documentación de apoyo</span>
                   </li>
                 </ul>
                 </div>
 
-                <div className="bg-[#07C59A]/10 border-l-4 border-[#07C59A] p-6 rounded-r-lg">
+                <div className="bg-[#6366F1]/10 border-l-4 border-[#6366F1] p-6 rounded-r-lg">
                   <p className="font-semibold text-gray-900">
                     <strong>7.4.3 Tiempo de procesamiento:</strong> 3 días hábiles
                   </p>
@@ -278,7 +278,7 @@ export default function ReembolsoPage() {
                     <li>• Los tipos de cambio los determina su banco o el emisor de su tarjeta.</li>
                     <li>• Cualquier tarifa de conversión de moneda cobrada por su banco no es reembolsable.</li>
                     <li>• Es posible que vea cargos por conversión de moneda en el estado de cuenta de su banco.</li>
-                    <li>• Estos cargos de conversión son independientes de nuestros cargos por servicio y no están controlados por MindMetric.</li>
+                    <li>• Estos cargos de conversión son independientes de nuestros cargos por servicio y no están controlados por Brain Metric.</li>
                   </ul>
                   <div className="mt-4 pt-4 border-t border-blue-200">
                     <p className="text-sm text-gray-700">
@@ -290,21 +290,21 @@ export default function ReembolsoPage() {
             </section>
 
             {/* Contact Section */}
-            <div className="bg-gradient-to-r from-[#113240] to-[#052547] text-white rounded-xl p-8 mt-12">
+            <div className="bg-gradient-to-r from-[#0F172A] to-[#1E1B4B] text-white rounded-xl p-8 mt-12">
               <h3 className="text-2xl font-bold mb-4">¿Necesitas ayuda?</h3>
               <p className="mb-6">
                 Si tienes alguna pregunta sobre nuestra política de reembolso o necesitas asistencia con una solicitud, no dudes en contactarnos.
               </p>
               <div className="flex flex-col sm:flex-row gap-4">
                 <a 
-                  href="mailto:support@mindmetric.io" 
-                  className="bg-[#07C59A] hover:bg-[#069e7b] text-white font-semibold py-3 px-6 rounded-lg transition-all text-center"
+                  href="mailto:support@brainmetric.io" 
+                  className="bg-[#6366F1] hover:bg-[#4F46E5] text-white font-semibold py-3 px-6 rounded-lg transition-all text-center"
                 >
                   Enviar correo electrónico
                 </a>
                 <a 
                   href={`/${lang}/contacto`} 
-                  className="bg-white text-[#113240] hover:bg-gray-100 font-semibold py-3 px-6 rounded-lg transition-all text-center"
+                  className="bg-white text-[#0F172A] hover:bg-gray-100 font-semibold py-3 px-6 rounded-lg transition-all text-center"
                 >
                   Formulario de contacto
                 </a>

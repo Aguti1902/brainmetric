@@ -7,7 +7,7 @@
     "startTest": "Comenzar Test"
   },
   "footer": {
-    "description": "Descubre tu nivel de inteligencia con nuestro test científico y obtén resultados precisos y personalizados en minutos.",
+    "description": "Descubre tu potencial cognitivo con Brain Metric. Test científico de inteligencia con resultados precisos y personalizados.",
     "links": "Enlaces",
     "home": "Inicio",
     "startTest": "Comenzar Test",
@@ -21,9 +21,9 @@
     "allRightsReserved": "Todos los derechos reservados"
   },
   "hero": {
-    "title": "Descubre tu nivel de inteligencia en",
+    "title": "Mide tu potencial cognitivo en",
     "titleHighlight": "minutos",
-    "description": "Test científico de CI con resultados precisos y personalizados. Más de 100,000 personas ya han descubierto su potencial.",
+    "description": "Evaluación científica de inteligencia con análisis detallado y resultados personalizados. Más de 100,000 personas confían en Brain Metric.",
     "cta": "Comenzar Test Ahora",
     "ctaSecondary": "Saber Más",
     "secure": "100% Seguro",
@@ -40,7 +40,7 @@
   },
   "howItWorks": {
     "title": "¿Cómo funciona?",
-    "subtitle": "Tres simples pasos para descubrir tu nivel de inteligencia",
+    "subtitle": "Tres simples pasos para descubrir tu potencial cognitivo",
     "step1": "Realiza el Test",
     "step1Desc": "Completa 20 preguntas de lógica visual. Tienes 20 minutos para completar el test, tómate el que necesites para pensar cada respuesta.",
     "step2": "Pago Seguro",
@@ -49,7 +49,7 @@
     "step3Desc": "Accede a tu CI exacto, análisis detallado y gráficos comparativos. Comparte tus resultados en redes sociales."
   },
   "features": {
-    "title": "¿Por qué MindMetric?",
+    "title": "¿Por qué Brain Metric?",
     "subtitle": "La forma más precisa y accesible de conocer tu coeficiente intelectual",
     "validated": "Científicamente Validado",
     "validatedDesc": "Nuestro test está basado en principios psicométricos reconocidos y validados por expertos en inteligencia.",
@@ -176,10 +176,10 @@
     "subtitle": "Todo lo que necesitas saber",
     "q1": "¿Cuánto tiempo se tarda en hacer el test de CI?",
     "a1": "Completar nuestro test de CI lleva, por lo general, entre 10 y 20 minutos. Para obtener la máxima precisión, realízalo de una sola vez, sin interrupciones. La mayoría de los usuarios considera que el tiempo invertido vale la pena por las valiosas ideas que obtienen sobre sus capacidades cognitivas.",
-    "q2": "¿Puedo usar MindMetric en varios dispositivos?",
+    "q2": "¿Puedo usar Brain Metric en varios dispositivos?",
     "a2": "¡Claro! Tu suscripción se integra sin problemas en smartphones, tabletas y ordenadores. Tu progreso se sincroniza automáticamente en todas partes, dándote la flexibilidad para mejorar tus habilidades cognitivas cuando y donde te convenga.",
     "q3": "¿Qué pasa si el programa no cumple mis expectativas?",
-    "a3": "Aunque la mayoría de los usuarios encuentran un gran valor en MindMetric, sabemos que cada experiencia es distinta. Si no quedas completamente satisfecho o presentas problemas técnicos, revisa nuestra Política de reembolsos para verificar si cumples los requisitos de las opciones disponibles.",
+    "a3": "Aunque la mayoría de los usuarios encuentran un gran valor en Brain Metric, sabemos que cada experiencia es distinta. Si no quedas completamente satisfecho o presentas problemas técnicos, revisa nuestra Política de reembolsos para verificar si cumples los requisitos de las opciones disponibles.",
     "q4": "¿Están seguros mis datos?",
     "a4": "Por supuesto. Cumplimos estrictamente con los estándares PCI-DSS para proteger tu información. Tu privacidad es nuestra prioridad: nunca compartimos tus datos personales con terceros.",
     "q5": "¿El test es científicamente válido?",
@@ -195,7 +195,7 @@
   },
   "test": {
     "title": "Test de Inteligencia",
-    "welcomeTitle": "MindMetric - Evaluación de Inteligencia",
+    "welcomeTitle": "Brain Metric - Evaluación de Inteligencia",
     "welcomeSubtitle": "Antes de comenzar, cuéntanos cómo te llamas",
     "namePlaceholder": "Tu nombre",
     "startButton": "Comenzar Test",
@@ -399,7 +399,7 @@
     "fullNamePlaceholder": "Juan Pérez García",
     "email": "Correo Electrónico de Registro",
     "emailPlaceholder": "tu@email.com",
-    "emailHelper": "Usa el mismo email con el que te registraste en MindMetric",
+    "emailHelper": "Usa el mismo email con el que te registraste en Brain Metric",
     "reason": "Motivo de Cancelación (Opcional)",
     "reasonPlaceholder": "Cuéntanos por qué cancelas. Tu feedback nos ayuda a mejorar.",
     "confirmButton": "Confirmar Cancelación",
@@ -438,18 +438,18 @@
     "emailDirect": "O escríbenos directamente a:"
   },
   "legal": {
-    "noticeTranslation": "Este documento legal está disponible principalmente en español. Para consultas en otros idiomas, contacta con support@mindmetric.io"
+    "noticeTranslation": "Este documento legal está disponible principalmente en español. Para consultas en otros idiomas, contacta con support@brainmetric.io"
   },
   "certificate": {
     "title": "CERTIFICADO DE INTELIGENCIA",
     "certifies": "Se certifica que",
-    "completed": "ha completado exitosamente el test de inteligencia de MindMetric",
+    "completed": "ha completado exitosamente el test de inteligencia de Brain Metric",
     "obtained": "obteniendo un Coeficiente Intelectual de",
     "category": "Categoría",
     "correctAnswers": "respuestas correctas",
     "percentile": "Percentil",
     "issueDate": "Fecha de emisión",
-    "footer": "MindMetric - Evaluación de Inteligencia Profesional",
+    "footer": "Brain Metric - Evaluación de Inteligencia Profesional",
     "fileName": "Certificado_IQ"
   },
   "account": {

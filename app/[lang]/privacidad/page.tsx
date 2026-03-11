@@ -13,7 +13,7 @@ export default function PrivacidadPage() {
         <Header />
         <div className="min-h-screen flex items-center justify-center">
           <div className="text-center">
-            <div className="w-16 h-16 border-4 border-[#07C59A] border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
+            <div className="w-16 h-16 border-4 border-[#6366F1] border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
             <p className="text-gray-600">Loading...</p>
           </div>
         </div>
@@ -40,7 +40,7 @@ export default function PrivacidadPage() {
             <section>
               <h2 className="text-2xl font-bold text-gray-900 mb-4">1. Introduction</h2>
               <p>
-                At MindMetric, we take the privacy of our users very seriously. This Privacy Policy describes how we 
+                At Brain Metric, we take the privacy of our users very seriously. This Privacy Policy describes how we 
                 collect, use, store, and protect your personal information when you use our website and services.
               </p>
               <p>
@@ -154,7 +154,7 @@ export default function PrivacidadPage() {
               </ul>
               <p>
                 To exercise any of these rights, please contact us at{' '}
-                <a href="mailto:support@mindmetric.io" className="text-primary-600 underline">support@mindmetric.io</a>.
+                <a href="mailto:support@brainmetric.io" className="text-primary-600 underline">support@brainmetric.io</a>.
               </p>
             </section>
 
@@ -206,7 +206,7 @@ export default function PrivacidadPage() {
                 If you have any questions about this Privacy Policy or our data practices, please contact us at:
               </p>
               <ul className="list-none space-y-1 ml-0">
-                <li><strong>Email:</strong> <a href="mailto:support@mindmetric.io" className="text-primary-600 underline">support@mindmetric.io</a></li>
+                <li><strong>Email:</strong> <a href="mailto:support@brainmetric.io" className="text-primary-600 underline">support@brainmetric.io</a></li>
                 <li><strong>Contact page:</strong> <a href={`/${lang}/contacto`} className="text-primary-600 underline">Contact Form</a></li>
               </ul>
             </section>

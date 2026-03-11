@@ -213,7 +213,7 @@ export default function TestPremiumPage() {
         <Header />
         <div className="min-h-screen flex items-center justify-center">
           <div className="text-center">
-            <div className="w-16 h-16 border-4 border-[#07C59A] border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
+            <div className="w-16 h-16 border-4 border-[#6366F1] border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
             <p className="text-gray-600">{t ? t.test.loading : 'Loading...'}</p>
           </div>
         </div>
@@ -231,7 +231,7 @@ export default function TestPremiumPage() {
         <Header />
         <div className="min-h-screen flex items-center justify-center">
           <div className="text-center">
-            <div className="w-16 h-16 border-4 border-[#07C59A] border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
+            <div className="w-16 h-16 border-4 border-[#6366F1] border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
             <p className="text-gray-600">{t ? t.test.loading : 'Loading...'}</p>
           </div>
         </div>
@@ -277,7 +277,7 @@ export default function TestPremiumPage() {
           {/* Barra de progreso */}
           <div className="mb-8 bg-gray-200 rounded-full h-3">
             <div 
-              className="bg-gradient-to-r from-[#07C59A] to-[#069e7b] h-3 rounded-full transition-all duration-300"
+              className="bg-gradient-to-r from-[#6366F1] to-[#4F46E5] h-3 rounded-full transition-all duration-300"
               style={{ width: `${progress}%` }}
             />
           </div>
@@ -296,12 +296,12 @@ export default function TestPremiumPage() {
                     key={index}
                     className={`aspect-square rounded-lg flex items-center justify-center transition-all ${
                       index === 8 
-                        ? 'border-4 border-dashed border-[#07C59A] bg-[#e6f5f5]' 
+                        ? 'border-4 border-dashed border-[#6366F1] bg-[#e6f5f5]' 
                         : 'border-2 border-gray-300 bg-white'
                     }`}
                   >
                     {index === 8 ? (
-                      <span className="text-5xl font-bold text-[#07C59A]">?</span>
+                      <span className="text-5xl font-bold text-[#6366F1]">?</span>
                     ) : (
                       <VisualCell cell={cell} size={80} />
                     )}
@@ -323,14 +323,14 @@ export default function TestPremiumPage() {
                     onClick={() => handleOptionSelect(index)}
                     className={`aspect-square rounded-lg transition-all duration-200 relative ${
                       answers[currentQuestion] === index
-                        ? 'border-4 border-[#07C59A] bg-[#e6f5f5] ring-4 ring-[#07C59A]/20 scale-105'
-                        : 'border-2 border-gray-300 bg-white hover:border-[#07C59A] hover:shadow-lg'
+                        ? 'border-4 border-[#6366F1] bg-[#e6f5f5] ring-4 ring-[#6366F1]/20 scale-105'
+                        : 'border-2 border-gray-300 bg-white hover:border-[#6366F1] hover:shadow-lg'
                     }`}
                   >
                     <div className="w-full h-full flex items-center justify-center p-2">
                       <VisualCell cell={option} size={80} />
                     </div>
-                    <div className="absolute top-2 left-2 bg-[#07C59A] text-white rounded-full w-7 h-7 flex items-center justify-center text-sm font-bold shadow-md">
+                    <div className="absolute top-2 left-2 bg-[#6366F1] text-white rounded-full w-7 h-7 flex items-center justify-center text-sm font-bold shadow-md">
                       {optionLetters[index]}
                     </div>
                   </button>
@@ -347,7 +347,7 @@ export default function TestPremiumPage() {
               className={`flex items-center gap-2 px-6 py-3 rounded-lg font-semibold transition-all ${
                 currentQuestion === 0 
                   ? 'bg-gray-200 text-gray-400 cursor-not-allowed' 
-                  : 'bg-white text-[#113240] border-2 border-[#113240] hover:bg-[#113240] hover:text-white'
+                  : 'bg-white text-[#0F172A] border-2 border-[#0F172A] hover:bg-[#0F172A] hover:text-white'
               }`}
             >
               <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -356,13 +356,13 @@ export default function TestPremiumPage() {
               {t.test.previous}
             </button>
 
-            <div className="px-6 py-3 bg-[#07C59A] text-white rounded-full font-bold text-lg shadow-md">
+            <div className="px-6 py-3 bg-[#6366F1] text-white rounded-full font-bold text-lg shadow-md">
               {currentQuestion + 1}/{visualQuestions.length}
             </div>
 
             <button
               onClick={handleNext}
-              className="flex items-center gap-2 px-6 py-3 rounded-lg font-semibold transition-all bg-[#113240] text-white hover:bg-[#052547] shadow-md hover:shadow-lg"
+              className="flex items-center gap-2 px-6 py-3 rounded-lg font-semibold transition-all bg-[#0F172A] text-white hover:bg-[#1E1B4B] shadow-md hover:shadow-lg"
             >
               {currentQuestion === visualQuestions.length - 1 ? t.test.finish : t.test.next}
               <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -398,7 +398,7 @@ export default function TestPremiumPage() {
                     setShowFinishConfirmModal(false)
                     handleFinishTest()
                   }}
-                  className="flex-1 bg-[#113240] hover:bg-[#052547] text-white font-semibold py-3 px-6 rounded-lg transition-all duration-200 shadow-lg hover:shadow-xl"
+                  className="flex-1 bg-[#0F172A] hover:bg-[#1E1B4B] text-white font-semibold py-3 px-6 rounded-lg transition-all duration-200 shadow-lg hover:shadow-xl"
                 >
                   {t.test.getResults}
                 </button>
@@ -427,7 +427,7 @@ export default function TestPremiumPage() {
               
               <button
                 onClick={() => setShowTooFastModal(false)}
-                className="w-full bg-[#113240] hover:bg-[#052547] text-white font-semibold py-3 px-8 rounded-lg transition-all duration-200 shadow-lg hover:shadow-xl"
+                className="w-full bg-[#0F172A] hover:bg-[#1E1B4B] text-white font-semibold py-3 px-8 rounded-lg transition-all duration-200 shadow-lg hover:shadow-xl"
               >
                 {t?.test?.understood}
               </button>

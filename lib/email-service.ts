@@ -6,8 +6,8 @@ if (process.env.SENDGRID_API_KEY) {
   sgMail.setApiKey(process.env.SENDGRID_API_KEY)
 }
 
-const FROM_EMAIL = 'info@mindmetric.io'
-const FROM_NAME = 'MindMetric'
+const FROM_EMAIL = 'info@brainmetric.io'
+const FROM_NAME = 'Brain Metric'
 
 export interface EmailOptions {
   to: string
@@ -51,7 +51,7 @@ export const emailTemplates = {
     const t = (key: any) => getEmailTranslation(lang, key)
     return {
     to: email,
-    subject: `${t('welcome')} MindMetric! ${t('estimatedIQ')} ${estimatedIQ} 🎯`,
+    subject: `${t('welcome')} Brain Metric! ${t('estimatedIQ')} ${estimatedIQ} 🎯`,
     html: `
       <!DOCTYPE html>
       <html>
@@ -67,15 +67,15 @@ export const emailTemplates = {
               <table role="presentation" style="max-width: 600px; background-color: #ffffff; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
                 <!-- Header -->
                 <tr>
-                  <td style="background: linear-gradient(135deg, #113240 0%, #07C59A 100%); padding: 40px 30px; text-align: center;">
-                    <img src="https://www.mindmetric.io/images/MINDMETRIC/Logo_blanco.png" alt="MindMetric" style="height: 40px; width: auto; margin: 0 auto; display: block;" />
+                  <td style="background: linear-gradient(135deg, #0F172A 0%, #6366F1 100%); padding: 40px 30px; text-align: center;">
+                    <img src="https://www.brainmetric.io/images/MINDMETRIC/Logo_blanco.png" alt="Brain Metric" style="height: 40px; width: auto; margin: 0 auto; display: block;" />
                   </td>
                 </tr>
                 
                 <!-- Content -->
                 <tr>
                   <td style="padding: 40px 30px; text-align: center;">
-                    <h2 style="color: #113240; margin: 0 0 20px 0; font-size: 28px; font-weight: 600;">
+                    <h2 style="color: #0F172A; margin: 0 0 20px 0; font-size: 28px; font-weight: 600;">
                       ${t('welcome')}, ${userName}!
                     </h2>
                     
@@ -84,7 +84,7 @@ export const emailTemplates = {
                     </p>
                     
                     <!-- IQ Score -->
-                    <div style="background: linear-gradient(135deg, #07C59A 0%, #113240 100%); border-radius: 16px; padding: 30px; margin: 30px 0; color: #ffffff;">
+                    <div style="background: linear-gradient(135deg, #6366F1 0%, #0F172A 100%); border-radius: 16px; padding: 30px; margin: 30px 0; color: #ffffff;">
                       <p style="margin: 0 0 10px 0; font-size: 14px; opacity: 0.9;">
                         ${t('estimatedIQ')}
                       </p>
@@ -106,7 +106,7 @@ export const emailTemplates = {
                       </p>
                     </div>
                     
-                    <a href="https://mindmetric.io/${lang}/checkout" style="display: inline-block; background: linear-gradient(135deg, #113240 0%, #07C59A 100%); color: #ffffff; text-decoration: none; padding: 16px 40px; border-radius: 8px; font-weight: 600; font-size: 16px; margin: 20px 0;">
+                    <a href="https://brainmetric.io/${lang}/checkout" style="display: inline-block; background: linear-gradient(135deg, #0F172A 0%, #6366F1 100%); color: #ffffff; text-decoration: none; padding: 16px 40px; border-radius: 8px; font-weight: 600; font-size: 16px; margin: 20px 0;">
                       ${t('viewCompleteResult')}
                     </a>
                     
@@ -120,10 +120,10 @@ export const emailTemplates = {
                 <tr>
                   <td style="background-color: #f7fafc; padding: 30px; text-align: center; border-top: 1px solid #e2e8f0;">
                     <p style="color: #718096; font-size: 12px; margin: 0 0 10px 0;">
-                      © ${new Date().getFullYear()} MindMetric. ${lang === 'es' ? 'Todos los derechos reservados.' : 'All rights reserved.'}
+                      © ${new Date().getFullYear()} Brain Metric. ${lang === 'es' ? 'Todos los derechos reservados.' : 'All rights reserved.'}
                     </p>
                     <p style="color: #718096; font-size: 12px; margin: 0;">
-                      info@mindmetric.io
+                      info@brainmetric.io
                     </p>
                   </td>
                 </tr>
@@ -157,8 +157,8 @@ export const emailTemplates = {
               <table role="presentation" style="max-width: 600px; background-color: #ffffff; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
                 <!-- Header -->
                 <tr>
-                  <td style="background: linear-gradient(135deg, #113240 0%, #07C59A 100%); padding: 40px 30px; text-align: center;">
-                    <img src="https://www.mindmetric.io/images/MINDMETRIC/Logo_blanco.png" alt="MindMetric" style="height: 32px; width: auto; margin: 0 auto 20px auto; display: block;" />
+                  <td style="background: linear-gradient(135deg, #0F172A 0%, #6366F1 100%); padding: 40px 30px; text-align: center;">
+                    <img src="https://www.brainmetric.io/images/MINDMETRIC/Logo_blanco.png" alt="Brain Metric" style="height: 32px; width: auto; margin: 0 auto 20px auto; display: block;" />
                     <h1 style="color: #ffffff; margin: 0; font-size: 32px; font-weight: 700;">
                       🎁 ${lang === 'es' ? '¡Tu Resultado te Espera!' : 'Your Result Awaits!'}
                     </h1>
@@ -168,7 +168,7 @@ export const emailTemplates = {
                 <!-- Content -->
                 <tr>
                   <td style="padding: 40px 30px;">
-                    <h2 style="color: #113240; margin: 0 0 20px 0; font-size: 24px; font-weight: 600;">
+                    <h2 style="color: #0F172A; margin: 0 0 20px 0; font-size: 24px; font-weight: 600;">
                       ${lang === 'es' ? 'Hola' : 'Hello'}, ${userName} 👋
                     </h2>
                     
@@ -178,8 +178,8 @@ export const emailTemplates = {
                         : 'We noticed you started the payment process but didn\'t complete it. Your exact result is just €1.00 away!'}
                     </p>
                     
-                    <div style="background-color: #e6f5f5; border-left: 4px solid #07C59A; padding: 20px; margin: 30px 0; border-radius: 4px;">
-                      <h3 style="color: #07C59A; margin: 0 0 10px 0; font-size: 18px; font-weight: 600;">
+                    <div style="background-color: #e6f5f5; border-left: 4px solid #6366F1; padding: 20px; margin: 30px 0; border-radius: 4px;">
+                      <h3 style="color: #6366F1; margin: 0 0 10px 0; font-size: 18px; font-weight: 600;">
                         ${lang === 'es' ? '¿Qué obtienes por 0,50€?' : 'What do you get for €1.00?'}
                       </h3>
                       <ul style="color: #2d3748; margin: 0; padding-left: 20px; line-height: 1.8;">
@@ -203,7 +203,7 @@ export const emailTemplates = {
                     </div>
                     
                     <div style="text-align: center; margin: 30px 0;">
-                      <a href="https://mindmetric.io/${lang}/checkout" style="display: inline-block; background: linear-gradient(135deg, #113240 0%, #07C59A 100%); color: #ffffff; text-decoration: none; padding: 16px 40px; border-radius: 8px; font-weight: 600; font-size: 18px;">
+                      <a href="https://brainmetric.io/${lang}/checkout" style="display: inline-block; background: linear-gradient(135deg, #0F172A 0%, #6366F1 100%); color: #ffffff; text-decoration: none; padding: 16px 40px; border-radius: 8px; font-weight: 600; font-size: 18px;">
                         ${lang === 'es' ? 'Completar Pago Ahora' : 'Complete Payment Now'}
                       </a>
                     </div>
@@ -220,10 +220,10 @@ export const emailTemplates = {
                 <tr>
                   <td style="background-color: #f7fafc; padding: 30px; text-align: center; border-top: 1px solid #e2e8f0;">
                     <p style="color: #718096; font-size: 12px; margin: 0 0 10px 0;">
-                      © ${new Date().getFullYear()} MindMetric. ${lang === 'es' ? 'Todos los derechos reservados.' : 'All rights reserved.'}
+                      © ${new Date().getFullYear()} Brain Metric. ${lang === 'es' ? 'Todos los derechos reservados.' : 'All rights reserved.'}
                     </p>
                     <p style="color: #718096; font-size: 12px; margin: 0;">
-                      info@mindmetric.io
+                      info@brainmetric.io
                     </p>
                   </td>
                 </tr>
@@ -257,8 +257,8 @@ export const emailTemplates = {
               <table role="presentation" style="max-width: 600px; background-color: #ffffff; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
                 <!-- Header -->
                 <tr>
-                  <td style="background: linear-gradient(135deg, #113240 0%, #07C59A 100%); padding: 40px 30px; text-align: center;">
-                    <img src="https://www.mindmetric.io/images/MINDMETRIC/Logo_blanco.png" alt="MindMetric" style="height: 32px; width: auto; margin: 0 auto 20px auto; display: block;" />
+                  <td style="background: linear-gradient(135deg, #0F172A 0%, #6366F1 100%); padding: 40px 30px; text-align: center;">
+                    <img src="https://www.brainmetric.io/images/MINDMETRIC/Logo_blanco.png" alt="Brain Metric" style="height: 32px; width: auto; margin: 0 auto 20px auto; display: block;" />
                     <h1 style="color: #ffffff; margin: 0; font-size: 32px; font-weight: 700;">
                       🎉 ${lang === 'es' ? '¡Pago Confirmado!' : 'Payment Confirmed!'}
                     </h1>
@@ -268,7 +268,7 @@ export const emailTemplates = {
                 <!-- Content -->
                 <tr>
                   <td style="padding: 40px 30px; text-align: center;">
-                    <h2 style="color: #113240; margin: 0 0 20px 0; font-size: 28px; font-weight: 600;">
+                    <h2 style="color: #0F172A; margin: 0 0 20px 0; font-size: 28px; font-weight: 600;">
                       ${lang === 'es' ? '¡Gracias' : 'Thank you'}, ${userName}!
                     </h2>
                     
@@ -279,7 +279,7 @@ export const emailTemplates = {
                     </p>
                     
                     <!-- IQ Score -->
-                    <div style="background: linear-gradient(135deg, #07C59A 0%, #113240 100%); border-radius: 16px; padding: 30px; margin: 30px 0; color: #ffffff;">
+                    <div style="background: linear-gradient(135deg, #6366F1 0%, #0F172A 100%); border-radius: 16px; padding: 30px; margin: 30px 0; color: #ffffff;">
                       <p style="margin: 0 0 10px 0; font-size: 14px; opacity: 0.9;">
                         ${lang === 'es' ? 'Tu Coeficiente Intelectual' : 'Your Intelligence Quotient'}
                       </p>
@@ -306,7 +306,7 @@ export const emailTemplates = {
                     </div>
                     
                     <div style="text-align: center; margin: 30px 0;">
-                      <a href="https://mindmetric.io/${lang}/resultado" style="display: inline-block; background: linear-gradient(135deg, #113240 0%, #07C59A 100%); color: #ffffff; text-decoration: none; padding: 16px 40px; border-radius: 8px; font-weight: 600; font-size: 18px;">
+                      <a href="https://brainmetric.io/${lang}/resultado" style="display: inline-block; background: linear-gradient(135deg, #0F172A 0%, #6366F1 100%); color: #ffffff; text-decoration: none; padding: 16px 40px; border-radius: 8px; font-weight: 600; font-size: 18px;">
                         ${lang === 'es' ? 'Ver Mi Resultado Completo' : 'View My Complete Result'}
                       </a>
                     </div>
@@ -323,10 +323,10 @@ export const emailTemplates = {
                 <tr>
                   <td style="background-color: #f7fafc; padding: 30px; text-align: center; border-top: 1px solid #e2e8f0;">
                     <p style="color: #718096; font-size: 12px; margin: 0 0 10px 0;">
-                      © ${new Date().getFullYear()} MindMetric. ${lang === 'es' ? 'Todos los derechos reservados.' : 'All rights reserved.'}
+                      © ${new Date().getFullYear()} Brain Metric. ${lang === 'es' ? 'Todos los derechos reservados.' : 'All rights reserved.'}
                     </p>
                     <p style="color: #718096; font-size: 12px; margin: 0;">
-                      info@mindmetric.io
+                      info@brainmetric.io
                     </p>
                   </td>
                 </tr>
@@ -360,8 +360,8 @@ export const emailTemplates = {
               <table role="presentation" style="max-width: 600px; background-color: #ffffff; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
                 <!-- Header -->
                 <tr>
-                  <td style="background: linear-gradient(135deg, #113240 0%, #07C59A 100%); padding: 40px 30px; text-align: center;">
-                    <img src="https://www.mindmetric.io/images/MINDMETRIC/Logo_blanco.png" alt="MindMetric" style="height: 32px; width: auto; margin: 0 auto 20px auto; display: block;" />
+                  <td style="background: linear-gradient(135deg, #0F172A 0%, #6366F1 100%); padding: 40px 30px; text-align: center;">
+                    <img src="https://www.brainmetric.io/images/MINDMETRIC/Logo_blanco.png" alt="Brain Metric" style="height: 32px; width: auto; margin: 0 auto 20px auto; display: block;" />
                     <h1 style="color: #ffffff; margin: 0; font-size: 32px; font-weight: 700;">
                       🚀 ${lang === 'es' ? '¡Premium Activado!' : 'Premium Activated!'}
                     </h1>
@@ -371,7 +371,7 @@ export const emailTemplates = {
                 <!-- Content -->
                 <tr>
                   <td style="padding: 40px 30px;">
-                    <h2 style="color: #113240; margin: 0 0 20px 0; font-size: 24px; font-weight: 600;">
+                    <h2 style="color: #0F172A; margin: 0 0 20px 0; font-size: 24px; font-weight: 600;">
                       ${lang === 'es' ? 'Hola' : 'Hello'}, ${userName}! 👋
                     </h2>
                     
@@ -381,8 +381,8 @@ export const emailTemplates = {
                         : 'Your 2-day premium trial period has started! You now have access to all advanced features.'}
                     </p>
                     
-                    <div style="background-color: #e6f5f5; border-left: 4px solid #07C59A; padding: 20px; margin: 30px 0; border-radius: 4px;">
-                      <h3 style="color: #07C59A; margin: 0 0 15px 0; font-size: 18px; font-weight: 600;">
+                    <div style="background-color: #e6f5f5; border-left: 4px solid #6366F1; padding: 20px; margin: 30px 0; border-radius: 4px;">
+                      <h3 style="color: #6366F1; margin: 0 0 15px 0; font-size: 18px; font-weight: 600;">
                         ✨ ${lang === 'es' ? '¿Qué puedes hacer ahora?' : 'What can you do now?'}
                       </h3>
                       <ul style="color: #2d3748; margin: 0; padding-left: 20px; line-height: 1.8;">
@@ -409,7 +409,7 @@ export const emailTemplates = {
                     </div>
                     
                     <div style="text-align: center; margin: 30px 0;">
-                      <a href="https://mindmetric.io/${lang}/cuenta" style="display: inline-block; background: linear-gradient(135deg, #113240 0%, #07C59A 100%); color: #ffffff; text-decoration: none; padding: 16px 40px; border-radius: 8px; font-weight: 600; font-size: 18px;">
+                      <a href="https://brainmetric.io/${lang}/cuenta" style="display: inline-block; background: linear-gradient(135deg, #0F172A 0%, #6366F1 100%); color: #ffffff; text-decoration: none; padding: 16px 40px; border-radius: 8px; font-weight: 600; font-size: 18px;">
                         ${lang === 'es' ? 'Acceder a Mi Dashboard' : 'Access My Dashboard'}
                       </a>
                     </div>
@@ -426,10 +426,10 @@ export const emailTemplates = {
                 <tr>
                   <td style="background-color: #f7fafc; padding: 30px; text-align: center; border-top: 1px solid #e2e8f0;">
                     <p style="color: #718096; font-size: 12px; margin: 0 0 10px 0;">
-                      © ${new Date().getFullYear()} MindMetric. ${lang === 'es' ? 'Todos los derechos reservados.' : 'All rights reserved.'}
+                      © ${new Date().getFullYear()} Brain Metric. ${lang === 'es' ? 'Todos los derechos reservados.' : 'All rights reserved.'}
                     </p>
                     <p style="color: #718096; font-size: 12px; margin: 0;">
-                      info@mindmetric.io
+                      info@brainmetric.io
                     </p>
                   </td>
                 </tr>
@@ -464,7 +464,7 @@ export const emailTemplates = {
                 <!-- Header -->
                 <tr>
                   <td style="background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%); padding: 40px 30px; text-align: center;">
-                    <img src="https://www.mindmetric.io/images/MINDMETRIC/Logo_blanco.png" alt="MindMetric" style="height: 32px; width: auto; margin: 0 auto 20px auto; display: block;" />
+                    <img src="https://www.brainmetric.io/images/MINDMETRIC/Logo_blanco.png" alt="Brain Metric" style="height: 32px; width: auto; margin: 0 auto 20px auto; display: block;" />
                     <h1 style="color: #ffffff; margin: 0; font-size: 32px; font-weight: 700;">
                       ⏰ ${lang === 'es' ? 'Trial Termina Mañana' : 'Trial Ends Tomorrow'}
                     </h1>
@@ -474,7 +474,7 @@ export const emailTemplates = {
                 <!-- Content -->
                 <tr>
                   <td style="padding: 40px 30px;">
-                    <h2 style="color: #113240; margin: 0 0 20px 0; font-size: 24px; font-weight: 600;">
+                    <h2 style="color: #0F172A; margin: 0 0 20px 0; font-size: 24px; font-weight: 600;">
                       ${lang === 'es' ? 'Hola' : 'Hello'}, ${userName} 👋
                     </h2>
                     
@@ -511,7 +511,7 @@ export const emailTemplates = {
                     </p>
                     
                     <div style="text-align: center; margin: 30px 0;">
-                      <a href="https://mindmetric.io/${lang}/cuenta" style="display: inline-block; background: linear-gradient(135deg, #113240 0%, #07C59A 100%); color: #ffffff; text-decoration: none; padding: 16px 40px; border-radius: 8px; font-weight: 600; font-size: 18px; margin: 0;">
+                      <a href="https://brainmetric.io/${lang}/cuenta" style="display: inline-block; background: linear-gradient(135deg, #0F172A 0%, #6366F1 100%); color: #ffffff; text-decoration: none; padding: 16px 40px; border-radius: 8px; font-weight: 600; font-size: 18px; margin: 0;">
                         ${lang === 'es' ? 'Gestionar Suscripción' : 'Manage Subscription'}
                       </a>
                     </div>
@@ -528,10 +528,10 @@ export const emailTemplates = {
                 <tr>
                   <td style="background-color: #f7fafc; padding: 30px; text-align: center; border-top: 1px solid #e2e8f0;">
                     <p style="color: #718096; font-size: 12px; margin: 0 0 10px 0;">
-                      © ${new Date().getFullYear()} MindMetric. ${lang === 'es' ? 'Todos los derechos reservados.' : 'All rights reserved.'}
+                      © ${new Date().getFullYear()} Brain Metric. ${lang === 'es' ? 'Todos los derechos reservados.' : 'All rights reserved.'}
                     </p>
                     <p style="color: #718096; font-size: 12px; margin: 0;">
-                      info@mindmetric.io
+                      info@brainmetric.io
                     </p>
                   </td>
                 </tr>
@@ -566,7 +566,7 @@ export const emailTemplates = {
                 <!-- Header -->
                 <tr>
                   <td style="background: linear-gradient(135deg, #10b981 0%, #059669 100%); padding: 40px 30px; text-align: center;">
-                    <img src="https://www.mindmetric.io/images/MINDMETRIC/Logo_blanco.png" alt="MindMetric" style="height: 32px; width: auto; margin: 0 auto 20px auto; display: block;" />
+                    <img src="https://www.brainmetric.io/images/MINDMETRIC/Logo_blanco.png" alt="Brain Metric" style="height: 32px; width: auto; margin: 0 auto 20px auto; display: block;" />
                     <h1 style="color: #ffffff; margin: 0; font-size: 32px; font-weight: 700;">
                       ✅ ${lang === 'es' ? '¡Suscripción Activada!' : 'Subscription Activated!'}
                     </h1>
@@ -576,7 +576,7 @@ export const emailTemplates = {
                 <!-- Content -->
                 <tr>
                   <td style="padding: 40px 30px; text-align: center;">
-                    <h2 style="color: #113240; margin: 0 0 20px 0; font-size: 28px; font-weight: 600;">
+                    <h2 style="color: #0F172A; margin: 0 0 20px 0; font-size: 28px; font-weight: 600;">
                       ${lang === 'es' ? '¡Bienvenido a Premium!' : 'Welcome to Premium!'}
                     </h2>
                     
@@ -599,8 +599,8 @@ export const emailTemplates = {
                       </ul>
                     </div>
                     
-                    <div style="background-color: #e6f5f5; border-left: 4px solid #07C59A; padding: 20px; margin: 30px 0; border-radius: 4px;">
-                      <p style="color: #07C59A; font-size: 14px; margin: 0; line-height: 1.6;">
+                    <div style="background-color: #e6f5f5; border-left: 4px solid #6366F1; padding: 20px; margin: 30px 0; border-radius: 4px;">
+                      <p style="color: #6366F1; font-size: 14px; margin: 0; line-height: 1.6;">
                         <strong>${lang === 'es' ? 'Próximo cobro:' : 'Next charge:'}</strong><br>
                         9,99€ ${lang === 'es' ? 'el próximo mes' : 'next month'}<br>
                         ${lang === 'es' ? 'Puedes cancelar en cualquier momento desde tu cuenta.' : 'You can cancel anytime from your account.'}
@@ -608,7 +608,7 @@ export const emailTemplates = {
                     </div>
                     
                     <div style="text-align: center; margin: 30px 0;">
-                      <a href="https://mindmetric.io/${lang}/cuenta" style="display: inline-block; background: linear-gradient(135deg, #113240 0%, #07C59A 100%); color: #ffffff; text-decoration: none; padding: 16px 40px; border-radius: 8px; font-weight: 600; font-size: 18px;">
+                      <a href="https://brainmetric.io/${lang}/cuenta" style="display: inline-block; background: linear-gradient(135deg, #0F172A 0%, #6366F1 100%); color: #ffffff; text-decoration: none; padding: 16px 40px; border-radius: 8px; font-weight: 600; font-size: 18px;">
                         ${lang === 'es' ? 'Acceder a Mi Dashboard' : 'Access My Dashboard'}
                       </a>
                     </div>
@@ -625,10 +625,10 @@ export const emailTemplates = {
                 <tr>
                   <td style="background-color: #f7fafc; padding: 30px; text-align: center; border-top: 1px solid #e2e8f0;">
                     <p style="color: #718096; font-size: 12px; margin: 0 0 10px 0;">
-                      © ${new Date().getFullYear()} MindMetric. ${lang === 'es' ? 'Todos los derechos reservados.' : 'All rights reserved.'}
+                      © ${new Date().getFullYear()} Brain Metric. ${lang === 'es' ? 'Todos los derechos reservados.' : 'All rights reserved.'}
                     </p>
                     <p style="color: #718096; font-size: 12px; margin: 0;">
-                      info@mindmetric.io
+                      info@brainmetric.io
                     </p>
                   </td>
                 </tr>
@@ -663,7 +663,7 @@ export const emailTemplates = {
                 <!-- Header -->
                 <tr>
                   <td style="background: linear-gradient(135deg, #10b981 0%, #059669 100%); padding: 40px 30px; text-align: center;">
-                    <img src="https://www.mindmetric.io/images/MINDMETRIC/Logo_blanco.png" alt="MindMetric" style="height: 32px; width: auto; margin: 0 auto 20px auto; display: block;" />
+                    <img src="https://www.brainmetric.io/images/MINDMETRIC/Logo_blanco.png" alt="Brain Metric" style="height: 32px; width: auto; margin: 0 auto 20px auto; display: block;" />
                     <h1 style="color: #ffffff; margin: 0; font-size: 32px; font-weight: 700;">
                       ✅ ${lang === 'es' ? 'Pago Recibido' : 'Payment Received'}
                     </h1>
@@ -673,7 +673,7 @@ export const emailTemplates = {
                 <!-- Content -->
                 <tr>
                   <td style="padding: 40px 30px; text-align: center;">
-                    <h2 style="color: #113240; margin: 0 0 20px 0; font-size: 24px; font-weight: 600;">
+                    <h2 style="color: #0F172A; margin: 0 0 20px 0; font-size: 24px; font-weight: 600;">
                       ${lang === 'es' ? 'Hola' : 'Hello'}, ${userName}! 👋
                     </h2>
                     
@@ -683,11 +683,11 @@ export const emailTemplates = {
                         : 'We have received your monthly Premium payment. Thank you for trusting us!'}
                     </p>
                     
-                    <div style="background-color: #e6f5f5; border-left: 4px solid #07C59A; padding: 20px; margin: 30px 0; border-radius: 4px;">
-                      <p style="color: #07C59A; font-size: 14px; margin: 0 0 10px 0;">
+                    <div style="background-color: #e6f5f5; border-left: 4px solid #6366F1; padding: 20px; margin: 30px 0; border-radius: 4px;">
+                      <p style="color: #6366F1; font-size: 14px; margin: 0 0 10px 0;">
                         ${lang === 'es' ? 'Monto pagado:' : 'Amount paid:'}
                       </p>
-                      <p style="color: #07C59A; font-size: 32px; margin: 0; font-weight: 700;">
+                      <p style="color: #6366F1; font-size: 32px; margin: 0; font-weight: 700;">
                         ${amount}€
                       </p>
                       <p style="color: #2d3748; font-size: 14px; margin: 10px 0 0 0;">
@@ -702,7 +702,7 @@ export const emailTemplates = {
                     </p>
                     
                     <div style="text-align: center; margin: 30px 0;">
-                      <a href="https://mindmetric.io/${lang}/cuenta" style="display: inline-block; background: linear-gradient(135deg, #113240 0%, #07C59A 100%); color: #ffffff; text-decoration: none; padding: 16px 40px; border-radius: 8px; font-weight: 600; font-size: 18px;">
+                      <a href="https://brainmetric.io/${lang}/cuenta" style="display: inline-block; background: linear-gradient(135deg, #0F172A 0%, #6366F1 100%); color: #ffffff; text-decoration: none; padding: 16px 40px; border-radius: 8px; font-weight: 600; font-size: 18px;">
                         ${lang === 'es' ? 'Ver Mi Cuenta' : 'View My Account'}
                       </a>
                     </div>
@@ -719,10 +719,10 @@ export const emailTemplates = {
                 <tr>
                   <td style="background-color: #f7fafc; padding: 30px; text-align: center; border-top: 1px solid #e2e8f0;">
                     <p style="color: #718096; font-size: 12px; margin: 0 0 10px 0;">
-                      © ${new Date().getFullYear()} MindMetric. ${lang === 'es' ? 'Todos los derechos reservados.' : 'All rights reserved.'}
+                      © ${new Date().getFullYear()} Brain Metric. ${lang === 'es' ? 'Todos los derechos reservados.' : 'All rights reserved.'}
                     </p>
                     <p style="color: #718096; font-size: 12px; margin: 0;">
-                      info@mindmetric.io
+                      info@brainmetric.io
                     </p>
                   </td>
                 </tr>
@@ -757,7 +757,7 @@ export const emailTemplates = {
                 <!-- Header -->
                 <tr>
                   <td style="background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%); padding: 40px 30px; text-align: center;">
-                    <img src="https://www.mindmetric.io/images/MINDMETRIC/Logo_blanco.png" alt="MindMetric" style="height: 32px; width: auto; margin: 0 auto 20px auto; display: block;" />
+                    <img src="https://www.brainmetric.io/images/MINDMETRIC/Logo_blanco.png" alt="Brain Metric" style="height: 32px; width: auto; margin: 0 auto 20px auto; display: block;" />
                     <h1 style="color: #ffffff; margin: 0; font-size: 32px; font-weight: 700;">
                       ⚠️ ${lang === 'es' ? 'Problema con el Pago' : 'Payment Issue'}
                     </h1>
@@ -767,7 +767,7 @@ export const emailTemplates = {
                 <!-- Content -->
                 <tr>
                   <td style="padding: 40px 30px;">
-                    <h2 style="color: #113240; margin: 0 0 20px 0; font-size: 24px; font-weight: 600;">
+                    <h2 style="color: #0F172A; margin: 0 0 20px 0; font-size: 24px; font-weight: 600;">
                       ${lang === 'es' ? 'Hola' : 'Hello'}, ${userName} 👋
                     </h2>
                     
@@ -808,7 +808,7 @@ export const emailTemplates = {
                     </p>
                     
                     <div style="text-align: center; margin: 30px 0;">
-                      <a href="https://mindmetric.io/${lang}/cuenta" style="display: inline-block; background: linear-gradient(135deg, #113240 0%, #07C59A 100%); color: #ffffff; text-decoration: none; padding: 16px 40px; border-radius: 8px; font-weight: 600; font-size: 18px;">
+                      <a href="https://brainmetric.io/${lang}/cuenta" style="display: inline-block; background: linear-gradient(135deg, #0F172A 0%, #6366F1 100%); color: #ffffff; text-decoration: none; padding: 16px 40px; border-radius: 8px; font-weight: 600; font-size: 18px;">
                         ${lang === 'es' ? 'Actualizar Método de Pago' : 'Update Payment Method'}
                       </a>
                     </div>
@@ -825,10 +825,10 @@ export const emailTemplates = {
                 <tr>
                   <td style="background-color: #f7fafc; padding: 30px; text-align: center; border-top: 1px solid #e2e8f0;">
                     <p style="color: #718096; font-size: 12px; margin: 0 0 10px 0;">
-                      © ${new Date().getFullYear()} MindMetric. ${lang === 'es' ? 'Todos los derechos reservados.' : 'All rights reserved.'}
+                      © ${new Date().getFullYear()} Brain Metric. ${lang === 'es' ? 'Todos los derechos reservados.' : 'All rights reserved.'}
                     </p>
                     <p style="color: #718096; font-size: 12px; margin: 0;">
-                      info@mindmetric.io
+                      info@brainmetric.io
                     </p>
                   </td>
                 </tr>
@@ -863,7 +863,7 @@ export const emailTemplates = {
                 <!-- Header -->
                 <tr>
                   <td style="background: linear-gradient(135deg, #6b7280 0%, #4b5563 100%); padding: 40px 30px; text-align: center;">
-                    <img src="https://www.mindmetric.io/images/MINDMETRIC/Logo_blanco.png" alt="MindMetric" style="height: 32px; width: auto; margin: 0 auto 20px auto; display: block;" />
+                    <img src="https://www.brainmetric.io/images/MINDMETRIC/Logo_blanco.png" alt="Brain Metric" style="height: 32px; width: auto; margin: 0 auto 20px auto; display: block;" />
                     <h1 style="color: #ffffff; margin: 0; font-size: 32px; font-weight: 700;">
                       ✅ ${lang === 'es' ? 'Suscripción Cancelada' : 'Subscription Cancelled'}
                     </h1>
@@ -873,7 +873,7 @@ export const emailTemplates = {
                 <!-- Content -->
                 <tr>
                   <td style="padding: 40px 30px;">
-                    <h2 style="color: #113240; margin: 0 0 20px 0; font-size: 24px; font-weight: 600;">
+                    <h2 style="color: #0F172A; margin: 0 0 20px 0; font-size: 24px; font-weight: 600;">
                       ${lang === 'es' ? 'Hola' : 'Hello'}, ${userName} 👋
                     </h2>
                     
@@ -883,11 +883,11 @@ export const emailTemplates = {
                         : 'Your cancellation request has been processed. We\'re sorry to see you go.'}
                     </p>
                     
-                    <div style="background-color: #e6f5f5; border-left: 4px solid #07C59A; padding: 20px; margin: 30px 0; border-radius: 4px;">
-                      <p style="color: #07C59A; font-size: 14px; margin: 0 0 10px 0;">
+                    <div style="background-color: #e6f5f5; border-left: 4px solid #6366F1; padding: 20px; margin: 30px 0; border-radius: 4px;">
+                      <p style="color: #6366F1; font-size: 14px; margin: 0 0 10px 0;">
                         ${lang === 'es' ? 'Acceso hasta:' : 'Access until:'}
                       </p>
-                      <p style="color: #07C59A; font-size: 18px; margin: 0; font-weight: 700;">
+                      <p style="color: #6366F1; font-size: 18px; margin: 0; font-weight: 700;">
                         ${accessUntil}
                       </p>
                       <p style="color: #2d3748; font-size: 14px; margin: 10px 0 0 0; line-height: 1.6;">
@@ -904,7 +904,7 @@ export const emailTemplates = {
                     </p>
                     
                     <div style="text-align: center; margin: 30px 0;">
-                      <a href="https://mindmetric.io/${lang}/cuenta" style="display: inline-block; background: linear-gradient(135deg, #113240 0%, #07C59A 100%); color: #ffffff; text-decoration: none; padding: 16px 40px; border-radius: 8px; font-weight: 600; font-size: 18px;">
+                      <a href="https://brainmetric.io/${lang}/cuenta" style="display: inline-block; background: linear-gradient(135deg, #0F172A 0%, #6366F1 100%); color: #ffffff; text-decoration: none; padding: 16px 40px; border-radius: 8px; font-weight: 600; font-size: 18px;">
                         ${lang === 'es' ? 'Ver Mi Cuenta' : 'View My Account'}
                       </a>
                     </div>
@@ -927,10 +927,10 @@ export const emailTemplates = {
                 <tr>
                   <td style="background-color: #f7fafc; padding: 30px; text-align: center; border-top: 1px solid #e2e8f0;">
                     <p style="color: #718096; font-size: 12px; margin: 0 0 10px 0;">
-                      © ${new Date().getFullYear()} MindMetric. ${lang === 'es' ? 'Todos los derechos reservados.' : 'All rights reserved.'}
+                      © ${new Date().getFullYear()} Brain Metric. ${lang === 'es' ? 'Todos los derechos reservados.' : 'All rights reserved.'}
                     </p>
                     <p style="color: #718096; font-size: 12px; margin: 0;">
-                      info@mindmetric.io
+                      info@brainmetric.io
                     </p>
                   </td>
                 </tr>
@@ -947,8 +947,8 @@ export const emailTemplates = {
   loginCredentials: (email: string, userName: string, password: string, iq: number, lang: string) => ({
     to: email,
     subject: lang === 'es'
-      ? `🎉 ¡Bienvenido a MindMetric! Tu CI: ${iq} - Acceso a tu cuenta`
-      : `🎉 Welcome to MindMetric! Your IQ: ${iq} - Account Access`,
+      ? `🎉 ¡Bienvenido a Brain Metric! Tu CI: ${iq} - Acceso a tu cuenta`
+      : `🎉 Welcome to Brain Metric! Your IQ: ${iq} - Account Access`,
     html: `
       <!DOCTYPE html>
       <html>
@@ -964,8 +964,8 @@ export const emailTemplates = {
               <table role="presentation" style="max-width: 600px; background-color: #ffffff; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
                 <!-- Header -->
                 <tr>
-                  <td style="background: linear-gradient(135deg, #113240 0%, #07C59A 100%); padding: 40px 30px; text-align: center;">
-                    <img src="https://www.mindmetric.io/images/MINDMETRIC/Logo_blanco.png" alt="MindMetric" style="height: 32px; width: auto; margin: 0 auto 20px auto; display: block;" />
+                  <td style="background: linear-gradient(135deg, #0F172A 0%, #6366F1 100%); padding: 40px 30px; text-align: center;">
+                    <img src="https://www.brainmetric.io/images/MINDMETRIC/Logo_blanco.png" alt="Brain Metric" style="height: 32px; width: auto; margin: 0 auto 20px auto; display: block;" />
                     <h1 style="color: #ffffff; margin: 0; font-size: 32px; font-weight: 700;">
                       🎉 ${lang === 'es' ? '¡Cuenta Creada!' : 'Account Created!'}
                     </h1>
@@ -975,19 +975,19 @@ export const emailTemplates = {
                 <!-- Content -->
                 <tr>
                   <td style="padding: 40px 30px;">
-                    <h2 style="color: #113240; margin: 0 0 20px 0; font-size: 24px; font-weight: 600;">
+                    <h2 style="color: #0F172A; margin: 0 0 20px 0; font-size: 24px; font-weight: 600;">
                       ${lang === 'es' ? '¡Hola' : 'Hello'}, ${userName}! 👋
                     </h2>
                     
                     <p style="color: #4a5568; font-size: 16px; line-height: 1.6; margin: 0 0 20px 0;">
                       ${lang === 'es'
-                        ? 'Tu cuenta en MindMetric ha sido creada exitosamente. Aquí están tus credenciales de acceso:'
-                        : 'Your MindMetric account has been created successfully. Here are your login credentials:'}
+                        ? 'Tu cuenta en Brain Metric ha sido creada exitosamente. Aquí están tus credenciales de acceso:'
+                        : 'Your Brain Metric account has been created successfully. Here are your login credentials:'}
                     </p>
                     
                     <!-- Credentials Box -->
-                    <div style="background-color: #f7fafc; border: 2px solid #07C59A; border-radius: 8px; padding: 20px; margin: 30px 0;">
-                      <h3 style="color: #07C59A; margin: 0 0 15px 0; font-size: 18px; font-weight: 600;">
+                    <div style="background-color: #f7fafc; border: 2px solid #6366F1; border-radius: 8px; padding: 20px; margin: 30px 0;">
+                      <h3 style="color: #6366F1; margin: 0 0 15px 0; font-size: 18px; font-weight: 600;">
                         🔑 ${lang === 'es' ? 'Credenciales de Acceso' : 'Login Credentials'}
                       </h3>
                       <table style="width: 100%; border-collapse: collapse;">
@@ -1011,7 +1011,7 @@ export const emailTemplates = {
                     </div>
                     
                     <!-- IQ Score -->
-                    <div style="background: linear-gradient(135deg, #07C59A 0%, #113240 100%); border-radius: 16px; padding: 30px; margin: 30px 0; color: #ffffff; text-align: center;">
+                    <div style="background: linear-gradient(135deg, #6366F1 0%, #0F172A 100%); border-radius: 16px; padding: 30px; margin: 30px 0; color: #ffffff; text-align: center;">
                       <p style="margin: 0 0 10px 0; font-size: 14px; opacity: 0.9;">
                         ${lang === 'es' ? 'Tu Coeficiente Intelectual' : 'Your Intelligence Quotient'}
                       </p>
@@ -1030,13 +1030,13 @@ export const emailTemplates = {
                     </div>
                     
                     <div style="text-align: center; margin: 30px 0;">
-                      <a href="https://mindmetric.io/${lang}/login" style="display: inline-block; background: linear-gradient(135deg, #113240 0%, #07C59A 100%); color: #ffffff; text-decoration: none; padding: 16px 40px; border-radius: 8px; font-weight: 600; font-size: 18px;">
+                      <a href="https://brainmetric.io/${lang}/login" style="display: inline-block; background: linear-gradient(135deg, #0F172A 0%, #6366F1 100%); color: #ffffff; text-decoration: none; padding: 16px 40px; border-radius: 8px; font-weight: 600; font-size: 18px;">
                         ${lang === 'es' ? '🔓 Acceder a Mi Dashboard' : '🔓 Access My Dashboard'}
                       </a>
                     </div>
                     
-                    <div style="background-color: #e6f5f5; border-left: 4px solid #07C59A; padding: 20px; margin: 30px 0; border-radius: 4px;">
-                      <h3 style="color: #07C59A; margin: 0 0 15px 0; font-size: 18px; font-weight: 600;">
+                    <div style="background-color: #e6f5f5; border-left: 4px solid #6366F1; padding: 20px; margin: 30px 0; border-radius: 4px;">
+                      <h3 style="color: #6366F1; margin: 0 0 15px 0; font-size: 18px; font-weight: 600;">
                         ✨ ${lang === 'es' ? '¿Qué puedes hacer ahora?' : 'What can you do now?'}
                       </h3>
                       <ul style="color: #2d3748; margin: 0; padding-left: 20px; line-height: 1.8;">
@@ -1060,10 +1060,10 @@ export const emailTemplates = {
                 <tr>
                   <td style="background-color: #f7fafc; padding: 30px; text-align: center; border-top: 1px solid #e2e8f0;">
                     <p style="color: #718096; font-size: 12px; margin: 0 0 10px 0;">
-                      © ${new Date().getFullYear()} MindMetric. ${lang === 'es' ? 'Todos los derechos reservados.' : 'All rights reserved.'}
+                      © ${new Date().getFullYear()} Brain Metric. ${lang === 'es' ? 'Todos los derechos reservados.' : 'All rights reserved.'}
                     </p>
                     <p style="color: #718096; font-size: 12px; margin: 0;">
-                      info@mindmetric.io
+                      info@brainmetric.io
                     </p>
                   </td>
                 </tr>
@@ -1095,11 +1095,11 @@ export const emailTemplates = {
           <tr><td align="center" style="padding:40px 20px;">
             <table style="max-width:600px;background:#fff;border-radius:12px;overflow:hidden;box-shadow:0 4px 6px rgba(0,0,0,0.1);">
               <tr><td style="background:linear-gradient(135deg,#8B5CF6 0%,#6D28D9 100%);padding:40px 30px;text-align:center;">
-                <img src="https://www.mindmetric.io/images/MINDMETRIC/Logo_blanco.png" alt="MindMetric" style="height:32px;margin:0 auto 20px;display:block;"/>
+                <img src="https://www.brainmetric.io/images/MINDMETRIC/Logo_blanco.png" alt="Brain Metric" style="height:32px;margin:0 auto 20px;display:block;"/>
                 <h1 style="color:#fff;margin:0;font-size:28px;">🎯 ${lang === 'es' ? 'Tu Perfil de Personalidad' : 'Your Personality Profile'}</h1>
               </td></tr>
               <tr><td style="padding:40px 30px;text-align:center;">
-                <h2 style="color:#113240;margin:0 0 20px;">${lang === 'es' ? '¡Hola' : 'Hello'}, ${userName}!</h2>
+                <h2 style="color:#0F172A;margin:0 0 20px;">${lang === 'es' ? '¡Hola' : 'Hello'}, ${userName}!</h2>
                 <p style="color:#4a5568;font-size:16px;line-height:1.6;margin:0 0 30px;">
                   ${lang === 'es' 
                     ? 'Has completado el Test de Personalidad Big Five. Tu perfil detallado te espera.'
@@ -1115,12 +1115,12 @@ export const emailTemplates = {
                       : 'Openness • Conscientiousness • Extraversion • Agreeableness • Neuroticism'}
                   </p>
                 </div>
-                <a href="https://mindmetric.io/${lang}/resultado?testType=personality" style="display:inline-block;background:linear-gradient(135deg,#8B5CF6 0%,#6D28D9 100%);color:#fff;text-decoration:none;padding:16px 40px;border-radius:8px;font-weight:600;font-size:16px;">
+                <a href="https://brainmetric.io/${lang}/resultado?testType=personality" style="display:inline-block;background:linear-gradient(135deg,#8B5CF6 0%,#6D28D9 100%);color:#fff;text-decoration:none;padding:16px 40px;border-radius:8px;font-weight:600;font-size:16px;">
                   ${lang === 'es' ? 'Ver Mi Perfil Completo' : 'View My Complete Profile'}
                 </a>
               </td></tr>
               <tr><td style="background:#f7fafc;padding:30px;text-align:center;border-top:1px solid #e2e8f0;">
-                <p style="color:#718096;font-size:12px;margin:0;">© ${new Date().getFullYear()} MindMetric</p>
+                <p style="color:#718096;font-size:12px;margin:0;">© ${new Date().getFullYear()} Brain Metric</p>
               </td></tr>
             </table>
           </td></tr>
@@ -1145,11 +1145,11 @@ export const emailTemplates = {
           <tr><td align="center" style="padding:40px 20px;">
             <table style="max-width:600px;background:#fff;border-radius:12px;overflow:hidden;box-shadow:0 4px 6px rgba(0,0,0,0.1);">
               <tr><td style="background:linear-gradient(135deg,#F59E0B 0%,#D97706 100%);padding:40px 30px;text-align:center;">
-                <img src="https://www.mindmetric.io/images/MINDMETRIC/Logo_blanco.png" alt="MindMetric" style="height:32px;margin:0 auto 20px;display:block;"/>
+                <img src="https://www.brainmetric.io/images/MINDMETRIC/Logo_blanco.png" alt="Brain Metric" style="height:32px;margin:0 auto 20px;display:block;"/>
                 <h1 style="color:#fff;margin:0;font-size:28px;">🎯 ${lang === 'es' ? 'Evaluación de TDAH' : 'ADHD Assessment'}</h1>
               </td></tr>
               <tr><td style="padding:40px 30px;text-align:center;">
-                <h2 style="color:#113240;margin:0 0 20px;">${lang === 'es' ? '¡Hola' : 'Hello'}, ${userName}!</h2>
+                <h2 style="color:#0F172A;margin:0 0 20px;">${lang === 'es' ? '¡Hola' : 'Hello'}, ${userName}!</h2>
                 <p style="color:#4a5568;font-size:16px;line-height:1.6;margin:0 0 30px;">
                   ${lang === 'es' 
                     ? 'Has completado la evaluación de síntomas de TDAH. Tu análisis detallado está disponible.'
@@ -1165,12 +1165,12 @@ export const emailTemplates = {
                       : 'Inattention • Hyperactivity • Impulsivity'}
                   </p>
                 </div>
-                <a href="https://mindmetric.io/${lang}/resultado?testType=adhd" style="display:inline-block;background:linear-gradient(135deg,#F59E0B 0%,#D97706 100%);color:#fff;text-decoration:none;padding:16px 40px;border-radius:8px;font-weight:600;font-size:16px;">
+                <a href="https://brainmetric.io/${lang}/resultado?testType=adhd" style="display:inline-block;background:linear-gradient(135deg,#F59E0B 0%,#D97706 100%);color:#fff;text-decoration:none;padding:16px 40px;border-radius:8px;font-weight:600;font-size:16px;">
                   ${lang === 'es' ? 'Ver Mi Evaluación' : 'View My Assessment'}
                 </a>
               </td></tr>
               <tr><td style="background:#f7fafc;padding:30px;text-align:center;border-top:1px solid #e2e8f0;">
-                <p style="color:#718096;font-size:12px;margin:0;">© ${new Date().getFullYear()} MindMetric</p>
+                <p style="color:#718096;font-size:12px;margin:0;">© ${new Date().getFullYear()} Brain Metric</p>
               </td></tr>
             </table>
           </td></tr>
@@ -1195,11 +1195,11 @@ export const emailTemplates = {
           <tr><td align="center" style="padding:40px 20px;">
             <table style="max-width:600px;background:#fff;border-radius:12px;overflow:hidden;box-shadow:0 4px 6px rgba(0,0,0,0.1);">
               <tr><td style="background:linear-gradient(135deg,#3B82F6 0%,#1D4ED8 100%);padding:40px 30px;text-align:center;">
-                <img src="https://www.mindmetric.io/images/MINDMETRIC/Logo_blanco.png" alt="MindMetric" style="height:32px;margin:0 auto 20px;display:block;"/>
+                <img src="https://www.brainmetric.io/images/MINDMETRIC/Logo_blanco.png" alt="Brain Metric" style="height:32px;margin:0 auto 20px;display:block;"/>
                 <h1 style="color:#fff;margin:0;font-size:28px;">💙 ${lang === 'es' ? 'Evaluación de Ansiedad' : 'Anxiety Assessment'}</h1>
               </td></tr>
               <tr><td style="padding:40px 30px;text-align:center;">
-                <h2 style="color:#113240;margin:0 0 20px;">${lang === 'es' ? '¡Hola' : 'Hello'}, ${userName}!</h2>
+                <h2 style="color:#0F172A;margin:0 0 20px;">${lang === 'es' ? '¡Hola' : 'Hello'}, ${userName}!</h2>
                 <p style="color:#4a5568;font-size:16px;line-height:1.6;margin:0 0 30px;">
                   ${lang === 'es' 
                     ? 'Has completado la evaluación de niveles de ansiedad. Tus resultados están listos para revisar.'
@@ -1215,12 +1215,12 @@ export const emailTemplates = {
                       : 'Physical symptoms • Cognitive symptoms • Recommendations'}
                   </p>
                 </div>
-                <a href="https://mindmetric.io/${lang}/resultado?testType=anxiety" style="display:inline-block;background:linear-gradient(135deg,#3B82F6 0%,#1D4ED8 100%);color:#fff;text-decoration:none;padding:16px 40px;border-radius:8px;font-weight:600;font-size:16px;">
+                <a href="https://brainmetric.io/${lang}/resultado?testType=anxiety" style="display:inline-block;background:linear-gradient(135deg,#3B82F6 0%,#1D4ED8 100%);color:#fff;text-decoration:none;padding:16px 40px;border-radius:8px;font-weight:600;font-size:16px;">
                   ${lang === 'es' ? 'Ver Mi Evaluación' : 'View My Assessment'}
                 </a>
               </td></tr>
               <tr><td style="background:#f7fafc;padding:30px;text-align:center;border-top:1px solid #e2e8f0;">
-                <p style="color:#718096;font-size:12px;margin:0;">© ${new Date().getFullYear()} MindMetric</p>
+                <p style="color:#718096;font-size:12px;margin:0;">© ${new Date().getFullYear()} Brain Metric</p>
               </td></tr>
             </table>
           </td></tr>
@@ -1245,11 +1245,11 @@ export const emailTemplates = {
           <tr><td align="center" style="padding:40px 20px;">
             <table style="max-width:600px;background:#fff;border-radius:12px;overflow:hidden;box-shadow:0 4px 6px rgba(0,0,0,0.1);">
               <tr><td style="background:linear-gradient(135deg,#6366F1 0%,#4F46E5 100%);padding:40px 30px;text-align:center;">
-                <img src="https://www.mindmetric.io/images/MINDMETRIC/Logo_blanco.png" alt="MindMetric" style="height:32px;margin:0 auto 20px;display:block;"/>
+                <img src="https://www.brainmetric.io/images/MINDMETRIC/Logo_blanco.png" alt="Brain Metric" style="height:32px;margin:0 auto 20px;display:block;"/>
                 <h1 style="color:#fff;margin:0;font-size:28px;">🌟 ${lang === 'es' ? 'Evaluación de Depresión' : 'Depression Assessment'}</h1>
               </td></tr>
               <tr><td style="padding:40px 30px;text-align:center;">
-                <h2 style="color:#113240;margin:0 0 20px;">${lang === 'es' ? '¡Hola' : 'Hello'}, ${userName}!</h2>
+                <h2 style="color:#0F172A;margin:0 0 20px;">${lang === 'es' ? '¡Hola' : 'Hello'}, ${userName}!</h2>
                 <p style="color:#4a5568;font-size:16px;line-height:1.6;margin:0 0 30px;">
                   ${lang === 'es' 
                     ? 'Has completado la evaluación de síntomas depresivos. Tu análisis detallado está disponible.'
@@ -1265,12 +1265,12 @@ export const emailTemplates = {
                       : 'Mood • Energy • Sleep patterns • Recommendations'}
                   </p>
                 </div>
-                <a href="https://mindmetric.io/${lang}/resultado?testType=depression" style="display:inline-block;background:linear-gradient(135deg,#6366F1 0%,#4F46E5 100%);color:#fff;text-decoration:none;padding:16px 40px;border-radius:8px;font-weight:600;font-size:16px;">
+                <a href="https://brainmetric.io/${lang}/resultado?testType=depression" style="display:inline-block;background:linear-gradient(135deg,#6366F1 0%,#4F46E5 100%);color:#fff;text-decoration:none;padding:16px 40px;border-radius:8px;font-weight:600;font-size:16px;">
                   ${lang === 'es' ? 'Ver Mi Evaluación' : 'View My Assessment'}
                 </a>
               </td></tr>
               <tr><td style="background:#f7fafc;padding:30px;text-align:center;border-top:1px solid #e2e8f0;">
-                <p style="color:#718096;font-size:12px;margin:0;">© ${new Date().getFullYear()} MindMetric</p>
+                <p style="color:#718096;font-size:12px;margin:0;">© ${new Date().getFullYear()} Brain Metric</p>
               </td></tr>
             </table>
           </td></tr>
@@ -1295,11 +1295,11 @@ export const emailTemplates = {
           <tr><td align="center" style="padding:40px 20px;">
             <table style="max-width:600px;background:#fff;border-radius:12px;overflow:hidden;box-shadow:0 4px 6px rgba(0,0,0,0.1);">
               <tr><td style="background:linear-gradient(135deg,#EC4899 0%,#DB2777 100%);padding:40px 30px;text-align:center;">
-                <img src="https://www.mindmetric.io/images/MINDMETRIC/Logo_blanco.png" alt="MindMetric" style="height:32px;margin:0 auto 20px;display:block;"/>
+                <img src="https://www.brainmetric.io/images/MINDMETRIC/Logo_blanco.png" alt="Brain Metric" style="height:32px;margin:0 auto 20px;display:block;"/>
                 <h1 style="color:#fff;margin:0;font-size:28px;">❤️ ${lang === 'es' ? 'Inteligencia Emocional' : 'Emotional Intelligence'}</h1>
               </td></tr>
               <tr><td style="padding:40px 30px;text-align:center;">
-                <h2 style="color:#113240;margin:0 0 20px;">${lang === 'es' ? '¡Hola' : 'Hello'}, ${userName}!</h2>
+                <h2 style="color:#0F172A;margin:0 0 20px;">${lang === 'es' ? '¡Hola' : 'Hello'}, ${userName}!</h2>
                 <p style="color:#4a5568;font-size:16px;line-height:1.6;margin:0 0 30px;">
                   ${lang === 'es' 
                     ? 'Has completado la evaluación de Inteligencia Emocional. Descubre tus fortalezas emocionales.'
@@ -1315,12 +1315,12 @@ export const emailTemplates = {
                       : 'Self-awareness • Self-regulation • Empathy • Social skills'}
                   </p>
                 </div>
-                <a href="https://mindmetric.io/${lang}/resultado?testType=eq" style="display:inline-block;background:linear-gradient(135deg,#EC4899 0%,#DB2777 100%);color:#fff;text-decoration:none;padding:16px 40px;border-radius:8px;font-weight:600;font-size:16px;">
+                <a href="https://brainmetric.io/${lang}/resultado?testType=eq" style="display:inline-block;background:linear-gradient(135deg,#EC4899 0%,#DB2777 100%);color:#fff;text-decoration:none;padding:16px 40px;border-radius:8px;font-weight:600;font-size:16px;">
                   ${lang === 'es' ? 'Ver Mi Evaluación' : 'View My Assessment'}
                 </a>
               </td></tr>
               <tr><td style="background:#f7fafc;padding:30px;text-align:center;border-top:1px solid #e2e8f0;">
-                <p style="color:#718096;font-size:12px;margin:0;">© ${new Date().getFullYear()} MindMetric</p>
+                <p style="color:#718096;font-size:12px;margin:0;">© ${new Date().getFullYear()} Brain Metric</p>
               </td></tr>
             </table>
           </td></tr>

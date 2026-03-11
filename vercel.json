@@ -8,30 +8,5 @@
       "path": "/api/cron/trial-ending-emails",
       "schedule": "0 9 * * *"
     }
-  ],
-  "rewrites": [
-    {
-      "source": "/checkout-sipay.html",
-      "destination": "/checkout-sipay.html"
-    },
-    {
-      "source": "/:lang/checkout-sipay",
-      "destination": "/checkout-sipay.html"
-    }
-  ],
-  "headers": [
-    {
-      "source": "/checkout-sipay.html",
-      "headers": [
-        {
-          "key": "Content-Type",
-          "value": "text/html; charset=utf-8"
-        },
-        {
-          "key": "Cache-Control",
-          "value": "no-cache, no-store, must-revalidate"
-        }
-      ]
-    }
   ]
 }

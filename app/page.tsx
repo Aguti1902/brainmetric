@@ -13,7 +13,7 @@ export default function RootPage() {
     const defaultLang = supportedLangs.includes(browserLang) ? browserLang : 'es'
     
     // Verificar si hay idioma guardado en localStorage
-    const savedLang = localStorage.getItem('mindmetric-locale')
+    const savedLang = localStorage.getItem('brainmetric-locale')
     const finalLang = savedLang && supportedLangs.includes(savedLang) ? savedLang : defaultLang
     
     router.replace(`/${finalLang}`)
@@ -22,7 +22,7 @@ export default function RootPage() {
   return (
     <div className="min-h-screen flex items-center justify-center">
       <div className="text-center">
-        <div className="w-16 h-16 border-4 border-[#07C59A] border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
+        <div className="w-16 h-16 border-4 border-[#6366F1] border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
         <p className="text-gray-600">Cargando...</p>
       </div>
     </div>

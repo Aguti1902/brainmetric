@@ -1,6 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { Pool } from 'pg'
-import { getSipayClient } from '@/lib/sipay-client'
 
 export const dynamic = 'force-dynamic'
 
@@ -10,11 +9,6 @@ function getPool() {
   return new Pool({ connectionString, ssl: { rejectUnauthorized: false }, max: 5 })
 }
 
-/**
- * Admin: listar usuarios con suscripciones (como transacciones)
- * Con Sipay no tenemos un log de transacciones local, pero mostramos
- * los usuarios con su estado de suscripción.
- */
 export async function GET(req: NextRequest) {
   const pool = getPool()
   try {
@@ -73,47 +67,5 @@ export async function GET(req: NextRequest) {
     )
   } finally {
     await pool.end().catch(() => {})
-  }
-}
-
-/**
- * Admin: crear reembolso via Sipay
- */
-export async function POST(req: NextRequest) {
-  try {
-    const { transactionId, amount } = await req.json()
-
-    if (!transactionId || !amount) {
-      return NextResponse.json(
-        { success: false, error: 'transactionId y amount requeridos' },
-        { status: 400 }
-      )
-    }
-
-    const sipay = getSipayClient()
-    const response: any = await sipay.refund({
-      transactionId,
-      amount: Math.round(amount * 100),
-      currency: 'EUR',
-    })
-
-    if (response.type !== 'success') {
-      return NextResponse.json(
-        { success: false, error: response.description || 'Error en reembolso' },
-        { status: 400 }
-      )
-    }
-
-    return NextResponse.json({
-      success: true,
-      message: 'Reembolso procesado exitosamente',
-      data: response.payload,
-    })
-  } catch (error: any) {
-    console.error('Error creating refund:', error)
-    return NextResponse.json(
-      { success: false, error: error.message },
-      { status: 500 }
-    )
   }
 }

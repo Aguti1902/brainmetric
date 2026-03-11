@@ -102,7 +102,7 @@ export default function AchievementBadges({ stats }: { stats: any }) {
           <p className="text-gray-600">Has desbloqueado {unlockedCount} de {achievements.length} logros</p>
         </div>
         <div className="text-right">
-          <div className="text-4xl font-black text-[#07C59A]">{unlockedCount}/{achievements.length}</div>
+          <div className="text-4xl font-black text-[#6366F1]">{unlockedCount}/{achievements.length}</div>
           <div className="text-sm text-gray-600">Completado</div>
         </div>
       </div>

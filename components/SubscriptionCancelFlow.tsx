@@ -50,7 +50,7 @@ export default function SubscriptionCancelFlow({
   const handleRedirectToTrustpilot = () => {
     setRedirecting(true)
     // Abrir Trustpilot en nueva pestaña
-    window.open('https://www.trustpilot.com/evaluate/mindmetric.io', '_blank')
+    window.open('https://www.trustpilot.com/evaluate/brainmetric.io', '_blank')
     // Cerrar el modal después de un breve delay
     setTimeout(() => {
       onClose()
@@ -92,7 +92,7 @@ export default function SubscriptionCancelFlow({
         {step === 'upsell' && (
           <>
             {/* Header con diseño atractivo */}
-            <div className="relative bg-gradient-to-r from-[#113240] to-[#1a4a5e] rounded-t-2xl p-6 text-white">
+            <div className="relative bg-gradient-to-r from-[#0F172A] to-[#1a4a5e] rounded-t-2xl p-6 text-white">
               <button
                 onClick={handleClose}
                 className="absolute top-4 right-4 text-white hover:text-gray-300 transition-colors"
@@ -101,7 +101,7 @@ export default function SubscriptionCancelFlow({
               </button>
               
               <div className="text-center">
-                <div className="w-20 h-20 bg-[#07C59A] rounded-full flex items-center justify-center mx-auto mb-4 shadow-lg">
+                <div className="w-20 h-20 bg-[#6366F1] rounded-full flex items-center justify-center mx-auto mb-4 shadow-lg">
                   <FaCrown className="text-4xl text-yellow-300" />
                 </div>
                 <h3 className="text-2xl font-bold mb-2">
@@ -123,13 +123,13 @@ export default function SubscriptionCancelFlow({
               </div>
 
               {/* Oferta destacada */}
-              <div className="bg-gradient-to-br from-[#07C59A]/10 to-[#07C59A]/20 border-2 border-[#07C59A] rounded-xl p-6 mb-6 relative">
+              <div className="bg-gradient-to-br from-[#6366F1]/10 to-[#6366F1]/20 border-2 border-[#6366F1] rounded-xl p-6 mb-6 relative">
                 <div className="flex items-center gap-3 mb-4">
-                  <div className="w-12 h-12 bg-[#07C59A] rounded-full flex items-center justify-center shadow-lg">
+                  <div className="w-12 h-12 bg-[#6366F1] rounded-full flex items-center justify-center shadow-lg">
                     <FaTag className="text-2xl text-white" />
                   </div>
                   <div>
-                    <h4 className="text-xl font-bold text-[#113240]">
+                    <h4 className="text-xl font-bold text-[#0F172A]">
                       50% de descuento
                     </h4>
                     <p className="text-sm text-gray-700">
@@ -139,23 +139,23 @@ export default function SubscriptionCancelFlow({
                 </div>
 
                 <div className="grid grid-cols-2 gap-3 mb-4">
-                  <div className="text-center p-3 bg-white rounded-lg border border-[#07C59A]/30">
+                  <div className="text-center p-3 bg-white rounded-lg border border-[#6366F1]/30">
                     <p className="text-xs text-gray-600 mb-1">Plan Quincenal</p>
-                    <p className="text-lg font-bold text-[#113240]">
+                    <p className="text-lg font-bold text-[#0F172A]">
                       <span className="line-through text-gray-400 text-sm">9,99€</span> 
-                      <span className="text-[#07C59A] ml-1">4,99€</span>
+                      <span className="text-[#6366F1] ml-1">4,99€</span>
                     </p>
                   </div>
-                  <div className="text-center p-3 bg-white rounded-lg border border-[#07C59A]/30">
+                  <div className="text-center p-3 bg-white rounded-lg border border-[#6366F1]/30">
                     <p className="text-xs text-gray-600 mb-1">Plan Mensual</p>
-                    <p className="text-lg font-bold text-[#113240]">
+                    <p className="text-lg font-bold text-[#0F172A]">
                       <span className="line-through text-gray-400 text-sm">19,99€</span> 
-                      <span className="text-[#07C59A] ml-1">9,99€</span>
+                      <span className="text-[#6366F1] ml-1">9,99€</span>
                     </p>
                   </div>
                 </div>
 
-                <div className="bg-[#113240] rounded-lg p-3">
+                <div className="bg-[#0F172A] rounded-lg p-3">
                   <p className="text-xs text-white text-center font-semibold">
                     💎 Mantén todos tus beneficios premium por solo la mitad del precio
                   </p>
@@ -192,7 +192,7 @@ export default function SubscriptionCancelFlow({
               <div className="space-y-3">
                 <button
                   onClick={handleAcceptDiscount}
-                  className="w-full bg-gradient-to-r from-[#07C59A] to-[#069e7b] hover:from-[#069e7b] hover:to-[#058f6e] text-white py-4 px-6 rounded-xl font-bold text-lg transition shadow-lg hover:shadow-xl flex items-center justify-center gap-2 transform hover:scale-105"
+                  className="w-full bg-gradient-to-r from-[#6366F1] to-[#4F46E5] hover:from-[#4F46E5] hover:to-[#058f6e] text-white py-4 px-6 rounded-xl font-bold text-lg transition shadow-lg hover:shadow-xl flex items-center justify-center gap-2 transform hover:scale-105"
                 >
                   <FaStar className="text-yellow-300" />
                   ¡Quiero el 50% de descuento!
@@ -206,7 +206,7 @@ export default function SubscriptionCancelFlow({
                 </button>
               </div>
 
-              <p className="text-xs text-[#113240] text-center mt-4 bg-[#07C59A]/10 py-2 rounded-lg">
+              <p className="text-xs text-[#0F172A] text-center mt-4 bg-[#6366F1]/10 py-2 rounded-lg">
                 🔒 El descuento se aplicará automáticamente en tu próxima factura
               </p>
             </div>
@@ -239,8 +239,8 @@ export default function SubscriptionCancelFlow({
                 Esta es tu última oportunidad para mantener tu suscripción premium.
               </p>
               
-              <div className="bg-[#07C59A]/10 border-2 border-[#07C59A] rounded-lg p-4 mb-4">
-                <h4 className="font-bold text-[#113240] mb-2 flex items-center gap-2">
+              <div className="bg-[#6366F1]/10 border-2 border-[#6366F1] rounded-lg p-4 mb-4">
+                <h4 className="font-bold text-[#0F172A] mb-2 flex items-center gap-2">
                   💡 ¿Sabías que...?
                 </h4>
                 <p className="text-sm text-gray-700">
@@ -249,8 +249,8 @@ export default function SubscriptionCancelFlow({
                 </p>
               </div>
 
-              <div className="bg-[#113240]/5 border border-[#113240]/20 rounded-lg p-4 mb-6">
-                <h4 className="font-semibold text-[#113240] mb-1 flex items-center gap-2">
+              <div className="bg-[#0F172A]/5 border border-[#0F172A]/20 rounded-lg p-4 mb-6">
+                <h4 className="font-semibold text-[#0F172A] mb-1 flex items-center gap-2">
                   ℹ️ Información importante:
                 </h4>
                 <p className="text-sm text-gray-700">
@@ -270,7 +270,7 @@ export default function SubscriptionCancelFlow({
                 <button
                   onClick={handleClose}
                   disabled={loading}
-                  className="flex-1 bg-gradient-to-r from-[#07C59A] to-[#069e7b] hover:from-[#069e7b] hover:to-[#058f6e] text-white py-3 px-6 rounded-lg font-semibold transition disabled:opacity-50 shadow-md"
+                  className="flex-1 bg-gradient-to-r from-[#6366F1] to-[#4F46E5] hover:from-[#4F46E5] hover:to-[#058f6e] text-white py-3 px-6 rounded-lg font-semibold transition disabled:opacity-50 shadow-md"
                 >
                   Mantener mi Premium
                 </button>
@@ -310,29 +310,29 @@ export default function SubscriptionCancelFlow({
                 Mantendrás acceso hasta el final de tu período de facturación actual.
               </p>
 
-              <div className="bg-[#07C59A]/10 border-2 border-[#07C59A] rounded-xl p-6 mb-6">
-                <h5 className="font-bold text-[#113240] mb-3 text-lg">
+              <div className="bg-[#6366F1]/10 border-2 border-[#6366F1] rounded-xl p-6 mb-6">
+                <h5 className="font-bold text-[#0F172A] mb-3 text-lg">
                   🌟 Tu opinión es muy importante para nosotros
                 </h5>
                 <p className="text-sm text-gray-700 mb-4">
                   Nos encantaría saber qué podemos mejorar. ¿Nos dejas una reseña en Trustpilot?
                 </p>
                 
-                <div className="bg-white rounded-lg p-4 mb-4 border border-[#07C59A]/30">
+                <div className="bg-white rounded-lg p-4 mb-4 border border-[#6366F1]/30">
                   <img 
                     src="https://cdn.trustpilot.net/brand-assets/4.1.0/logo-black.svg" 
                     alt="Trustpilot" 
                     className="h-8 mx-auto mb-2"
                   />
                   <p className="text-xs text-gray-600">
-                    Redirigiendo automáticamente en <span className="font-bold text-[#07C59A]">{countdown}s</span>...
+                    Redirigiendo automáticamente en <span className="font-bold text-[#6366F1]">{countdown}s</span>...
                   </p>
                 </div>
 
                 <button
                   onClick={handleRedirectToTrustpilot}
                   disabled={redirecting}
-                  className="w-full bg-gradient-to-r from-[#113240] to-[#1a4a5e] hover:from-[#1a4a5e] hover:to-[#113240] text-white py-3 px-6 rounded-lg font-semibold transition disabled:opacity-50 flex items-center justify-center gap-2 shadow-md"
+                  className="w-full bg-gradient-to-r from-[#0F172A] to-[#1a4a5e] hover:from-[#1a4a5e] hover:to-[#0F172A] text-white py-3 px-6 rounded-lg font-semibold transition disabled:opacity-50 flex items-center justify-center gap-2 shadow-md"
                 >
                   {redirecting ? (
                     <>
@@ -341,7 +341,7 @@ export default function SubscriptionCancelFlow({
                     </>
                   ) : (
                     <>
-                      <FaStar className="text-[#07C59A]" />
+                      <FaStar className="text-[#6366F1]" />
                       Dejar Reseña Ahora
                     </>
                   )}

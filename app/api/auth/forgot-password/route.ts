@@ -60,7 +60,7 @@ export async function POST(request: NextRequest) {
                 <table role="presentation" style="max-width: 600px; background-color: #ffffff; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
                   <!-- Header -->
                   <tr>
-                    <td style="background: linear-gradient(135deg, #113240 0%, #07C59A 100%); padding: 40px 30px; text-align: center;">
+                    <td style="background: linear-gradient(135deg, #0F172A 0%, #6366F1 100%); padding: 40px 30px; text-align: center;">
                       <img src="https://www.mindmetric.io/images/MINDMETRIC/Logo_blanco.png" alt="MindMetric" style="height: 40px; width: auto; margin: 0 auto; display: block;" />
                     </td>
                   </tr>
@@ -68,7 +68,7 @@ export async function POST(request: NextRequest) {
                   <!-- Content -->
                   <tr>
                     <td style="padding: 40px 30px; text-align: center;">
-                      <h2 style="color: #113240; margin: 0 0 20px 0; font-size: 28px; font-weight: 600;">
+                      <h2 style="color: #0F172A; margin: 0 0 20px 0; font-size: 28px; font-weight: 600;">
                         ${t('resetPassword')}
                       </h2>
                       
@@ -80,7 +80,7 @@ export async function POST(request: NextRequest) {
                         ${t('resetPasswordMessage')}
                       </p>
                       
-                      <a href="${resetUrl}" style="display: inline-block; background: linear-gradient(135deg, #113240 0%, #07C59A 100%); color: #ffffff; text-decoration: none; padding: 16px 40px; border-radius: 8px; font-weight: 600; font-size: 16px; margin: 20px 0;">
+                      <a href="${resetUrl}" style="display: inline-block; background: linear-gradient(135deg, #0F172A 0%, #6366F1 100%); color: #ffffff; text-decoration: none; padding: 16px 40px; border-radius: 8px; font-weight: 600; font-size: 16px; margin: 20px 0;">
                         ${t('resetPasswordButton')}
                       </a>
                       

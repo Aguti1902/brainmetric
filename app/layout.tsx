@@ -6,9 +6,9 @@ import GoogleAnalytics, { GTMNoscript } from '@/components/GoogleAnalytics'
 const inter = Inter({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
-   title: 'MindMetric - Professional Intelligence Assessment | Discover Your IQ',
-  description: 'Unlock your cognitive potential with MindMetric\'s advanced intelligence assessment. Get precise, personalized results in minutes through scientifically validated testing.',
-  keywords: 'intelligence test, IQ assessment, cognitive analysis, mind metrics, professional IQ test, mental evaluation',
+  title: 'Brain Metric - Professional Intelligence Assessment | Discover Your IQ',
+  description: 'Unlock your cognitive potential with Brain Metric\'s advanced intelligence assessment. Get precise, personalized results in minutes through scientifically validated testing.',
+  keywords: 'intelligence test, IQ assessment, cognitive analysis, brain metric, professional IQ test, mental evaluation',
   icons: {
     icon: '/images/FAVICON2.png',
   }

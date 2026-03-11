@@ -127,7 +127,7 @@ export default function SubscriptionsTab() {
         <button
           onClick={loadSubscriptions}
           disabled={loading}
-          className="px-4 py-2 bg-[#07C59A] text-white rounded-lg hover:bg-[#069e7b] transition-colors flex items-center gap-2 disabled:opacity-50"
+          className="px-4 py-2 bg-[#6366F1] text-white rounded-lg hover:bg-[#4F46E5] transition-colors flex items-center gap-2 disabled:opacity-50"
         >
           <FaSync className={loading ? 'animate-spin' : ''} />
           Actualizar Ahora
@@ -145,7 +145,7 @@ export default function SubscriptionsTab() {
               placeholder="Buscar por email, ID o cliente..."
               value={search}
               onChange={(e) => setSearch(e.target.value)}
-              className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#07C59A] focus:border-transparent"
+              className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#6366F1] focus:border-transparent"
             />
           </div>
 
@@ -155,7 +155,7 @@ export default function SubscriptionsTab() {
             <select
               value={statusFilter}
               onChange={(e) => setStatusFilter(e.target.value)}
-              className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#07C59A] focus:border-transparent appearance-none"
+              className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#6366F1] focus:border-transparent appearance-none"
             >
               <option value="all">Todos los estados</option>
               <option value="active">Activas</option>
@@ -197,7 +197,7 @@ export default function SubscriptionsTab() {
       <div className="bg-white rounded-xl shadow-lg overflow-hidden">
         {loading ? (
           <div className="flex items-center justify-center py-12">
-            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#07C59A]"></div>
+            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#6366F1]"></div>
           </div>
         ) : subscriptions.length === 0 ? (
           <div className="text-center py-12">

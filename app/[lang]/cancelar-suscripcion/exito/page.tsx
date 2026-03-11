@@ -47,10 +47,10 @@ function ExitoContent() {
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 mb-6">
               
               {/* Columna izquierda: Precios */}
-              <div className="bg-gradient-to-br from-[#07C59A]/10 to-[#07C59A]/20 border-2 border-[#07C59A] rounded-xl p-4">
+              <div className="bg-gradient-to-br from-[#6366F1]/10 to-[#6366F1]/20 border-2 border-[#6366F1] rounded-xl p-4">
                 <div className="flex items-center gap-2 mb-3">
-                  <FaTag className="text-2xl text-[#07C59A]" />
-                  <h2 className="text-lg font-bold text-[#113240]">
+                  <FaTag className="text-2xl text-[#6366F1]" />
+                  <h2 className="text-lg font-bold text-[#0F172A]">
                     Tu descuento ha sido aplicado
                   </h2>
                 </div>
@@ -58,19 +58,19 @@ function ExitoContent() {
                 <div className="space-y-3">
                   <div className="bg-white rounded-lg p-3">
                     <p className="text-xs text-gray-600 mb-1">Plan Quincenal</p>
-                    <p className="text-xl font-bold text-[#113240]">
+                    <p className="text-xl font-bold text-[#0F172A]">
                       <span className="line-through text-gray-400 text-sm">9,99€</span>
                       {' → '}
-                      <span className="text-[#07C59A]">4,99€</span>
+                      <span className="text-[#6366F1]">4,99€</span>
                     </p>
                     <p className="text-xs text-gray-500">Ahorro: 15€ en 3 meses</p>
                   </div>
                   <div className="bg-white rounded-lg p-3">
                     <p className="text-xs text-gray-600 mb-1">Plan Mensual</p>
-                    <p className="text-xl font-bold text-[#113240]">
+                    <p className="text-xl font-bold text-[#0F172A]">
                       <span className="line-through text-gray-400 text-sm">19,99€</span>
                       {' → '}
-                      <span className="text-[#07C59A]">9,99€</span>
+                      <span className="text-[#6366F1]">9,99€</span>
                     </p>
                     <p className="text-xs text-gray-500">Ahorro: 30€ en 3 meses</p>
                   </div>
@@ -78,28 +78,28 @@ function ExitoContent() {
               </div>
 
               {/* Columna derecha: Beneficios */}
-              <div className="bg-gradient-to-br from-[#07C59A]/10 to-[#07C59A]/20 border-2 border-[#07C59A] rounded-xl p-4 flex flex-col justify-center">
+              <div className="bg-gradient-to-br from-[#6366F1]/10 to-[#6366F1]/20 border-2 border-[#6366F1] rounded-xl p-4 flex flex-col justify-center">
                 <div className="space-y-2 text-left">
                   <div className="flex items-start gap-2">
-                    <span className="text-[#07C59A] text-lg flex-shrink-0">✓</span>
+                    <span className="text-[#6366F1] text-lg flex-shrink-0">✓</span>
                     <p className="text-gray-700 text-sm">
                       <strong>A partir de tu próxima factura</strong>, disfrutarás del 50% de descuento
                     </p>
                   </div>
                   <div className="flex items-start gap-2">
-                    <span className="text-[#07C59A] text-lg flex-shrink-0">✓</span>
+                    <span className="text-[#6366F1] text-lg flex-shrink-0">✓</span>
                     <p className="text-gray-700 text-sm">
                       El descuento se aplicará <strong>automáticamente durante 3 meses</strong>
                     </p>
                   </div>
                   <div className="flex items-start gap-2">
-                    <span className="text-[#07C59A] text-lg flex-shrink-0">✓</span>
+                    <span className="text-[#6366F1] text-lg flex-shrink-0">✓</span>
                     <p className="text-gray-700 text-sm">
                       Después, el precio volverá al normal (<strong>puedes cancelar antes</strong>)
                     </p>
                   </div>
                   <div className="flex items-start gap-2">
-                    <span className="text-[#07C59A] text-lg flex-shrink-0">✓</span>
+                    <span className="text-[#6366F1] text-lg flex-shrink-0">✓</span>
                     <p className="text-gray-700 text-sm">
                       Mantén <strong>todos tus beneficios premium</strong>
                     </p>
@@ -123,7 +123,7 @@ function ExitoContent() {
             <div className="space-y-3">
               <button
                 onClick={() => router.push(`/${lang}/cuenta`)}
-                className="w-full max-w-md mx-auto bg-gradient-to-r from-[#07C59A] to-[#069e7b] hover:from-[#069e7b] hover:to-[#058f6e] text-white py-3 px-6 rounded-xl font-bold text-base transition shadow-lg hover:shadow-xl flex items-center justify-center gap-2"
+                className="w-full max-w-md mx-auto bg-gradient-to-r from-[#6366F1] to-[#4F46E5] hover:from-[#4F46E5] hover:to-[#058f6e] text-white py-3 px-6 rounded-xl font-bold text-base transition shadow-lg hover:shadow-xl flex items-center justify-center gap-2"
               >
                 Ver Mi Cuenta
               </button>
@@ -140,7 +140,7 @@ function ExitoContent() {
             {/* Mensaje de agradecimiento */}
             <div className="mt-6 pt-4 border-t border-gray-200">
               <p className="text-gray-600 text-sm">
-                💚 Gracias por confiar en MindMetric y por quedarte con nosotros
+                💚 Gracias por confiar en Brain Metric y por quedarte con nosotros
               </p>
             </div>
 
@@ -160,7 +160,7 @@ export default function ExitoCancelacionPage() {
     <Suspense fallback={
       <div className="min-h-screen bg-gradient-to-br from-gray-50 to-white flex items-center justify-center">
         <div className="text-center">
-          <div className="animate-spin rounded-full h-16 w-16 border-b-2 border-[#07C59A] mx-auto mb-4"></div>
+          <div className="animate-spin rounded-full h-16 w-16 border-b-2 border-[#6366F1] mx-auto mb-4"></div>
           <p className="text-gray-600">Cargando...</p>
         </div>
       </div>

@@ -18,7 +18,7 @@ export default function Sidebar({ activeTab, onTabChange, userEmail }: SidebarPr
   }
   
   const menuItems = [
-    { id: 'dashboard', icon: FaChartLine, label: 'Dashboard', color: 'text-[#07C59A]' },
+    { id: 'dashboard', icon: FaChartLine, label: 'Dashboard', color: 'text-[#6366F1]' },
     { id: 'subscriptions', icon: FaUsers, label: 'Suscripciones', color: 'text-blue-500' },
     { id: 'transactions', icon: FaCreditCard, label: 'Transacciones', color: 'text-purple-500' },
   ]
@@ -28,7 +28,7 @@ export default function Sidebar({ activeTab, onTabChange, userEmail }: SidebarPr
       {/* Logo/Header */}
       <div className="p-6 border-b border-gray-800">
         <div className="flex items-center gap-3">
-          <div className="w-10 h-10 bg-gradient-to-br from-[#07C59A] to-[#069e7b] rounded-lg flex items-center justify-center">
+          <div className="w-10 h-10 bg-gradient-to-br from-[#6366F1] to-[#4F46E5] rounded-lg flex items-center justify-center">
             <FaHome className="text-xl text-white" />
           </div>
           <div>
@@ -41,7 +41,7 @@ export default function Sidebar({ activeTab, onTabChange, userEmail }: SidebarPr
       {/* User Info */}
       <div className="p-4 border-b border-gray-800">
         <div className="flex items-center gap-3">
-          <div className="w-8 h-8 bg-[#07C59A] rounded-full flex items-center justify-center">
+          <div className="w-8 h-8 bg-[#6366F1] rounded-full flex items-center justify-center">
             <span className="text-white font-bold text-sm">
               {userEmail.charAt(0).toUpperCase()}
             </span>
@@ -66,7 +66,7 @@ export default function Sidebar({ activeTab, onTabChange, userEmail }: SidebarPr
                   onClick={() => onTabChange(item.id)}
                   className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg transition-all ${
                     isActive
-                      ? 'bg-[#07C59A] text-white shadow-lg'
+                      ? 'bg-[#6366F1] text-white shadow-lg'
                       : 'text-gray-400 hover:bg-gray-800 hover:text-white'
                   }`}
                 >

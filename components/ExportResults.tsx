@@ -29,7 +29,7 @@ export default function ExportResults() {
       const url = URL.createObjectURL(dataBlob)
       const link = document.createElement('a')
       link.href = url
-      link.download = `mindmetric-results-${new Date().toISOString().split('T')[0]}.json`
+      link.download = `brainmetric-results-${new Date().toISOString().split('T')[0]}.json`
       link.click()
       URL.revokeObjectURL(url)
     } catch (error) {
@@ -66,7 +66,7 @@ export default function ExportResults() {
       const url = URL.createObjectURL(blob)
       const link = document.createElement('a')
       link.href = url
-      link.download = `mindmetric-history-${new Date().toISOString().split('T')[0]}.csv`
+      link.download = `brainmetric-history-${new Date().toISOString().split('T')[0]}.csv`
       link.click()
       URL.revokeObjectURL(url)
     } catch (error) {
@@ -76,7 +76,7 @@ export default function ExportResults() {
   }
 
   return (
-    <div className="bg-gradient-to-br from-[#113240] to-[#052547] rounded-2xl shadow-xl p-8 text-white">
+    <div className="bg-gradient-to-br from-[#0F172A] to-[#1E1B4B] rounded-2xl shadow-xl p-8 text-white">
       <h2 className="text-3xl font-bold mb-2">Exportar Resultados</h2>
       <p className="text-white/80 mb-8">Descarga todos tus datos y resultados</p>
 
@@ -98,7 +98,7 @@ export default function ExportResults() {
           onClick={handleExportJSON}
           className="bg-white/10 backdrop-blur-sm hover:bg-white/20 rounded-xl p-6 transition-all duration-300 hover:scale-105 text-center"
         >
-          <FaDownload className="text-5xl mx-auto mb-3 text-[#07C59A]" />
+          <FaDownload className="text-5xl mx-auto mb-3 text-[#6366F1]" />
           <h3 className="font-bold text-lg mb-2">Exportar JSON</h3>
           <p className="text-sm text-white/80">
             Datos completos en formato JSON

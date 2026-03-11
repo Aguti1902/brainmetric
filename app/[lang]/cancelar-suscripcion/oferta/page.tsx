@@ -74,8 +74,8 @@ export default function OfertaCancelacionPage() {
           <div className="bg-white rounded-2xl shadow-2xl overflow-hidden">
             
             {/* Header compacto */}
-            <div className="bg-gradient-to-r from-[#113240] to-[#1a4a5e] px-6 py-6 text-white text-center">
-              <div className="w-16 h-16 bg-[#07C59A] rounded-full flex items-center justify-center mx-auto mb-3 shadow-xl">
+            <div className="bg-gradient-to-r from-[#0F172A] to-[#1a4a5e] px-6 py-6 text-white text-center">
+              <div className="w-16 h-16 bg-[#6366F1] rounded-full flex items-center justify-center mx-auto mb-3 shadow-xl">
                 <FaCrown className="text-3xl text-yellow-300" />
               </div>
               <h1 className="text-2xl md:text-3xl font-bold mb-2">
@@ -93,13 +93,13 @@ export default function OfertaCancelacionPage() {
               <div className="space-y-4">
                 
                 {/* Oferta Destacada */}
-                <div className="bg-gradient-to-br from-[#07C59A]/10 to-[#07C59A]/20 border-2 border-[#07C59A] rounded-xl p-4">
+                <div className="bg-gradient-to-br from-[#6366F1]/10 to-[#6366F1]/20 border-2 border-[#6366F1] rounded-xl p-4">
                   <div className="flex items-center gap-3 mb-4">
-                    <div className="w-12 h-12 bg-[#07C59A] rounded-full flex items-center justify-center shadow-lg flex-shrink-0">
+                    <div className="w-12 h-12 bg-[#6366F1] rounded-full flex items-center justify-center shadow-lg flex-shrink-0">
                       <FaTag className="text-2xl text-white" />
                     </div>
                     <div>
-                      <h2 className="text-2xl font-bold text-[#113240]">
+                      <h2 className="text-2xl font-bold text-[#0F172A]">
                         50% de descuento
                       </h2>
                       <p className="text-sm text-gray-700">
@@ -109,25 +109,25 @@ export default function OfertaCancelacionPage() {
                   </div>
 
                   <div className="grid grid-cols-2 gap-3 mb-3">
-                    <div className="text-center p-3 bg-white rounded-lg border border-[#07C59A]/30 shadow-sm">
+                    <div className="text-center p-3 bg-white rounded-lg border border-[#6366F1]/30 shadow-sm">
                       <p className="text-xs text-gray-600 mb-1">Plan Quincenal</p>
-                      <p className="text-lg font-bold text-[#113240]">
+                      <p className="text-lg font-bold text-[#0F172A]">
                         <span className="line-through text-gray-400 text-sm">9,99€</span>
                       </p>
-                      <p className="text-2xl font-bold text-[#07C59A]">4,99€</p>
+                      <p className="text-2xl font-bold text-[#6366F1]">4,99€</p>
                       <p className="text-xs text-gray-500 mt-1">cada 2 semanas</p>
                     </div>
-                    <div className="text-center p-3 bg-white rounded-lg border border-[#07C59A]/30 shadow-sm">
+                    <div className="text-center p-3 bg-white rounded-lg border border-[#6366F1]/30 shadow-sm">
                       <p className="text-xs text-gray-600 mb-1">Plan Mensual</p>
-                      <p className="text-lg font-bold text-[#113240]">
+                      <p className="text-lg font-bold text-[#0F172A]">
                         <span className="line-through text-gray-400 text-sm">19,99€</span>
                       </p>
-                      <p className="text-2xl font-bold text-[#07C59A]">9,99€</p>
+                      <p className="text-2xl font-bold text-[#6366F1]">9,99€</p>
                       <p className="text-xs text-gray-500 mt-1">al mes</p>
                     </div>
                   </div>
 
-                  <div className="bg-[#113240] rounded-lg p-2 text-center">
+                  <div className="bg-[#0F172A] rounded-lg p-2 text-center">
                     <p className="text-white text-sm font-semibold">
                       💎 Mantén todos tus beneficios premium
                     </p>
@@ -192,7 +192,7 @@ export default function OfertaCancelacionPage() {
                   <button
                     onClick={handleAcceptDiscount}
                     disabled={loading}
-                    className="w-full bg-gradient-to-r from-[#07C59A] to-[#069e7b] hover:from-[#069e7b] hover:to-[#058f6e] text-white py-4 px-6 rounded-xl font-bold text-base md:text-lg transition shadow-lg hover:shadow-xl flex items-center justify-center gap-2 disabled:opacity-50"
+                    className="w-full bg-gradient-to-r from-[#6366F1] to-[#4F46E5] hover:from-[#4F46E5] hover:to-[#058f6e] text-white py-4 px-6 rounded-xl font-bold text-base md:text-lg transition shadow-lg hover:shadow-xl flex items-center justify-center gap-2 disabled:opacity-50"
                   >
                     {loading ? (
                       <>
@@ -220,7 +220,7 @@ export default function OfertaCancelacionPage() {
 
                 {/* Nota informativa */}
                 <div className="text-center">
-                  <p className="text-xs text-[#113240] bg-[#07C59A]/10 py-2 px-4 rounded-lg inline-block">
+                  <p className="text-xs text-[#0F172A] bg-[#6366F1]/10 py-2 px-4 rounded-lg inline-block">
                     🔒 El descuento se aplicará automáticamente
                   </p>
                 </div>

@@ -98,28 +98,28 @@ export const visualQuestions: VisualQuestion[] = [
     question: 'Completa la secuencia',
     matrix: [
       [
-        { type: 'shape', content: 'square', strokeColor: '#113240', backgroundColor: '#F0F9F9' },
-        { type: 'shape', content: 'square', fillColor: '#113240', strokeColor: '#07C59A', backgroundColor: '#FFFFFF' },
-        { type: 'shape', content: 'square', strokeColor: '#113240', backgroundColor: '#F0F9F9' }
+        { type: 'shape', content: 'square', strokeColor: '#0F172A', backgroundColor: '#F0F9F9' },
+        { type: 'shape', content: 'square', fillColor: '#0F172A', strokeColor: '#6366F1', backgroundColor: '#FFFFFF' },
+        { type: 'shape', content: 'square', strokeColor: '#0F172A', backgroundColor: '#F0F9F9' }
       ],
       [
-        { type: 'shape', content: 'circle', strokeColor: '#113240', backgroundColor: '#FFFFFF' },
-        { type: 'shape', content: 'circle', fillColor: '#113240', backgroundColor: '#F0F9F9' },
-        { type: 'shape', content: 'circle', strokeColor: '#113240', nested: true, innerShape: 'circle', backgroundColor: '#FFFFFF' }
+        { type: 'shape', content: 'circle', strokeColor: '#0F172A', backgroundColor: '#FFFFFF' },
+        { type: 'shape', content: 'circle', fillColor: '#0F172A', backgroundColor: '#F0F9F9' },
+        { type: 'shape', content: 'circle', strokeColor: '#0F172A', nested: true, innerShape: 'circle', backgroundColor: '#FFFFFF' }
       ],
       [
-        { type: 'shape', content: 'square', strokeColor: '#113240', backgroundColor: '#F0F9F9' },
-        { type: 'shape', content: 'square', fillColor: '#113240', backgroundColor: '#FFFFFF' },
+        { type: 'shape', content: 'square', strokeColor: '#0F172A', backgroundColor: '#F0F9F9' },
+        { type: 'shape', content: 'square', fillColor: '#0F172A', backgroundColor: '#FFFFFF' },
         { type: 'empty', backgroundColor: '#F0F9F9' }
       ]
     ],
     options: [
-      { type: 'shape', content: 'square', strokeColor: '#113240' },
-      { type: 'shape', content: 'square', fillColor: '#07C59A' },
-      { type: 'shape', content: 'square', strokeColor: '#07C59A' },
-      { type: 'shape', content: 'square', fillColor: '#113240', strokeColor: '#07C59A' },
-      { type: 'shape', content: 'circle', strokeColor: '#113240' },
-      { type: 'shape', content: 'triangle', fillColor: '#07C59A' }
+      { type: 'shape', content: 'square', strokeColor: '#0F172A' },
+      { type: 'shape', content: 'square', fillColor: '#6366F1' },
+      { type: 'shape', content: 'square', strokeColor: '#6366F1' },
+      { type: 'shape', content: 'square', fillColor: '#0F172A', strokeColor: '#6366F1' },
+      { type: 'shape', content: 'circle', strokeColor: '#0F172A' },
+      { type: 'shape', content: 'triangle', fillColor: '#6366F1' }
     ],
     correctAnswer: 0 // square con solo borde
   },
@@ -132,28 +132,28 @@ export const visualQuestions: VisualQuestion[] = [
     question: 'Completa la secuencia',
     matrix: [
       [
-        { type: 'card', content: 'diamond', fillColor: '#07C59A', backgroundColor: '#F0F9F9' },
-        { type: 'card', content: 'heart', fillColor: '#07C59A', backgroundColor: '#FFFFFF' },
-        { type: 'card', content: 'club', fillColor: '#07C59A', backgroundColor: '#F0F9F9' }
+        { type: 'card', content: 'diamond', fillColor: '#6366F1', backgroundColor: '#F0F9F9' },
+        { type: 'card', content: 'heart', fillColor: '#6366F1', backgroundColor: '#FFFFFF' },
+        { type: 'card', content: 'club', fillColor: '#6366F1', backgroundColor: '#F0F9F9' }
       ],
       [
-        { type: 'card', content: 'diamond', strokeColor: '#113240', backgroundColor: '#FFFFFF' },
-        { type: 'card', content: 'heart', strokeColor: '#113240', backgroundColor: '#F0F9F9' },
-        { type: 'card', content: 'club', strokeColor: '#113240', backgroundColor: '#FFFFFF' }
+        { type: 'card', content: 'diamond', strokeColor: '#0F172A', backgroundColor: '#FFFFFF' },
+        { type: 'card', content: 'heart', strokeColor: '#0F172A', backgroundColor: '#F0F9F9' },
+        { type: 'card', content: 'club', strokeColor: '#0F172A', backgroundColor: '#FFFFFF' }
       ],
       [
-        { type: 'card', content: 'diamond', fillColor: '#07C59A', backgroundColor: '#F0F9F9' },
+        { type: 'card', content: 'diamond', fillColor: '#6366F1', backgroundColor: '#F0F9F9' },
         { type: 'empty', backgroundColor: '#FFFFFF' },
-        { type: 'card', content: 'club', fillColor: '#07C59A', backgroundColor: '#F0F9F9' }
+        { type: 'card', content: 'club', fillColor: '#6366F1', backgroundColor: '#F0F9F9' }
       ]
     ],
     options: [
-      { type: 'card', content: 'heart', strokeColor: '#113240' },
-      { type: 'card', content: 'diamond', fillColor: '#07C59A' },
-      { type: 'card', content: 'club', fillColor: '#07C59A' },
-      { type: 'card', content: 'heart', fillColor: '#07C59A' },
-      { type: 'card', content: 'club', strokeColor: '#113240' },
-      { type: 'card', content: 'heart', fillColor: '#113240' }
+      { type: 'card', content: 'heart', strokeColor: '#0F172A' },
+      { type: 'card', content: 'diamond', fillColor: '#6366F1' },
+      { type: 'card', content: 'club', fillColor: '#6366F1' },
+      { type: 'card', content: 'heart', fillColor: '#6366F1' },
+      { type: 'card', content: 'club', strokeColor: '#0F172A' },
+      { type: 'card', content: 'heart', fillColor: '#0F172A' }
     ],
     correctAnswer: 3 // heart relleno verde
   },
@@ -200,28 +200,28 @@ export const visualQuestions: VisualQuestion[] = [
     question: 'Completa la secuencia',
     matrix: [
       [
-        { type: 'shape', content: 'triangle', fillColor: '#113240', nested: true, innerShape: 'triangle', backgroundColor: '#F0F9F9' },
-        { type: 'shape', content: 'triangle', fillColor: '#113240', backgroundColor: '#FFFFFF' },
-        { type: 'shape', content: 'triangle', strokeColor: '#113240', nested: true, innerShape: 'triangle', backgroundColor: '#F0F9F9' }
+        { type: 'shape', content: 'triangle', fillColor: '#0F172A', nested: true, innerShape: 'triangle', backgroundColor: '#F0F9F9' },
+        { type: 'shape', content: 'triangle', fillColor: '#0F172A', backgroundColor: '#FFFFFF' },
+        { type: 'shape', content: 'triangle', strokeColor: '#0F172A', nested: true, innerShape: 'triangle', backgroundColor: '#F0F9F9' }
       ],
       [
-        { type: 'shape', content: 'circle', fillColor: '#113240', nested: true, innerShape: 'circle', backgroundColor: '#FFFFFF' },
-        { type: 'shape', content: 'circle', fillColor: '#113240', backgroundColor: '#F0F9F9' },
-        { type: 'shape', content: 'circle', strokeColor: '#113240', nested: true, innerShape: 'circle', backgroundColor: '#FFFFFF' }
+        { type: 'shape', content: 'circle', fillColor: '#0F172A', nested: true, innerShape: 'circle', backgroundColor: '#FFFFFF' },
+        { type: 'shape', content: 'circle', fillColor: '#0F172A', backgroundColor: '#F0F9F9' },
+        { type: 'shape', content: 'circle', strokeColor: '#0F172A', nested: true, innerShape: 'circle', backgroundColor: '#FFFFFF' }
       ],
       [
-        { type: 'shape', content: 'hexagon', fillColor: '#113240', nested: true, innerShape: 'hexagon', backgroundColor: '#F0F9F9' },
-        { type: 'shape', content: 'hexagon', fillColor: '#113240', backgroundColor: '#FFFFFF' },
+        { type: 'shape', content: 'hexagon', fillColor: '#0F172A', nested: true, innerShape: 'hexagon', backgroundColor: '#F0F9F9' },
+        { type: 'shape', content: 'hexagon', fillColor: '#0F172A', backgroundColor: '#FFFFFF' },
         { type: 'empty', backgroundColor: '#F0F9F9' }
       ]
     ],
     options: [
-      { type: 'shape', content: 'hexagon', strokeColor: '#113240', nested: true, innerShape: 'hexagon' },
-      { type: 'shape', content: 'hexagon', fillColor: '#07C59A' },
-      { type: 'shape', content: 'circle', strokeColor: '#113240' },
-      { type: 'shape', content: 'hexagon', fillColor: '#113240', nested: true },
-      { type: 'shape', content: 'triangle', fillColor: '#113240' },
-      { type: 'shape', content: 'hexagon', fillColor: '#07C59A', nested: true }
+      { type: 'shape', content: 'hexagon', strokeColor: '#0F172A', nested: true, innerShape: 'hexagon' },
+      { type: 'shape', content: 'hexagon', fillColor: '#6366F1' },
+      { type: 'shape', content: 'circle', strokeColor: '#0F172A' },
+      { type: 'shape', content: 'hexagon', fillColor: '#0F172A', nested: true },
+      { type: 'shape', content: 'triangle', fillColor: '#0F172A' },
+      { type: 'shape', content: 'hexagon', fillColor: '#6366F1', nested: true }
     ],
     correctAnswer: 0 // hexágono con borde y hexágono interior
   },
@@ -268,28 +268,28 @@ export const visualQuestions: VisualQuestion[] = [
     question: 'Completa la secuencia',
     matrix: [
       [
-        { type: 'shape', content: 'circle', fillColor: '#113240', backgroundColor: '#F0F9F9' },
-        { type: 'shape', content: 'triangle', fillColor: '#07C59A', backgroundColor: '#FFFFFF' },
-        { type: 'shape', content: 'circle', strokeColor: '#113240', backgroundColor: '#F0F9F9' }
+        { type: 'shape', content: 'circle', fillColor: '#0F172A', backgroundColor: '#F0F9F9' },
+        { type: 'shape', content: 'triangle', fillColor: '#6366F1', backgroundColor: '#FFFFFF' },
+        { type: 'shape', content: 'circle', strokeColor: '#0F172A', backgroundColor: '#F0F9F9' }
       ],
       [
-        { type: 'shape', content: 'triangle', strokeColor: '#113240', backgroundColor: '#FFFFFF' },
-        { type: 'shape', content: 'circle', fillColor: '#07C59A', backgroundColor: '#F0F9F9' },
-        { type: 'shape', content: 'triangle', fillColor: '#113240', backgroundColor: '#FFFFFF' }
+        { type: 'shape', content: 'triangle', strokeColor: '#0F172A', backgroundColor: '#FFFFFF' },
+        { type: 'shape', content: 'circle', fillColor: '#6366F1', backgroundColor: '#F0F9F9' },
+        { type: 'shape', content: 'triangle', fillColor: '#0F172A', backgroundColor: '#FFFFFF' }
       ],
       [
-        { type: 'shape', content: 'circle', strokeColor: '#07C59A', backgroundColor: '#F0F9F9' },
-        { type: 'shape', content: 'triangle', fillColor: '#07C59A', backgroundColor: '#FFFFFF' },
+        { type: 'shape', content: 'circle', strokeColor: '#6366F1', backgroundColor: '#F0F9F9' },
+        { type: 'shape', content: 'triangle', fillColor: '#6366F1', backgroundColor: '#FFFFFF' },
         { type: 'empty', backgroundColor: '#F0F9F9' }
       ]
     ],
     options: [
-      { type: 'shape', content: 'circle', fillColor: '#07C59A' },
-      { type: 'shape', content: 'triangle', strokeColor: '#113240' },
-      { type: 'shape', content: 'circle', strokeColor: '#113240' },
-      { type: 'shape', content: 'triangle', fillColor: '#07C59A' },
-      { type: 'shape', content: 'circle', fillColor: '#113240' },
-      { type: 'shape', content: 'square', fillColor: '#07C59A' }
+      { type: 'shape', content: 'circle', fillColor: '#6366F1' },
+      { type: 'shape', content: 'triangle', strokeColor: '#0F172A' },
+      { type: 'shape', content: 'circle', strokeColor: '#0F172A' },
+      { type: 'shape', content: 'triangle', fillColor: '#6366F1' },
+      { type: 'shape', content: 'circle', fillColor: '#0F172A' },
+      { type: 'shape', content: 'square', fillColor: '#6366F1' }
     ],
     correctAnswer: 2 // círculo con borde azul oscuro
   },
@@ -336,28 +336,28 @@ export const visualQuestions: VisualQuestion[] = [
     question: 'Completa la secuencia',
     matrix: [
       [
-        { type: 'shape', content: 'square', fillColor: '#113240', backgroundColor: '#F0F9F9' },
-        { type: 'shape', content: 'square', strokeColor: '#113240', backgroundColor: '#FFFFFF' },
-        { type: 'shape', content: 'square', fillColor: '#07C59A', backgroundColor: '#F0F9F9' }
+        { type: 'shape', content: 'square', fillColor: '#0F172A', backgroundColor: '#F0F9F9' },
+        { type: 'shape', content: 'square', strokeColor: '#0F172A', backgroundColor: '#FFFFFF' },
+        { type: 'shape', content: 'square', fillColor: '#6366F1', backgroundColor: '#F0F9F9' }
       ],
       [
-        { type: 'shape', content: 'square', strokeColor: '#07C59A', backgroundColor: '#FFFFFF' },
-        { type: 'shape', content: 'square', fillColor: '#113240', backgroundColor: '#F0F9F9' },
-        { type: 'shape', content: 'square', strokeColor: '#113240', backgroundColor: '#FFFFFF' }
+        { type: 'shape', content: 'square', strokeColor: '#6366F1', backgroundColor: '#FFFFFF' },
+        { type: 'shape', content: 'square', fillColor: '#0F172A', backgroundColor: '#F0F9F9' },
+        { type: 'shape', content: 'square', strokeColor: '#0F172A', backgroundColor: '#FFFFFF' }
       ],
       [
-        { type: 'shape', content: 'square', fillColor: '#07C59A', backgroundColor: '#F0F9F9' },
-        { type: 'shape', content: 'square', strokeColor: '#07C59A', backgroundColor: '#FFFFFF' },
+        { type: 'shape', content: 'square', fillColor: '#6366F1', backgroundColor: '#F0F9F9' },
+        { type: 'shape', content: 'square', strokeColor: '#6366F1', backgroundColor: '#FFFFFF' },
         { type: 'empty', backgroundColor: '#F0F9F9' }
       ]
     ],
     options: [
-      { type: 'shape', content: 'square', fillColor: '#07C59A' },
-      { type: 'shape', content: 'square', strokeColor: '#113240' },
-      { type: 'shape', content: 'square', fillColor: '#113240' },
-      { type: 'shape', content: 'square', strokeColor: '#07C59A' },
-      { type: 'shape', content: 'circle', fillColor: '#113240' },
-      { type: 'shape', content: 'triangle', fillColor: '#07C59A' }
+      { type: 'shape', content: 'square', fillColor: '#6366F1' },
+      { type: 'shape', content: 'square', strokeColor: '#0F172A' },
+      { type: 'shape', content: 'square', fillColor: '#0F172A' },
+      { type: 'shape', content: 'square', strokeColor: '#6366F1' },
+      { type: 'shape', content: 'circle', fillColor: '#0F172A' },
+      { type: 'shape', content: 'triangle', fillColor: '#6366F1' }
     ],
     correctAnswer: 2 // cuadrado relleno azul oscuro
   },
@@ -370,28 +370,28 @@ export const visualQuestions: VisualQuestion[] = [
     question: 'Completa la secuencia',
     matrix: [
       [
-        { type: 'shape', content: 'circle', fillColor: '#113240', nested: true, innerShape: 'triangle', backgroundColor: '#F0F9F9' },
-        { type: 'shape', content: 'square', fillColor: '#07C59A', nested: true, innerShape: 'circle', backgroundColor: '#FFFFFF' },
-        { type: 'shape', content: 'triangle', fillColor: '#113240', nested: true, innerShape: 'square', backgroundColor: '#F0F9F9' }
+        { type: 'shape', content: 'circle', fillColor: '#0F172A', nested: true, innerShape: 'triangle', backgroundColor: '#F0F9F9' },
+        { type: 'shape', content: 'square', fillColor: '#6366F1', nested: true, innerShape: 'circle', backgroundColor: '#FFFFFF' },
+        { type: 'shape', content: 'triangle', fillColor: '#0F172A', nested: true, innerShape: 'square', backgroundColor: '#F0F9F9' }
       ],
       [
-        { type: 'shape', content: 'square', strokeColor: '#113240', nested: true, innerShape: 'triangle', backgroundColor: '#FFFFFF' },
-        { type: 'shape', content: 'triangle', strokeColor: '#07C59A', nested: true, innerShape: 'circle', backgroundColor: '#F0F9F9' },
-        { type: 'shape', content: 'circle', strokeColor: '#113240', nested: true, innerShape: 'square', backgroundColor: '#FFFFFF' }
+        { type: 'shape', content: 'square', strokeColor: '#0F172A', nested: true, innerShape: 'triangle', backgroundColor: '#FFFFFF' },
+        { type: 'shape', content: 'triangle', strokeColor: '#6366F1', nested: true, innerShape: 'circle', backgroundColor: '#F0F9F9' },
+        { type: 'shape', content: 'circle', strokeColor: '#0F172A', nested: true, innerShape: 'square', backgroundColor: '#FFFFFF' }
       ],
       [
-        { type: 'shape', content: 'triangle', fillColor: '#07C59A', backgroundColor: '#F0F9F9' },
-        { type: 'shape', content: 'circle', fillColor: '#113240', backgroundColor: '#FFFFFF' },
+        { type: 'shape', content: 'triangle', fillColor: '#6366F1', backgroundColor: '#F0F9F9' },
+        { type: 'shape', content: 'circle', fillColor: '#0F172A', backgroundColor: '#FFFFFF' },
         { type: 'empty', backgroundColor: '#F0F9F9' }
       ]
     ],
     options: [
-      { type: 'shape', content: 'square', fillColor: '#07C59A' },
-      { type: 'shape', content: 'triangle', strokeColor: '#113240' },
-      { type: 'shape', content: 'square', fillColor: '#113240' },
-      { type: 'shape', content: 'circle', fillColor: '#07C59A' },
-      { type: 'shape', content: 'hexagon', fillColor: '#113240' },
-      { type: 'shape', content: 'square', strokeColor: '#07C59A' }
+      { type: 'shape', content: 'square', fillColor: '#6366F1' },
+      { type: 'shape', content: 'triangle', strokeColor: '#0F172A' },
+      { type: 'shape', content: 'square', fillColor: '#0F172A' },
+      { type: 'shape', content: 'circle', fillColor: '#6366F1' },
+      { type: 'shape', content: 'hexagon', fillColor: '#0F172A' },
+      { type: 'shape', content: 'square', strokeColor: '#6366F1' }
     ],
     correctAnswer: 0 // cuadrado relleno verde
   },
@@ -404,28 +404,28 @@ export const visualQuestions: VisualQuestion[] = [
     question: 'Completa la secuencia',
     matrix: [
       [
-        { type: 'card', content: 'heart', fillColor: '#07C59A', backgroundColor: '#F0F9F9' },
-        { type: 'card', content: 'diamond', strokeColor: '#113240', backgroundColor: '#FFFFFF' },
-        { type: 'card', content: 'club', fillColor: '#07C59A', backgroundColor: '#F0F9F9' }
+        { type: 'card', content: 'heart', fillColor: '#6366F1', backgroundColor: '#F0F9F9' },
+        { type: 'card', content: 'diamond', strokeColor: '#0F172A', backgroundColor: '#FFFFFF' },
+        { type: 'card', content: 'club', fillColor: '#6366F1', backgroundColor: '#F0F9F9' }
       ],
       [
-        { type: 'card', content: 'diamond', fillColor: '#113240', backgroundColor: '#FFFFFF' },
-        { type: 'card', content: 'club', strokeColor: '#07C59A', backgroundColor: '#F0F9F9' },
-        { type: 'card', content: 'heart', fillColor: '#113240', backgroundColor: '#FFFFFF' }
+        { type: 'card', content: 'diamond', fillColor: '#0F172A', backgroundColor: '#FFFFFF' },
+        { type: 'card', content: 'club', strokeColor: '#6366F1', backgroundColor: '#F0F9F9' },
+        { type: 'card', content: 'heart', fillColor: '#0F172A', backgroundColor: '#FFFFFF' }
       ],
       [
-        { type: 'card', content: 'club', fillColor: '#07C59A', backgroundColor: '#F0F9F9' },
-        { type: 'card', content: 'heart', strokeColor: '#113240', backgroundColor: '#FFFFFF' },
+        { type: 'card', content: 'club', fillColor: '#6366F1', backgroundColor: '#F0F9F9' },
+        { type: 'card', content: 'heart', strokeColor: '#0F172A', backgroundColor: '#FFFFFF' },
         { type: 'empty', backgroundColor: '#F0F9F9' }
       ]
     ],
     options: [
-      { type: 'card', content: 'diamond', fillColor: '#07C59A' },
-      { type: 'card', content: 'club', strokeColor: '#113240' },
-      { type: 'card', content: 'heart', fillColor: '#07C59A' },
-      { type: 'card', content: 'diamond', strokeColor: '#07C59A' },
-      { type: 'card', content: 'club', fillColor: '#113240' },
-      { type: 'card', content: 'heart', fillColor: '#113240' }
+      { type: 'card', content: 'diamond', fillColor: '#6366F1' },
+      { type: 'card', content: 'club', strokeColor: '#0F172A' },
+      { type: 'card', content: 'heart', fillColor: '#6366F1' },
+      { type: 'card', content: 'diamond', strokeColor: '#6366F1' },
+      { type: 'card', content: 'club', fillColor: '#0F172A' },
+      { type: 'card', content: 'heart', fillColor: '#0F172A' }
     ],
     correctAnswer: 0 // diamante relleno verde
   },
@@ -540,28 +540,28 @@ export const visualQuestions: VisualQuestion[] = [
     question: 'Completa la secuencia',
     matrix: [
       [
-        { type: 'shape', content: 'hexagon', fillColor: '#113240', backgroundColor: '#F0F9F9' },
-        { type: 'shape', content: 'hexagon', strokeColor: '#07C59A', backgroundColor: '#FFFFFF' },
-        { type: 'shape', content: 'hexagon', fillColor: '#07C59A', nested: true, innerShape: 'hexagon', backgroundColor: '#F0F9F9' }
+        { type: 'shape', content: 'hexagon', fillColor: '#0F172A', backgroundColor: '#F0F9F9' },
+        { type: 'shape', content: 'hexagon', strokeColor: '#6366F1', backgroundColor: '#FFFFFF' },
+        { type: 'shape', content: 'hexagon', fillColor: '#6366F1', nested: true, innerShape: 'hexagon', backgroundColor: '#F0F9F9' }
       ],
       [
-        { type: 'shape', content: 'hexagon', strokeColor: '#113240', nested: true, innerShape: 'circle', backgroundColor: '#FFFFFF' },
-        { type: 'shape', content: 'hexagon', fillColor: '#113240', nested: true, innerShape: 'hexagon', backgroundColor: '#F0F9F9' },
-        { type: 'shape', content: 'hexagon', strokeColor: '#07C59A', nested: true, innerShape: 'hexagon', backgroundColor: '#FFFFFF' }
+        { type: 'shape', content: 'hexagon', strokeColor: '#0F172A', nested: true, innerShape: 'circle', backgroundColor: '#FFFFFF' },
+        { type: 'shape', content: 'hexagon', fillColor: '#0F172A', nested: true, innerShape: 'hexagon', backgroundColor: '#F0F9F9' },
+        { type: 'shape', content: 'hexagon', strokeColor: '#6366F1', nested: true, innerShape: 'hexagon', backgroundColor: '#FFFFFF' }
       ],
       [
-        { type: 'shape', content: 'hexagon', fillColor: '#07C59A', backgroundColor: '#F0F9F9' },
-        { type: 'shape', content: 'hexagon', strokeColor: '#113240', backgroundColor: '#FFFFFF' },
+        { type: 'shape', content: 'hexagon', fillColor: '#6366F1', backgroundColor: '#F0F9F9' },
+        { type: 'shape', content: 'hexagon', strokeColor: '#0F172A', backgroundColor: '#FFFFFF' },
         { type: 'empty', backgroundColor: '#F0F9F9' }
       ]
     ],
     options: [
-      { type: 'shape', content: 'hexagon', fillColor: '#07C59A', nested: true, innerShape: 'circle' },
-      { type: 'shape', content: 'hexagon', fillColor: '#113240' },
-      { type: 'shape', content: 'hexagon', strokeColor: '#07C59A' },
-      { type: 'shape', content: 'circle', fillColor: '#07C59A' },
-      { type: 'shape', content: 'hexagon', fillColor: '#07C59A' },
-      { type: 'shape', content: 'hexagon', strokeColor: '#113240', nested: true }
+      { type: 'shape', content: 'hexagon', fillColor: '#6366F1', nested: true, innerShape: 'circle' },
+      { type: 'shape', content: 'hexagon', fillColor: '#0F172A' },
+      { type: 'shape', content: 'hexagon', strokeColor: '#6366F1' },
+      { type: 'shape', content: 'circle', fillColor: '#6366F1' },
+      { type: 'shape', content: 'hexagon', fillColor: '#6366F1' },
+      { type: 'shape', content: 'hexagon', strokeColor: '#0F172A', nested: true }
     ],
     correctAnswer: 0 // hexágono verde con círculo interior
   },
@@ -608,28 +608,28 @@ export const visualQuestions: VisualQuestion[] = [
     question: 'Completa la secuencia',
     matrix: [
       [
-        { type: 'shape', content: 'triangle', fillColor: '#113240', backgroundColor: '#F0F9F9' },
-        { type: 'shape', content: 'circle', fillColor: '#07C59A', nested: true, innerShape: 'triangle', backgroundColor: '#FFFFFF' },
-        { type: 'shape', content: 'square', strokeColor: '#113240', nested: true, innerShape: 'circle', backgroundColor: '#F0F9F9' }
+        { type: 'shape', content: 'triangle', fillColor: '#0F172A', backgroundColor: '#F0F9F9' },
+        { type: 'shape', content: 'circle', fillColor: '#6366F1', nested: true, innerShape: 'triangle', backgroundColor: '#FFFFFF' },
+        { type: 'shape', content: 'square', strokeColor: '#0F172A', nested: true, innerShape: 'circle', backgroundColor: '#F0F9F9' }
       ],
       [
-        { type: 'shape', content: 'triangle', strokeColor: '#07C59A', backgroundColor: '#FFFFFF' },
-        { type: 'shape', content: 'circle', strokeColor: '#113240', nested: true, innerShape: 'square', backgroundColor: '#F0F9F9' },
-        { type: 'shape', content: 'square', fillColor: '#07C59A', nested: true, innerShape: 'triangle', backgroundColor: '#FFFFFF' }
+        { type: 'shape', content: 'triangle', strokeColor: '#6366F1', backgroundColor: '#FFFFFF' },
+        { type: 'shape', content: 'circle', strokeColor: '#0F172A', nested: true, innerShape: 'square', backgroundColor: '#F0F9F9' },
+        { type: 'shape', content: 'square', fillColor: '#6366F1', nested: true, innerShape: 'triangle', backgroundColor: '#FFFFFF' }
       ],
       [
-        { type: 'shape', content: 'triangle', fillColor: '#07C59A', nested: true, innerShape: 'circle', backgroundColor: '#F0F9F9' },
-        { type: 'shape', content: 'circle', fillColor: '#113240', backgroundColor: '#FFFFFF' },
+        { type: 'shape', content: 'triangle', fillColor: '#6366F1', nested: true, innerShape: 'circle', backgroundColor: '#F0F9F9' },
+        { type: 'shape', content: 'circle', fillColor: '#0F172A', backgroundColor: '#FFFFFF' },
         { type: 'empty', backgroundColor: '#F0F9F9' }
       ]
     ],
     options: [
-      { type: 'shape', content: 'square', fillColor: '#113240' },
-      { type: 'shape', content: 'square', strokeColor: '#07C59A', nested: true, innerShape: 'square' },
-      { type: 'shape', content: 'circle', fillColor: '#07C59A' },
-      { type: 'shape', content: 'triangle', strokeColor: '#113240' },
-      { type: 'shape', content: 'square', fillColor: '#07C59A' },
-      { type: 'shape', content: 'hexagon', fillColor: '#113240' }
+      { type: 'shape', content: 'square', fillColor: '#0F172A' },
+      { type: 'shape', content: 'square', strokeColor: '#6366F1', nested: true, innerShape: 'square' },
+      { type: 'shape', content: 'circle', fillColor: '#6366F1' },
+      { type: 'shape', content: 'triangle', strokeColor: '#0F172A' },
+      { type: 'shape', content: 'square', fillColor: '#6366F1' },
+      { type: 'shape', content: 'hexagon', fillColor: '#0F172A' }
     ],
     correctAnswer: 0 // cuadrado relleno azul oscuro
   },
@@ -642,28 +642,28 @@ export const visualQuestions: VisualQuestion[] = [
     question: 'Completa la secuencia',
     matrix: [
       [
-        { type: 'card', content: 'heart', fillColor: '#113240', backgroundColor: '#F0F9F9' },
-        { type: 'card', content: 'heart', strokeColor: '#07C59A', backgroundColor: '#FFFFFF' },
-        { type: 'card', content: 'diamond', fillColor: '#07C59A', backgroundColor: '#F0F9F9' }
+        { type: 'card', content: 'heart', fillColor: '#0F172A', backgroundColor: '#F0F9F9' },
+        { type: 'card', content: 'heart', strokeColor: '#6366F1', backgroundColor: '#FFFFFF' },
+        { type: 'card', content: 'diamond', fillColor: '#6366F1', backgroundColor: '#F0F9F9' }
       ],
       [
-        { type: 'card', content: 'diamond', strokeColor: '#113240', backgroundColor: '#FFFFFF' },
-        { type: 'card', content: 'club', fillColor: '#113240', backgroundColor: '#F0F9F9' },
-        { type: 'card', content: 'club', strokeColor: '#07C59A', backgroundColor: '#FFFFFF' }
+        { type: 'card', content: 'diamond', strokeColor: '#0F172A', backgroundColor: '#FFFFFF' },
+        { type: 'card', content: 'club', fillColor: '#0F172A', backgroundColor: '#F0F9F9' },
+        { type: 'card', content: 'club', strokeColor: '#6366F1', backgroundColor: '#FFFFFF' }
       ],
       [
-        { type: 'card', content: 'heart', fillColor: '#07C59A', backgroundColor: '#F0F9F9' },
-        { type: 'card', content: 'heart', strokeColor: '#113240', backgroundColor: '#FFFFFF' },
+        { type: 'card', content: 'heart', fillColor: '#6366F1', backgroundColor: '#F0F9F9' },
+        { type: 'card', content: 'heart', strokeColor: '#0F172A', backgroundColor: '#FFFFFF' },
         { type: 'empty', backgroundColor: '#F0F9F9' }
       ]
     ],
     options: [
-      { type: 'card', content: 'diamond', fillColor: '#113240' },
-      { type: 'card', content: 'club', fillColor: '#07C59A' },
-      { type: 'card', content: 'heart', fillColor: '#113240' },
-      { type: 'card', content: 'diamond', strokeColor: '#07C59A' },
-      { type: 'card', content: 'club', strokeColor: '#113240' },
-      { type: 'card', content: 'heart', strokeColor: '#07C59A' }
+      { type: 'card', content: 'diamond', fillColor: '#0F172A' },
+      { type: 'card', content: 'club', fillColor: '#6366F1' },
+      { type: 'card', content: 'heart', fillColor: '#0F172A' },
+      { type: 'card', content: 'diamond', strokeColor: '#6366F1' },
+      { type: 'card', content: 'club', strokeColor: '#0F172A' },
+      { type: 'card', content: 'heart', strokeColor: '#6366F1' }
     ],
     correctAnswer: 0 // diamante relleno azul oscuro
   },

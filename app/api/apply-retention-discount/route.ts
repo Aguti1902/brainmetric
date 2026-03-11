@@ -6,12 +6,9 @@ import { verifyToken } from '@/lib/auth'
 export const dynamic = 'force-dynamic'
 
 /**
- * Aplicar descuento de retención (Sipay)
- *
- * Con Sipay no hay cupones. Lo que hacemos es:
+ * Aplicar descuento de retención
  * - Confirmar que la suscripción sigue activa
  * - Enviar email de confirmación del descuento
- * - El descuento real se gestiona manualmente o ajustando el monto del cobro recurrente
  */
 export async function POST(request: NextRequest) {
   try {
@@ -54,7 +51,7 @@ export async function POST(request: NextRequest) {
         subject: '🎉 ¡Descuento Especial Aplicado!',
         html: `
           <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
-            <h2 style="color: #07C59A;">¡Gracias por quedarte con nosotros!</h2>
+            <h2 style="color: #6366F1;">¡Gracias por quedarte con nosotros!</h2>
             <p>Nos alegra que hayas decidido continuar tu suscripción Premium.</p>
             <div style="background: #f0fdf4; border-left: 4px solid #10b981; padding: 20px; margin: 20px 0;">
               <h3 style="color: #059669; margin-top: 0;">Tu descuento especial:</h3>

@@ -46,11 +46,11 @@ export default function AyudaPage() {
     },
     {
       icon: <FaHeadset className="text-3xl" />,
-      title: 'Conéctate con el soporte de MindMetric',
+      title: 'Conéctate con el soporte de Brain Metric',
       description: 'Nuestro equipo está aquí para ayudarte',
-      color: 'from-[#07C59A] to-[#069e7b]',
+      color: 'from-[#6366F1] to-[#4F46E5]',
       links: [
-        { title: 'Contacta con el soporte de MindMetric', href: `/${lang}/contacto` }
+        { title: 'Contacta con el soporte de Brain Metric', href: `/${lang}/contacto` }
       ]
     }
   ]
@@ -79,7 +79,7 @@ export default function AyudaPage() {
               <FaQuestionCircle className="text-5xl text-blue-600" />
             </div>
             <h1 className="text-5xl font-bold text-gray-900 mb-4">
-              Centro de ayuda MindMetric
+              Centro de ayuda Brain Metric
             </h1>
             <p className="text-xl text-gray-600 max-w-2xl mx-auto">
               Encuentra respuestas rápidas a tus preguntas o contacta con nuestro equipo de soporte
@@ -143,7 +143,7 @@ export default function AyudaPage() {
 
                   <h3 className="text-xl font-bold text-gray-900 mt-6 mb-4">Pasos para cancelar:</h3>
                   <ol className="list-decimal pl-6 space-y-3 text-gray-700">
-                    <li>Inicia sesión en tu cuenta de MindMetric</li>
+                    <li>Inicia sesión en tu cuenta de Brain Metric</li>
                     <li>Ve a <strong>Perfil</strong> o <strong>Mi Cuenta</strong></li>
                     <li>Busca la sección <strong>"Suscripción Premium"</strong></li>
                     <li>Haz clic en <strong>"Gestionar Suscripción"</strong></li>
@@ -185,7 +185,7 @@ export default function AyudaPage() {
 
                 <div className="prose max-w-none">
                   <p className="text-gray-700 mb-4">
-                    Sí, tu suscripción a MindMetric se renueva automáticamente al final de cada período de facturación 
+                    Sí, tu suscripción a Brain Metric se renueva automáticamente al final de cada período de facturación 
                     para asegurar que no pierdas acceso a tus funciones premium.
                   </p>
 
@@ -273,7 +273,7 @@ export default function AyudaPage() {
                   <h3 className="text-xl font-bold text-gray-900 mt-6 mb-4">Pasos a seguir:</h3>
                   <ol className="list-decimal pl-6 space-y-3 text-gray-700">
                     <li>
-                      <strong>Verifica el cargo:</strong> Revisa tu historial de pagos en tu cuenta de MindMetric
+                      <strong>Verifica el cargo:</strong> Revisa tu historial de pagos en tu cuenta de Brain Metric
                     </li>
                     <li>
                       <strong>Revisa tu email:</strong> Busca confirmaciones de pago en tu correo
@@ -340,7 +340,7 @@ export default function AyudaPage() {
                   <div className="bg-blue-50 border-l-4 border-blue-500 p-6 mt-6 rounded-r-lg">
                     <p className="font-semibold text-blue-900 mb-2">💡 Para el futuro:</p>
                     <p className="text-blue-800">
-                      Te recomendamos agregar nuestro email (support@mindmetric.io) a tu lista de contactos 
+                      Te recomendamos agregar nuestro email (support@brainmetric.io) a tu lista de contactos 
                       para no perderte ninguna notificación importante sobre tu suscripción.
                     </p>
                   </div>
@@ -356,8 +356,8 @@ export default function AyudaPage() {
           </div>
 
           {/* Contact CTA */}
-          <div className="mt-16 bg-gradient-to-r from-[#113240] to-[#052547] rounded-2xl shadow-2xl p-12 text-center text-white">
-            <FaHeadset className="text-6xl mx-auto mb-6 text-[#07C59A]" />
+          <div className="mt-16 bg-gradient-to-r from-[#0F172A] to-[#1E1B4B] rounded-2xl shadow-2xl p-12 text-center text-white">
+            <FaHeadset className="text-6xl mx-auto mb-6 text-[#6366F1]" />
             <h2 className="text-4xl font-bold mb-4">
               ¿Aún necesitas ayuda?
             </h2>
@@ -367,19 +367,19 @@ export default function AyudaPage() {
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <button
                 onClick={() => router.push(`/${lang}/contacto`)}
-                className="bg-[#07C59A] hover:bg-[#069e7b] text-white px-8 py-4 rounded-lg font-bold text-lg transition-all shadow-lg hover:shadow-xl"
+                className="bg-[#6366F1] hover:bg-[#4F46E5] text-white px-8 py-4 rounded-lg font-bold text-lg transition-all shadow-lg hover:shadow-xl"
               >
                 Contactar Soporte
               </button>
               <button
                 onClick={() => router.push(`/${lang}/cuenta`)}
-                className="bg-white text-[#113240] hover:bg-gray-100 px-8 py-4 rounded-lg font-bold text-lg transition-all"
+                className="bg-white text-[#0F172A] hover:bg-gray-100 px-8 py-4 rounded-lg font-bold text-lg transition-all"
               >
                 Ver Mi Cuenta
               </button>
             </div>
             <p className="mt-6 text-sm opacity-75">
-              Email: <a href="mailto:support@mindmetric.io" className="underline">support@mindmetric.io</a>
+              Email: <a href="mailto:support@brainmetric.io" className="underline">support@brainmetric.io</a>
             </p>
           </div>
         </div>

@@ -80,7 +80,7 @@ export default function TestsPage() {
         <div className="container-custom max-w-7xl">
           {/* Hero Section */}
           <div className="text-center mb-12">
-            <div className="inline-block p-4 bg-gradient-to-r from-[#07C59A] to-[#069e7b] rounded-full mb-6">
+            <div className="inline-block p-4 bg-gradient-to-r from-[#6366F1] to-[#4F46E5] rounded-full mb-6">
               <FaBrain className="text-5xl text-white" />
             </div>
             <h1 className="text-5xl font-bold text-gray-900 mb-4">
@@ -165,7 +165,7 @@ export default function TestsPage() {
           </div>
 
           {/* Info Section */}
-          <div className="bg-gradient-to-r from-[#113240] to-[#052547] rounded-2xl shadow-2xl p-12 text-center text-white">
+          <div className="bg-gradient-to-r from-[#0F172A] to-[#1E1B4B] rounded-2xl shadow-2xl p-12 text-center text-white">
             <h2 className="text-4xl font-bold mb-4">
               ¿Por qué hacer estos tests?
             </h2>
@@ -201,7 +201,7 @@ export default function TestsPage() {
             <div className="mt-8">
               <button
                 onClick={() => router.push(`/${lang}/cuenta`)}
-                className="bg-[#07C59A] hover:bg-[#069e7b] text-white px-8 py-4 rounded-lg font-bold text-lg transition-all shadow-lg hover:shadow-xl"
+                className="bg-[#6366F1] hover:bg-[#4F46E5] text-white px-8 py-4 rounded-lg font-bold text-lg transition-all shadow-lg hover:shadow-xl"
               >
                 Ver Mi Historial
               </button>

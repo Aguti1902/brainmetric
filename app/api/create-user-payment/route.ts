@@ -54,7 +54,8 @@ export async function POST(request: NextRequest) {
 
     // Enviar email con credenciales
     const t = (key: any) => getEmailTranslation(lang || 'es', key)
-    const loginUrl = `${process.env.NEXT_PUBLIC_APP_URL || 'https://mindmetric.io'}/${lang || 'es'}/cuenta`
+    const appUrl = process.env.NEXT_PUBLIC_APP_URL || 'https://brainmetric.io'
+    const loginUrl = `${appUrl}/${lang || 'es'}/cuenta`
 
     const emailData = {
       to: email,
@@ -65,76 +66,49 @@ export async function POST(request: NextRequest) {
         <head>
           <meta charset="utf-8">
           <meta name="viewport" content="width=device-width, initial-scale=1.0">
-          <title>${t('welcome')} MindMetric</title>
+          <title>${t('welcome')} Brain Metric</title>
         </head>
-        <body style="margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif; background-color: #f5f5f5;">
-          <table role="presentation" style="width: 100%; border-collapse: collapse;">
+        <body style="margin:0;padding:0;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,'Helvetica Neue',Arial,sans-serif;background:#f5f5f5;">
+          <table role="presentation" style="width:100%;border-collapse:collapse;">
             <tr>
-              <td align="center" style="padding: 40px 20px;">
-                <table role="presentation" style="max-width: 600px; background-color: #ffffff; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
+              <td align="center" style="padding:40px 20px;">
+                <table role="presentation" style="max-width:600px;background:#ffffff;border-radius:12px;overflow:hidden;box-shadow:0 4px 6px rgba(0,0,0,0.1);">
                   <tr>
-                    <td style="background: linear-gradient(135deg, #113240 0%, #07C59A 100%); padding: 40px 30px; text-align: center;">
-                      <img src="https://www.mindmetric.io/images/MINDMETRIC/Logo_blanco.png" alt="MindMetric" style="height: 40px; width: auto; margin: 0 auto; display: block;" />
+                    <td style="background:linear-gradient(135deg,#0F172A 0%,#6366F1 100%);padding:40px 30px;text-align:center;">
+                      <h1 style="color:#ffffff;margin:0;font-size:28px;font-weight:700;">Brain Metric</h1>
                     </td>
                   </tr>
-                  
                   <tr>
-                    <td style="padding: 40px 30px; text-align: center;">
-                      <h2 style="color: #113240; margin: 0 0 20px 0; font-size: 28px; font-weight: 600;">
-                        ${t('welcome')} MindMetric!
+                    <td style="padding:40px 30px;text-align:center;">
+                      <h2 style="color:#0F172A;margin:0 0 20px 0;font-size:24px;font-weight:600;">
+                        ${t('welcome')} Brain Metric!
                       </h2>
-                      
-                      <p style="color: #4a5568; font-size: 16px; line-height: 1.6; margin: 0 0 30px 0;">
+                      <p style="color:#4a5568;font-size:16px;line-height:1.6;margin:0 0 20px 0;">
                         ${t('hello')} ${userName || t('user')},
                       </p>
-                      
-                      <p style="color: #4a5568; font-size: 16px; line-height: 1.6; margin: 0 0 30px 0;">
+                      <p style="color:#4a5568;font-size:16px;line-height:1.6;margin:0 0 30px 0;">
                         ${t('congratulations')}
                       </p>
-                      
                       ${iq ? `
-                      <div style="background-color: #f7fafc; border: 1px solid #e2e8f0; border-radius: 8px; padding: 20px; margin: 30px 0; text-align: left;">
-                        <h3 style="color: #113240; margin: 0 0 15px 0; font-size: 18px; font-weight: 600;">
-                          🎯 ${t('yourIQResult')}: ${iq}
-                        </h3>
-                        <p style="color: #4a5568; font-size: 14px; margin: 0; line-height: 1.6;">
-                          ${t('completedTest')}
-                        </p>
+                      <div style="background:#f7fafc;border:1px solid #e2e8f0;border-radius:8px;padding:20px;margin:0 0 30px 0;text-align:left;">
+                        <h3 style="color:#0F172A;margin:0 0 10px 0;font-size:18px;">🎯 ${t('yourIQResult')}: ${iq}</h3>
+                        <p style="color:#4a5568;font-size:14px;margin:0;">${t('completedTest')}</p>
+                      </div>` : ''}
+                      <div style="background:#fff5f5;border:1px solid #fed7d7;border-radius:8px;padding:20px;margin:0 0 30px 0;text-align:left;">
+                        <h3 style="color:#c53030;margin:0 0 15px 0;font-size:18px;">🔑 ${t('loginCredentials')}</h3>
+                        <p style="color:#4a5568;font-size:14px;margin:0 0 8px 0;"><strong>Email:</strong> ${email}</p>
+                        <p style="color:#4a5568;font-size:14px;margin:0;"><strong>${t('password')}:</strong> ${password}</p>
+                        <p style="color:#e53e3e;font-size:12px;margin:10px 0 0 0;">⚠️ ${t('securityWarning')}</p>
                       </div>
-                      ` : ''}
-                      
-                      <div style="background-color: #fff5f5; border: 1px solid #fed7d7; border-radius: 8px; padding: 20px; margin: 30px 0; text-align: left;">
-                        <h3 style="color: #c53030; margin: 0 0 15px 0; font-size: 18px; font-weight: 600;">
-                          🔑 ${t('loginCredentials')}
-                        </h3>
-                        <p style="color: #4a5568; font-size: 14px; margin: 0 0 10px 0; line-height: 1.6;">
-                          <strong>Email:</strong> ${email}
-                        </p>
-                        <p style="color: #4a5568; font-size: 14px; margin: 0; line-height: 1.6;">
-                          <strong>${t('password')}:</strong> ${password}
-                        </p>
-                        <p style="color: #e53e3e; font-size: 12px; margin: 10px 0 0 0; line-height: 1.6;">
-                          ⚠️ ${t('securityWarning')}
-                        </p>
-                      </div>
-                      
-                      <a href="${loginUrl}" style="display: inline-block; background: linear-gradient(135deg, #113240 0%, #07C59A 100%); color: #ffffff; text-decoration: none; padding: 16px 40px; border-radius: 8px; font-weight: 600; font-size: 16px; margin: 20px 0;">
+                      <a href="${loginUrl}" style="display:inline-block;background:linear-gradient(135deg,#0F172A 0%,#6366F1 100%);color:#ffffff;text-decoration:none;padding:16px 40px;border-radius:8px;font-weight:600;font-size:16px;">
                         ${t('accessDashboard')}
                       </a>
-                      
-                      <p style="color: #718096; font-size: 14px; margin: 30px 0 0 0; line-height: 1.6;">
-                        ${t('dashboardInfo')}
-                      </p>
                     </td>
                   </tr>
-                  
                   <tr>
-                    <td style="background-color: #f7fafc; padding: 30px; text-align: center; border-top: 1px solid #e2e8f0;">
-                      <p style="color: #718096; font-size: 12px; margin: 0 0 10px 0;">
-                        © ${new Date().getFullYear()} MindMetric. ${t('allRightsReserved')}
-                      </p>
-                      <p style="color: #718096; font-size: 12px; margin: 0;">
-                        info@mindmetric.io
+                    <td style="background:#f7fafc;padding:20px 30px;text-align:center;border-top:1px solid #e2e8f0;">
+                      <p style="color:#718096;font-size:12px;margin:0;">
+                        © ${new Date().getFullYear()} Brain Metric. ${t('allRightsReserved')}
                       </p>
                     </td>
                   </tr>

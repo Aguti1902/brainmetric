@@ -67,7 +67,7 @@ export default function ContactoPage() {
         <Header />
         <div className="min-h-screen flex items-center justify-center">
           <div className="text-center">
-            <div className="w-16 h-16 border-4 border-[#07C59A] border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
+            <div className="w-16 h-16 border-4 border-[#6366F1] border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
             <p className="text-gray-600">Loading...</p>
           </div>
         </div>
@@ -122,7 +122,7 @@ export default function ContactoPage() {
                     value={formData.name}
                     onChange={handleChange}
                     required
-                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#07C59A] focus:border-[#07C59A]"
+                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#6366F1] focus:border-[#6366F1]"
                     placeholder={t.contact.namePlaceholder}
                   />
                 </div>
@@ -138,7 +138,7 @@ export default function ContactoPage() {
                     value={formData.email}
                     onChange={handleChange}
                     required
-                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#07C59A] focus:border-[#07C59A]"
+                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#6366F1] focus:border-[#6366F1]"
                     placeholder={t.contact.emailPlaceholder}
                   />
                 </div>
@@ -154,7 +154,7 @@ export default function ContactoPage() {
                   value={formData.subject}
                   onChange={handleChange}
                   required
-                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#07C59A] focus:border-[#07C59A]"
+                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#6366F1] focus:border-[#6366F1]"
                 >
                   <option value="">{t.contact.subjectSelect}</option>
                   <option value={t.contact.subjectTech}>{t.contact.subjectTech}</option>
@@ -177,7 +177,7 @@ export default function ContactoPage() {
                   onChange={handleChange}
                   required
                   rows={6}
-                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#07C59A] focus:border-[#07C59A]"
+                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#6366F1] focus:border-[#6366F1]"
                   placeholder={t.contact.messagePlaceholder}
                 />
               </div>
@@ -189,7 +189,7 @@ export default function ContactoPage() {
                   className={`inline-flex items-center gap-3 px-8 py-4 rounded-lg font-bold text-lg transition ${
                     isSubmitting
                       ? 'bg-gray-400 cursor-not-allowed'
-                      : 'bg-[#113240] hover:bg-[#052547] text-white shadow-lg hover:shadow-xl'
+                      : 'bg-[#0F172A] hover:bg-[#1E1B4B] text-white shadow-lg hover:shadow-xl'
                   }`}
                 >
                   {isSubmitting ? (
@@ -217,10 +217,10 @@ export default function ContactoPage() {
                 {t.contact.emailDirect}
               </p>
               <a 
-                href="mailto:support@mindmetric.io" 
-                className="text-[#07C59A] hover:text-[#069e7b] font-semibold text-lg"
+                href="mailto:support@brainmetric.io" 
+                className="text-[#6366F1] hover:text-[#4F46E5] font-semibold text-lg"
               >
-                support@mindmetric.io
+                support@brainmetric.io
               </a>
             </div>
           </div>

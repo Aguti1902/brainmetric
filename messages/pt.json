@@ -48,7 +48,7 @@
     "step3Desc": "Aceda ao seu QI exato, análise detalhada e gráficos comparativos. Partilhe os seus resultados nas redes sociais."
   },
   "features": {
-    "title": "Porquê MindMetric?",
+    "title": "Porquê Brain Metric?",
     "subtitle": "A forma mais precisa e acessível de conhecer o seu QI",
     "validated": "Cientificamente Validado",
     "validatedDesc": "O nosso teste baseia-se em princípios psicométricos reconhecidos e validados por especialistas em inteligência.",
@@ -187,7 +187,7 @@
   },
   "test": {
     "title": "Teste de Inteligência",
-    "welcomeTitle": "Teste de Inteligência MindMetric",
+    "welcomeTitle": "Teste de Inteligência Brain Metric",
     "welcomeSubtitle": "Antes de começar, diga-nos o seu nome",
     "namePlaceholder": "O seu nome",
     "startButton": "Começar Teste",
@@ -391,7 +391,7 @@
     "fullNamePlaceholder": "João Silva",
     "email": "Email Registado",
     "emailPlaceholder": "seu@email.com",
-    "emailHelper": "Use o mesmo email com que se registou no MindMetric",
+    "emailHelper": "Use o mesmo email com que se registou no Brain Metric",
     "reason": "Motivo do Cancelamento (Opcional)",
     "reasonPlaceholder": "Diga-nos por que está a cancelar. O seu feedback ajuda-nos a melhorar.",
     "confirmButton": "Confirmar Cancelamento",
@@ -432,13 +432,13 @@
   "certificate": {
     "title": "CERTIFICADO DE INTELIGÊNCIA",
     "certifies": "Certifica-se que",
-    "completed": "completou com sucesso o teste de inteligência MindMetric",
+    "completed": "completou com sucesso o teste de inteligência Brain Metric",
     "obtained": "obtendo um Quociente de Inteligência de",
     "category": "Categoria",
     "correctAnswers": "respostas corretas",
     "percentile": "Percentil",
     "issueDate": "Data de emissão",
-    "footer": "MindMetric - Teste de Inteligência Profissional",
+    "footer": "Brain Metric - Teste de Inteligência Profissional",
     "fileName": "Certificado_QI"
   },
   "account": {
@@ -494,7 +494,7 @@
     "cancelNoticeMessage": "O seu acesso premium permanecerá ativo até ao final do seu período de faturação atual. Não serão efetuadas mais cobranças após essa data."
   },
   "legal": {
-    "noticeTranslation": "Este documento legal está disponível principalmente em espanhol. Para consultas em outros idiomas, contacte support@mindmetric.io"
+    "noticeTranslation": "Este documento legal está disponível principalmente em espanhol. Para consultas em outros idiomas, contacte support@brainmetric.io"
   },
   "login": {
     "title": "Entrar",

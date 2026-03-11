@@ -152,7 +152,7 @@ export default function TransactionsTab() {
         <button
           onClick={loadTransactions}
           disabled={loading}
-          className="px-4 py-2 bg-[#07C59A] text-white rounded-lg hover:bg-[#069e7b] transition-colors flex items-center gap-2 disabled:opacity-50"
+          className="px-4 py-2 bg-[#6366F1] text-white rounded-lg hover:bg-[#4F46E5] transition-colors flex items-center gap-2 disabled:opacity-50"
         >
           <FaSync className={loading ? 'animate-spin' : ''} />
           Actualizar Ahora
@@ -169,7 +169,7 @@ export default function TransactionsTab() {
               placeholder="Buscar por email, ID o cliente..."
               value={search}
               onChange={(e) => setSearch(e.target.value)}
-              className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#07C59A] focus:border-transparent"
+              className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#6366F1] focus:border-transparent"
             />
           </div>
 
@@ -178,7 +178,7 @@ export default function TransactionsTab() {
             <select
               value={statusFilter}
               onChange={(e) => setStatusFilter(e.target.value)}
-              className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#07C59A] focus:border-transparent appearance-none"
+              className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#6366F1] focus:border-transparent appearance-none"
             >
               <option value="all">Todos los estados</option>
               <option value="succeeded">Exitosos</option>
@@ -208,7 +208,7 @@ export default function TransactionsTab() {
         </div>
         <div className="bg-white rounded-lg p-4 shadow">
           <p className="text-sm text-gray-600">Total Ingresos</p>
-          <p className="text-2xl font-bold text-[#07C59A]">
+          <p className="text-2xl font-bold text-[#6366F1]">
             €{transactions.filter(t => t.status === 'succeeded').reduce((sum, t) => sum + t.amount, 0).toFixed(2)}
           </p>
         </div>
@@ -218,7 +218,7 @@ export default function TransactionsTab() {
       <div className="bg-white rounded-xl shadow-lg overflow-hidden">
         {loading ? (
           <div className="flex items-center justify-center py-12">
-            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#07C59A]"></div>
+            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#6366F1]"></div>
           </div>
         ) : transactions.length === 0 ? (
           <div className="text-center py-12">
@@ -319,7 +319,7 @@ export default function TransactionsTab() {
                 step="0.01"
                 value={refundAmount}
                 onChange={(e) => setRefundAmount(e.target.value)}
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#07C59A] focus:border-transparent"
+                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#6366F1] focus:border-transparent"
               />
             </div>
 
@@ -330,7 +330,7 @@ export default function TransactionsTab() {
               <select
                 value={refundReason}
                 onChange={(e) => setRefundReason(e.target.value)}
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#07C59A] focus:border-transparent"
+                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#6366F1] focus:border-transparent"
               >
                 <option value="requested_by_customer">Solicitado por cliente</option>
                 <option value="duplicate">Duplicado</option>

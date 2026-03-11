@@ -4,15 +4,16 @@ import { useState, useEffect } from 'react'
 import Header from '@/components/Header'
 import Footer from '@/components/Footer'
 import Link from 'next/link'
-import { FaBrain, FaChartLine, FaCertificate, FaUserFriends, FaLock, FaCheckCircle, FaChevronLeft, FaChevronRight, FaArrowRight } from 'react-icons/fa'
+import { FaBrain, FaChartLine, FaCertificate, FaUserFriends, FaLock, FaCheckCircle, FaChevronLeft, FaChevronRight, FaArrowRight, FaStar } from 'react-icons/fa'
 import { useTranslations } from '@/hooks/useTranslations'
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts'
+import HeroAnimation from '@/components/HeroAnimation'
 
 export default function Home() {
   const { t, loading, lang } = useTranslations()
   const [currentTestimonial, setCurrentTestimonial] = useState(0)
+  const [visibleSections, setVisibleSections] = useState<Set<string>>(new Set())
 
-  // Auto-play carrousel (avanza de 3 en 3)
   useEffect(() => {
     if (!t?.testimonials?.reviews || t?.testimonials?.reviews?.length === 0) return
     const timer = setInterval(() => {
@@ -21,9 +22,28 @@ export default function Home() {
         const maxIndex = Math.max(0, totalReviews - 3)
         return prev >= maxIndex ? 0 : Math.min(maxIndex, prev + 3)
       })
-    }, 5000) // Cambia cada 5 segundos
+    }, 5000)
     return () => clearInterval(timer)
   }, [t?.testimonials?.reviews])
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            setVisibleSections(prev => new Set(prev).add(entry.target.id))
+          }
+        })
+      },
+      { threshold: 0.1 }
+    )
+
+    document.querySelectorAll('section[id]').forEach((section) => {
+      observer.observe(section)
+    })
+
+    return () => observer.disconnect()
+  }, [loading])
 
   if (loading || !t) {
     return (
@@ -31,8 +51,8 @@ export default function Home() {
         <Header />
         <div className="min-h-screen flex items-center justify-center">
           <div className="text-center">
-            <div className="w-16 h-16 border-4 border-[#07C59A] border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
-            <p className="text-gray-600">Cargando...</p>
+            <div className="w-16 h-16 border-4 border-primary-500 border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
+            <p className="text-gray-400">Cargando...</p>
           </div>
         </div>
         <Footer />
@@ -46,321 +66,146 @@ export default function Home() {
       
       <main>
         {/* Hero Section */}
-        <section className="bg-gradient-to-br from-primary-50 to-white py-20">
-          <div className="container-custom">
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-              <div className="animate-fadeIn">
-              <h1 className="text-5xl lg:text-6xl font-bold text-gray-900 mb-6">
-                {t.hero.title} <span className="text-[#07C59A]">{t.hero.titleHighlight}</span>
-              </h1>
-                <p className="text-xl text-gray-600 mb-8">
+        <section id="hero" className="relative min-h-[90vh] flex items-center overflow-hidden neural-bg">
+          {/* Animated background orbs */}
+          <div className="absolute inset-0 overflow-hidden pointer-events-none">
+            <div className="absolute top-20 left-[10%] w-72 h-72 bg-primary-500/10 rounded-full blur-[120px] animate-float"></div>
+            <div className="absolute bottom-20 right-[10%] w-96 h-96 bg-accent-500/8 rounded-full blur-[150px] animate-float" style={{ animationDelay: '3s' }}></div>
+            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-primary-600/5 rounded-full blur-[200px]"></div>
+          </div>
+
+          <div className="container-custom relative z-10 py-20">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+              <div className="animate-fade-in">
+                <div className="inline-flex items-center gap-2 bg-primary-500/10 border border-primary-500/20 rounded-full px-4 py-1.5 mb-6">
+                  <div className="w-2 h-2 bg-primary-400 rounded-full animate-pulse"></div>
+                  <span className="text-primary-300 text-sm font-medium">Evaluación Científica de Inteligencia</span>
+                </div>
+
+                <h1 className="text-5xl lg:text-7xl font-bold mb-6 leading-tight">
+                  <span className="text-white">{t.hero.title} </span>
+                  <span className="text-gradient">{t.hero.titleHighlight}</span>
+                </h1>
+
+                <p className="text-xl text-gray-400 mb-10 leading-relaxed max-w-xl">
                   {t.hero.description}
                 </p>
-                <div className="flex flex-col sm:flex-row gap-4">
-                          <Link href={`/${loading ? 'es' : (t ? lang : 'es')}/test`} className="btn-primary text-center text-lg">
-                            {t.hero.cta}
-                          </Link>
-                          <a href={`/${loading ? 'es' : (t ? lang : 'es')}#como-funciona`} className="btn-secondary text-center text-lg">
-                            {t.hero.ctaSecondary}
-                          </a>
+
+                <div className="flex flex-col sm:flex-row gap-4 mb-10">
+                  <Link href={`/${loading ? 'es' : (t ? lang : 'es')}/test`} className="btn-primary text-center text-lg py-4 px-10">
+                    {t.hero.cta}
+                  </Link>
+                  <a href={`/${loading ? 'es' : (t ? lang : 'es')}#como-funciona`} className="btn-secondary text-center text-lg py-4 px-10">
+                    {t.hero.ctaSecondary}
+                  </a>
                 </div>
                 
-                {/* Trust indicators */}
-                <div className="mt-8 flex items-center gap-6 text-sm text-gray-600">
+                <div className="flex items-center gap-6 text-sm text-gray-400">
                   <div className="flex items-center gap-2">
-                    <FaCheckCircle className="text-[#07C59A]" />
+                    <FaCheckCircle className="text-primary-400" />
                     <span>{t.hero.secure}</span>
                   </div>
                   <div className="flex items-center gap-2">
-                    <FaCheckCircle className="text-[#07C59A]" />
+                    <FaCheckCircle className="text-primary-400" />
                     <span>{t.hero.validated}</span>
                   </div>
                   <div className="flex items-center gap-2">
-                    <FaCheckCircle className="text-[#07C59A]" />
+                    <FaCheckCircle className="text-primary-400" />
                     <span>{t.hero.instant}</span>
                   </div>
                 </div>
               </div>
 
-              <div className="hidden lg:block">
-                <div className="relative">
-                  {/* Card con efecto glassmorphism */}
-                  <div className="bg-gradient-to-br from-[#07C59A]/10 to-[#113240]/10 backdrop-blur-sm rounded-3xl p-8 border border-white/20 shadow-2xl">
-                    {/* Stats destacadas */}
-                    <div className="grid grid-cols-2 gap-6 mb-8">
-                      <div className="bg-white/90 rounded-2xl p-6 text-center shadow-lg">
-                        <div className="text-4xl font-bold text-[#07C59A] mb-2">100K+</div>
-                        <div className="text-sm text-gray-600">Usuarios</div>
-                      </div>
-                      <div className="bg-white/90 rounded-2xl p-6 text-center shadow-lg">
-                        <div className="text-4xl font-bold text-[#113240] mb-2">20</div>
-                        <div className="text-sm text-gray-600">Preguntas</div>
-                      </div>
-                    </div>
-
-                    {/* Features list */}
-                    <div className="space-y-4">
-                      <div className="bg-white/90 rounded-xl p-4 flex items-center gap-4 shadow-md hover:shadow-lg transition-shadow">
-                        <div className="w-14 h-14 bg-gradient-to-br from-[#07C59A] to-[#069e7b] rounded-xl flex items-center justify-center flex-shrink-0">
-                          <FaBrain className="text-white text-2xl" />
-                        </div>
-                        <div>
-                          <h3 className="font-semibold text-gray-900">{t.hero.questions}</h3>
-                          <p className="text-gray-600 text-sm">{t.hero.questionsDesc}</p>
-                        </div>
-                      </div>
-                      
-                      <div className="bg-white/90 rounded-xl p-4 flex items-center gap-4 shadow-md hover:shadow-lg transition-shadow">
-                        <div className="w-14 h-14 bg-gradient-to-br from-[#07C59A] to-[#069e7b] rounded-xl flex items-center justify-center flex-shrink-0">
-                          <FaChartLine className="text-white text-2xl" />
-                        </div>
-                        <div>
-                          <h3 className="font-semibold text-gray-900">{t.hero.analysis}</h3>
-                          <p className="text-gray-600 text-sm">{t.hero.analysisDesc}</p>
-                        </div>
-                      </div>
-                      
-                      <div className="bg-white/90 rounded-xl p-4 flex items-center gap-4 shadow-md hover:shadow-lg transition-shadow">
-                        <div className="w-14 h-14 bg-gradient-to-br from-[#07C59A] to-[#069e7b] rounded-xl flex items-center justify-center flex-shrink-0">
-                          <FaCertificate className="text-white text-2xl" />
-                        </div>
-                        <div>
-                          <h3 className="font-semibold text-gray-900">{t.hero.certificate}</h3>
-                          <p className="text-gray-600 text-sm">{t.hero.certificateDesc}</p>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* Elemento decorativo */}
-                  <div className="absolute -bottom-4 -right-4 w-32 h-32 bg-gradient-to-br from-[#07C59A]/20 to-[#113240]/20 rounded-full blur-3xl -z-10"></div>
-                </div>
+              <div className="hidden lg:flex items-center justify-center">
+                <HeroAnimation />
               </div>
             </div>
           </div>
         </section>
 
         {/* Cómo Funciona */}
-        <section id="como-funciona" className="py-20 bg-white">
+        <section id="como-funciona" className={`py-24 relative transition-all duration-700 ${visibleSections.has('como-funciona') ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
           <div className="container-custom">
             <div className="text-center mb-16">
-              <h2 className="text-4xl font-bold text-gray-900 mb-4">
+              <h2 className="text-4xl lg:text-5xl font-bold text-white mb-4">
                 {t.howItWorks.title}
               </h2>
-              <p className="text-xl text-gray-600">
+              <p className="text-xl text-gray-400 max-w-2xl mx-auto">
                 {t.howItWorks.subtitle}
               </p>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-              <div className="text-center">
-                <div className="w-20 h-20 bg-[#07C59A] text-white rounded-full flex items-center justify-center text-3xl font-bold mx-auto mb-6">
-                  1
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-8 relative">
+              <div className="hidden md:block absolute top-10 left-[20%] right-[20%] h-px bg-gradient-to-r from-transparent via-primary-500/30 to-transparent"></div>
+              
+              {[
+                { num: '1', title: t.howItWorks.step1, desc: t.howItWorks.step1Desc },
+                { num: '2', title: t.howItWorks.step2, desc: t.howItWorks.step2Desc },
+                { num: '3', title: t.howItWorks.step3, desc: t.howItWorks.step3Desc },
+              ].map((step, idx) => (
+                <div key={idx} className="text-center relative z-10">
+                  <div className="w-20 h-20 bg-gradient-to-br from-primary-500 to-accent-500 text-white rounded-2xl flex items-center justify-center text-3xl font-bold mx-auto mb-6 shadow-lg shadow-primary-500/25">
+                    {step.num}
+                  </div>
+                  <h3 className="text-2xl font-semibold text-white mb-4">{step.title}</h3>
+                  <p className="text-gray-400 leading-relaxed">{step.desc}</p>
                 </div>
-                <h3 className="text-2xl font-semibold mb-4">{t.howItWorks.step1}</h3>
-                <p className="text-gray-600">
-                  {t.howItWorks.step1Desc}
-                </p>
-              </div>
-
-              <div className="text-center">
-                <div className="w-20 h-20 bg-[#07C59A] text-white rounded-full flex items-center justify-center text-3xl font-bold mx-auto mb-6">
-                  2
-                </div>
-                <h3 className="text-2xl font-semibold mb-4">{t.howItWorks.step2}</h3>
-                <p className="text-gray-600">
-                  {t.howItWorks.step2Desc}
-                </p>
-              </div>
-
-              <div className="text-center">
-                <div className="w-20 h-20 bg-[#07C59A] text-white rounded-full flex items-center justify-center text-3xl font-bold mx-auto mb-6">
-                  3
-                </div>
-                <h3 className="text-2xl font-semibold mb-4">{t.howItWorks.step3}</h3>
-                <p className="text-gray-600">
-                  {t.howItWorks.step3Desc}
-                </p>
-              </div>
+              ))}
             </div>
           </div>
         </section>
 
-        {/* Sección de Tests Disponibles - NUEVA */}
-        <section className="py-20 bg-white">
+        {/* Tests Disponibles */}
+        <section id="tests" className={`py-24 relative transition-all duration-700 ${visibleSections.has('tests') ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
           <div className="container-custom">
             <div className="text-center mb-16">
-              <h2 className="text-4xl font-bold text-gray-900 mb-4">
+              <h2 className="text-4xl lg:text-5xl font-bold text-white mb-4">
                 Tests de Evaluación Disponibles
               </h2>
-              <p className="text-xl text-gray-600">
+              <p className="text-xl text-gray-400 max-w-2xl mx-auto">
                 Evalúa diferentes aspectos de tu mente con nuestros tests científicamente validados
               </p>
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {/* Test de CI */}
-              <Link 
-                href={`/${lang}/test`}
-                className="group card hover:shadow-2xl transition-all duration-300 hover:-translate-y-2 border-2 border-transparent hover:border-[#07C59A] cursor-pointer"
-              >
-                <div className="flex items-center gap-4 mb-4">
-                  <div className="w-16 h-16 bg-gradient-to-br from-[#07C59A] to-[#069e7b] rounded-xl flex items-center justify-center text-white text-3xl flex-shrink-0 group-hover:scale-110 transition-transform">
-                    <FaBrain />
+              {[
+                { href: `/${lang}/test`, icon: <FaBrain />, title: 'Test de CI', sub: 'Coeficiente Intelectual', desc: 'Mide tu capacidad de razonamiento lógico, resolución de problemas y pensamiento abstracto.', time: '15-20 min', questions: '20 preguntas', gradient: 'from-primary-500 to-primary-600', border: 'hover:border-primary-500/50', textColor: 'text-primary-400' },
+                { href: `/${lang}/tests/personality`, icon: <FaUserFriends />, title: 'Test de Personalidad', sub: 'Big Five (OCEAN)', desc: 'Descubre los 5 rasgos fundamentales de tu personalidad.', time: '10-15 min', questions: '44 preguntas', gradient: 'from-purple-500 to-purple-600', border: 'hover:border-purple-500/50', textColor: 'text-purple-400' },
+                { href: `/${lang}/tests/adhd`, icon: <FaBrain />, title: 'Test de TDAH', sub: 'Evaluación de Atención', desc: 'Evalúa síntomas de TDAH basado en criterios DSM-5.', time: '5-8 min', questions: '18 preguntas', gradient: 'from-blue-500 to-blue-600', border: 'hover:border-blue-500/50', textColor: 'text-blue-400' },
+                { href: `/${lang}/tests/anxiety`, icon: <FaChartLine />, title: 'Test de Ansiedad', sub: 'GAD-7 Extendido', desc: 'Evaluación completa de ansiedad generalizada con escala clínica.', time: '5-7 min', questions: '20 preguntas', gradient: 'from-red-500 to-red-600', border: 'hover:border-red-500/50', textColor: 'text-red-400' },
+                { href: `/${lang}/tests/depression`, icon: <FaCheckCircle />, title: 'Test de Depresión', sub: 'PHQ-9', desc: 'Evaluación del estado de ánimo y síntomas depresivos.', time: '6-8 min', questions: '20 preguntas', gradient: 'from-slate-400 to-slate-500', border: 'hover:border-slate-400/50', textColor: 'text-slate-400' },
+                { href: `/${lang}/tests/eq`, icon: <FaChartLine />, title: 'Inteligencia Emocional', sub: 'Test EQ', desc: 'Mide tu capacidad para reconocer y gestionar emociones.', time: '8-10 min', questions: '33 preguntas', gradient: 'from-emerald-500 to-emerald-600', border: 'hover:border-emerald-500/50', textColor: 'text-emerald-400' },
+              ].map((test, idx) => (
+                <Link 
+                  key={idx}
+                  href={test.href}
+                  className={`group card hover:shadow-2xl hover:shadow-primary-500/5 transition-all duration-300 hover:-translate-y-2 ${test.border} cursor-pointer`}
+                >
+                  <div className="flex items-center gap-4 mb-4">
+                    <div className={`w-14 h-14 bg-gradient-to-br ${test.gradient} rounded-xl flex items-center justify-center text-white text-2xl flex-shrink-0 group-hover:scale-110 transition-transform`}>
+                      {test.icon}
+                    </div>
+                    <div>
+                      <h3 className="text-lg font-bold text-white">{test.title}</h3>
+                      <p className="text-sm text-gray-400">{test.sub}</p>
+                    </div>
                   </div>
-                  <div>
-                    <h3 className="text-xl font-bold text-gray-900">Test de CI</h3>
-                    <p className="text-sm text-gray-600">Coeficiente Intelectual</p>
+                  <p className="text-gray-400 text-sm mb-4">{test.desc}</p>
+                  <div className="flex items-center justify-between text-xs text-gray-500">
+                    <span>⏱️ {test.time}</span>
+                    <span>📝 {test.questions}</span>
                   </div>
-                </div>
-                <p className="text-gray-700 mb-4">
-                  Mide tu capacidad de razonamiento lógico, resolución de problemas y pensamiento abstracto.
-                </p>
-                <div className="flex items-center justify-between text-sm text-gray-600">
-                  <span>⏱️ 15-20 min</span>
-                  <span>📝 20 preguntas</span>
-                </div>
-                <div className="mt-4 text-[#07C59A] font-semibold flex items-center gap-2 group-hover:gap-3 transition-all">
-                  Comenzar Test <FaArrowRight className="text-sm" />
-                </div>
-              </Link>
-
-              {/* Test de Personalidad */}
-              <Link 
-                href={`/${lang}/tests/personality`}
-                className="group card hover:shadow-2xl transition-all duration-300 hover:-translate-y-2 border-2 border-transparent hover:border-purple-500 cursor-pointer"
-              >
-                <div className="flex items-center gap-4 mb-4">
-                  <div className="w-16 h-16 bg-gradient-to-br from-purple-500 to-purple-700 rounded-xl flex items-center justify-center text-white text-3xl flex-shrink-0 group-hover:scale-110 transition-transform">
-                    <FaUserFriends />
+                  <div className={`mt-4 ${test.textColor} font-semibold flex items-center gap-2 group-hover:gap-3 transition-all text-sm`}>
+                    Comenzar Test <FaArrowRight className="text-xs" />
                   </div>
-                  <div>
-                    <h3 className="text-xl font-bold text-gray-900">Test de Personalidad</h3>
-                    <p className="text-sm text-gray-600">Big Five (OCEAN)</p>
-                  </div>
-                </div>
-                <p className="text-gray-700 mb-4">
-                  Descubre los 5 rasgos fundamentales de tu personalidad: Apertura, Responsabilidad, Extroversión, Amabilidad y Neuroticismo.
-                </p>
-                <div className="flex items-center justify-between text-sm text-gray-600">
-                  <span>⏱️ 10-15 min</span>
-                  <span>📝 44 preguntas</span>
-                </div>
-                <div className="mt-4 text-purple-600 font-semibold flex items-center gap-2 group-hover:gap-3 transition-all">
-                  Comenzar Test <FaArrowRight className="text-sm" />
-                </div>
-              </Link>
-
-              {/* Test de TDAH */}
-              <Link 
-                href={`/${lang}/tests/adhd`}
-                className="group card hover:shadow-2xl transition-all duration-300 hover:-translate-y-2 border-2 border-transparent hover:border-blue-500 cursor-pointer"
-              >
-                <div className="flex items-center gap-4 mb-4">
-                  <div className="w-16 h-16 bg-gradient-to-br from-blue-500 to-blue-700 rounded-xl flex items-center justify-center text-white text-3xl flex-shrink-0 group-hover:scale-110 transition-transform">
-                    <FaBrain />
-                  </div>
-                  <div>
-                    <h3 className="text-xl font-bold text-gray-900">Test de TDAH</h3>
-                    <p className="text-sm text-gray-600">Evaluación de Atención</p>
-                  </div>
-                </div>
-                <p className="text-gray-700 mb-4">
-                  Evalúa síntomas de Trastorno por Déficit de Atención e Hiperactividad basado en criterios DSM-5.
-                </p>
-                <div className="flex items-center justify-between text-sm text-gray-600">
-                  <span>⏱️ 5-8 min</span>
-                  <span>📝 18 preguntas</span>
-                </div>
-                <div className="mt-4 text-blue-600 font-semibold flex items-center gap-2 group-hover:gap-3 transition-all">
-                  Comenzar Test <FaArrowRight className="text-sm" />
-                </div>
-              </Link>
-
-              {/* Test de Ansiedad */}
-              <Link 
-                href={`/${lang}/tests/anxiety`}
-                className="group card hover:shadow-2xl transition-all duration-300 hover:-translate-y-2 border-2 border-transparent hover:border-red-500 cursor-pointer"
-              >
-                <div className="flex items-center gap-4 mb-4">
-                  <div className="w-16 h-16 bg-gradient-to-br from-red-500 to-red-700 rounded-xl flex items-center justify-center text-white text-3xl flex-shrink-0 group-hover:scale-110 transition-transform">
-                    <FaChartLine />
-                  </div>
-                  <div>
-                    <h3 className="text-xl font-bold text-gray-900">Test de Ansiedad</h3>
-                    <p className="text-sm text-gray-600">GAD-7 Extendido</p>
-                  </div>
-                </div>
-                <p className="text-gray-700 mb-4">
-                  Evaluación completa de ansiedad generalizada con escala clínica validada internacionalmente.
-                </p>
-                <div className="flex items-center justify-between text-sm text-gray-600">
-                  <span>⏱️ 5-7 min</span>
-                  <span>📝 20 preguntas</span>
-                </div>
-                <div className="mt-4 text-red-600 font-semibold flex items-center gap-2 group-hover:gap-3 transition-all">
-                  Comenzar Test <FaArrowRight className="text-sm" />
-                </div>
-              </Link>
-
-              {/* Test de Depresión */}
-              <Link 
-                href={`/${lang}/tests/depression`}
-                className="group card hover:shadow-2xl transition-all duration-300 hover:-translate-y-2 border-2 border-transparent hover:border-gray-500 cursor-pointer"
-              >
-                <div className="flex items-center gap-4 mb-4">
-                  <div className="w-16 h-16 bg-gradient-to-br from-gray-500 to-gray-700 rounded-xl flex items-center justify-center text-white text-3xl flex-shrink-0 group-hover:scale-110 transition-transform">
-                    <FaCheckCircle />
-                  </div>
-                  <div>
-                    <h3 className="text-xl font-bold text-gray-900">Test de Depresión</h3>
-                    <p className="text-sm text-gray-600">PHQ-9</p>
-                  </div>
-                </div>
-                <p className="text-gray-700 mb-4">
-                  Evaluación del estado de ánimo y síntomas depresivos usando el cuestionario PHQ-9.
-                </p>
-                <div className="flex items-center justify-between text-sm text-gray-600">
-                  <span>⏱️ 6-8 min</span>
-                  <span>📝 20 preguntas</span>
-                </div>
-                <div className="mt-4 text-gray-600 font-semibold flex items-center gap-2 group-hover:gap-3 transition-all">
-                  Comenzar Test <FaArrowRight className="text-sm" />
-                </div>
-              </Link>
-
-              {/* Test de Inteligencia Emocional */}
-              <Link 
-                href={`/${lang}/tests/eq`}
-                className="group card hover:shadow-2xl transition-all duration-300 hover:-translate-y-2 border-2 border-transparent hover:border-green-500 cursor-pointer"
-              >
-                <div className="flex items-center gap-4 mb-4">
-                  <div className="w-16 h-16 bg-gradient-to-br from-green-500 to-green-700 rounded-xl flex items-center justify-center text-white text-3xl flex-shrink-0 group-hover:scale-110 transition-transform">
-                    <FaChartLine />
-                  </div>
-                  <div>
-                    <h3 className="text-xl font-bold text-gray-900">Inteligencia Emocional</h3>
-                    <p className="text-sm text-gray-600">Test EQ</p>
-                  </div>
-                </div>
-                <p className="text-gray-700 mb-4">
-                  Mide tu capacidad para reconocer, comprender y gestionar emociones propias y ajenas.
-                </p>
-                <div className="flex items-center justify-between text-sm text-gray-600">
-                  <span>⏱️ 8-10 min</span>
-                  <span>📝  33 preguntas</span>
-                </div>
-                <div className="mt-4 text-green-600 font-semibold flex items-center gap-2 group-hover:gap-3 transition-all">
-                  Comenzar Test <FaArrowRight className="text-sm" />
-                </div>
-              </Link>
+                </Link>
+              ))}
             </div>
 
-            {/* CTA ver todos */}
             <div className="text-center mt-12">
               <Link 
                 href={`/${lang}/tests`}
-                className="inline-flex items-center gap-2 text-[#07C59A] hover:text-[#069e7b] font-semibold text-lg transition-colors"
+                className="inline-flex items-center gap-2 text-primary-400 hover:text-primary-300 font-semibold text-lg transition-colors"
               >
                 Ver todos los tests disponibles <FaArrowRight />
               </Link>
@@ -369,82 +214,49 @@ export default function Home() {
         </section>
 
         {/* Características */}
-        <section className="py-20 bg-gray-50">
-          <div className="container-custom">
+        <section id="features" className={`py-24 relative transition-all duration-700 ${visibleSections.has('features') ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
+          <div className="absolute inset-0 bg-gradient-to-b from-transparent via-primary-950/20 to-transparent pointer-events-none"></div>
+          <div className="container-custom relative z-10">
             <div className="text-center mb-16">
-              <h2 className="text-4xl font-bold text-gray-900 mb-4">
+              <h2 className="text-4xl lg:text-5xl font-bold text-white mb-4">
                 {t.features.title}
               </h2>
-              <p className="text-xl text-gray-600">
+              <p className="text-xl text-gray-400 max-w-2xl mx-auto">
                 {t.features.subtitle}
               </p>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-              <div className="card hover:shadow-xl transition-shadow">
-                <FaBrain className="text-4xl text-[#07C59A] mb-4" />
-                <h3 className="text-xl font-semibold mb-3">{t.features.validated}</h3>
-                <p className="text-gray-600">
-                  {t.features.validatedDesc}
-                </p>
-              </div>
-
-              <div className="card hover:shadow-xl transition-shadow">
-                <FaUserFriends className="text-4xl text-[#07C59A] mb-4" />
-                <h3 className="text-xl font-semibold mb-3">{t.features.users}</h3>
-                <p className="text-gray-600">
-                  {t.features.usersDesc}
-                </p>
-              </div>
-
-              <div className="card hover:shadow-xl transition-shadow">
-                <FaLock className="text-4xl text-[#07C59A] mb-4" />
-                <h3 className="text-xl font-semibold mb-3">{t.features.secure}</h3>
-                <p className="text-gray-600">
-                  {t.features.secureDesc}
-                </p>
-              </div>
-
-              <div className="card hover:shadow-xl transition-shadow">
-                <FaChartLine className="text-4xl text-[#07C59A] mb-4" />
-                <h3 className="text-xl font-semibold mb-3">{t.features.analysis}</h3>
-                <p className="text-gray-600">
-                  {t.features.analysisDesc}
-                </p>
-              </div>
-
-              <div className="card hover:shadow-xl transition-shadow">
-                <FaCertificate className="text-4xl text-[#07C59A] mb-4" />
-                <h3 className="text-xl font-semibold mb-3">{t.features.certificate}</h3>
-                <p className="text-gray-600">
-                  {t.features.certificateDesc}
-                </p>
-              </div>
-
-              <div className="card hover:shadow-xl transition-shadow">
-                <FaCheckCircle className="text-4xl text-[#07C59A] mb-4" />
-                <h3 className="text-xl font-semibold mb-3">{t.features.instant}</h3>
-                <p className="text-gray-600">
-                  {t.features.instantDesc}
-                </p>
-              </div>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {[
+                { icon: <FaBrain />, title: t.features.validated, desc: t.features.validatedDesc },
+                { icon: <FaUserFriends />, title: t.features.users, desc: t.features.usersDesc },
+                { icon: <FaLock />, title: t.features.secure, desc: t.features.secureDesc },
+                { icon: <FaChartLine />, title: t.features.analysis, desc: t.features.analysisDesc },
+                { icon: <FaCertificate />, title: t.features.certificate, desc: t.features.certificateDesc },
+                { icon: <FaCheckCircle />, title: t.features.instant, desc: t.features.instantDesc },
+              ].map((feat, idx) => (
+                <div key={idx} className="card group hover:bg-white/10">
+                  <div className="text-3xl text-primary-400 mb-4 group-hover:text-primary-300 transition-colors">{feat.icon}</div>
+                  <h3 className="text-lg font-semibold text-white mb-3">{feat.title}</h3>
+                  <p className="text-gray-400 text-sm leading-relaxed">{feat.desc}</p>
+                </div>
+              ))}
             </div>
           </div>
         </section>
 
-        {/* Testimonios - Carrousel */}
-        <section id="testimonios" className="py-20 bg-white">
+        {/* Testimonios */}
+        <section id="testimonios" className={`py-24 transition-all duration-700 ${visibleSections.has('testimonios') ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
           <div className="container-custom max-w-6xl">
             <div className="text-center mb-16">
-              <h2 className="text-4xl font-bold text-gray-900 mb-4">
+              <h2 className="text-4xl lg:text-5xl font-bold text-white mb-4">
                 {t.testimonials.title}
               </h2>
-              <p className="text-xl text-gray-600">
+              <p className="text-xl text-gray-400">
                 {t.testimonials.subtitle}
               </p>
             </div>
 
-            {/* Carrousel Container */}
             <div className="relative px-16">
               <div className="overflow-hidden py-4">
                 <div 
@@ -453,18 +265,18 @@ export default function Home() {
                 >
                   {t?.testimonials?.reviews?.map((review: any, index: number) => (
                     <div key={index} className="w-1/3 flex-shrink-0 px-3">
-                      <div className="bg-white rounded-2xl p-8 h-full border border-gray-200">
-                        <div className="flex items-center mb-6">
-                          <div className="w-14 h-14 bg-gradient-to-br from-[#07C59A] to-[#069e7b] rounded-full flex items-center justify-center text-white font-bold text-lg">
+                      <div className="glass p-6 h-full">
+                        <div className="flex items-center mb-4">
+                          <div className="w-12 h-12 bg-gradient-to-br from-primary-500 to-accent-500 rounded-full flex items-center justify-center text-white font-bold">
                             {review.initials}
                           </div>
-                          <div className="ml-4">
-                            <h4 className="font-bold text-lg text-gray-900">{review.name}</h4>
-                            <div className="text-yellow-400 text-lg">★★★★★</div>
+                          <div className="ml-3">
+                            <h4 className="font-bold text-white">{review.name}</h4>
+                            <div className="text-yellow-400 text-sm">★★★★★</div>
                           </div>
                         </div>
-                        <p className="text-gray-700 text-base italic leading-relaxed">
-                          "{review.text}"
+                        <p className="text-gray-300 text-sm italic leading-relaxed">
+                          &ldquo;{review.text}&rdquo;
                         </p>
                       </div>
                     </div>
@@ -472,17 +284,15 @@ export default function Home() {
                 </div>
               </div>
 
-              {/* Navigation Arrows */}
               <button
                 onClick={() => {
                   const totalReviews = t?.testimonials?.reviews?.length || 1
                   const maxIndex = Math.max(0, totalReviews - 3)
                   setCurrentTestimonial((prev) => (prev === 0 ? maxIndex : Math.max(0, prev - 3)))
                 }}
-                className="absolute left-0 top-1/2 -translate-y-1/2 bg-white hover:bg-[#07C59A] text-gray-800 hover:text-white p-4 rounded-full shadow-lg transition-all duration-300 z-10"
-                aria-label="Anterior"
+                className="absolute left-0 top-1/2 -translate-y-1/2 glass hover:bg-primary-500/20 text-gray-400 hover:text-white p-3 rounded-full transition-all duration-300 z-10"
               >
-                <FaChevronLeft className="text-xl" />
+                <FaChevronLeft />
               </button>
               <button
                 onClick={() => {
@@ -490,24 +300,21 @@ export default function Home() {
                   const maxIndex = Math.max(0, totalReviews - 3)
                   setCurrentTestimonial((prev) => (prev >= maxIndex ? 0 : Math.min(maxIndex, prev + 3)))
                 }}
-                className="absolute right-0 top-1/2 -translate-y-1/2 bg-white hover:bg-[#07C59A] text-gray-800 hover:text-white p-4 rounded-full shadow-lg transition-all duration-300 z-10"
-                aria-label="Siguiente"
+                className="absolute right-0 top-1/2 -translate-y-1/2 glass hover:bg-primary-500/20 text-gray-400 hover:text-white p-3 rounded-full transition-all duration-300 z-10"
               >
-                <FaChevronRight className="text-xl" />
+                <FaChevronRight />
               </button>
 
-              {/* Dots Indicator */}
               <div className="flex justify-center gap-2 mt-8">
                 {Array.from({ length: Math.ceil((t?.testimonials?.reviews?.length || 0) / 3) }).map((_, groupIndex) => (
                   <button
                     key={groupIndex}
                     onClick={() => setCurrentTestimonial(groupIndex * 3)}
-                    className={`w-3 h-3 rounded-full transition-all duration-300 ${
+                    className={`h-2 rounded-full transition-all duration-300 ${
                       Math.floor(currentTestimonial / 3) === groupIndex
-                        ? 'bg-[#07C59A] w-8' 
-                        : 'bg-gray-300 hover:bg-gray-400'
+                        ? 'bg-primary-500 w-8' 
+                        : 'bg-gray-600 w-2 hover:bg-gray-500'
                     }`}
-                    aria-label={`Ir a grupo ${groupIndex + 1}`}
                   />
                 ))}
               </div>
@@ -516,209 +323,164 @@ export default function Home() {
         </section>
 
         {/* Precios */}
-        <section className="py-20 bg-gradient-to-br from-gray-50 to-white">
+        <section id="pricing" className={`py-24 transition-all duration-700 ${visibleSections.has('pricing') ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
           <div className="container-custom">
             <div className="text-center mb-16">
-              <h2 className="text-4xl font-bold text-gray-900 mb-4">
+              <h2 className="text-4xl lg:text-5xl font-bold text-white mb-4">
                 {t.pricing.title}
               </h2>
-              <p className="text-xl text-gray-600">
+              <p className="text-xl text-gray-400">
                 {t.pricing.subtitle}
               </p>
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-5xl mx-auto">
               {/* Plan Quincenal */}
-              <div className="group relative bg-white rounded-2xl shadow-xl p-8 border border-gray-200 hover:border-[#07C59A] transition-all duration-300 hover:shadow-2xl hover:-translate-y-1 flex flex-col">
+              <div className="group glass p-8 hover:border-primary-500/30 transition-all duration-300 hover:-translate-y-1 flex flex-col">
                 <div className="mb-6">
-                  <h3 className="text-xl font-bold text-gray-900 mb-4">{t.pricing?.quincenal?.title}</h3>
+                  <h3 className="text-xl font-bold text-white mb-4">{t.pricing?.quincenal?.title}</h3>
                   <div className="flex items-baseline gap-1 mb-2">
-                    <span className="text-5xl font-bold text-gray-900 leading-none">€{t.pricing?.quincenal?.price}</span>
-                    <span className="text-gray-500 text-lg font-normal ml-1">{t.pricing?.quincenal?.period}</span>
+                    <span className="text-5xl font-bold text-white leading-none">€{t.pricing?.quincenal?.price}</span>
+                    <span className="text-gray-400 text-lg font-normal ml-1">{t.pricing?.quincenal?.period}</span>
                   </div>
                 </div>
                 
                 <div className="space-y-3 mb-8 flex-1">
                   {t.pricing?.quincenal?.features?.map((feature: string, index: number) => (
                     <div key={index} className="flex items-start gap-3">
-                      <FaCheckCircle className="text-[#07C59A] flex-shrink-0 mt-1" />
-                      <span className="text-gray-700 text-sm">{feature}</span>
+                      <FaCheckCircle className="text-primary-400 flex-shrink-0 mt-0.5" />
+                      <span className="text-gray-300 text-sm">{feature}</span>
                     </div>
                   ))}
                 </div>
 
-                <Link href={`/${lang}/test`} className="block w-full bg-[#113240] hover:bg-[#052547] text-white font-bold py-4 px-6 rounded-xl text-center transition-all duration-300 shadow-lg hover:shadow-xl mt-auto">
+                <Link href={`/${lang}/test`} className="block w-full bg-white/10 hover:bg-white/20 text-white font-bold py-4 px-6 rounded-xl text-center transition-all duration-300 border border-white/10 mt-auto">
                   {t.pricing?.button}
                 </Link>
               </div>
 
               {/* Plan Mensual - Destacado */}
-              <div className="group relative bg-gradient-to-br from-[#113240] via-[#0d2838] to-[#052547] rounded-2xl shadow-2xl p-8 text-white overflow-hidden border-2 border-[#07C59A] transform hover:-translate-y-1 transition-all duration-300 hover:shadow-[0_20px_70px_rgba(7,197,154,0.3)] flex flex-col">
-                {/* Badge Recomendado */}
-                <div className="absolute top-3 right-3">
-                  <div className="bg-[#07C59A] text-white px-4 py-1 rounded-full font-bold text-xs tracking-wide shadow-lg">
+              <div className="group relative p-8 rounded-2xl overflow-hidden border-2 border-primary-500/50 hover:-translate-y-1 transition-all duration-300 flex flex-col bg-gradient-to-br from-primary-950/80 to-secondary-900/80 backdrop-blur-xl">
+                <div className="absolute inset-0 bg-gradient-to-br from-primary-500/10 to-accent-500/10 pointer-events-none"></div>
+                
+                <div className="absolute top-3 right-3 z-10">
+                  <div className="bg-gradient-to-r from-primary-500 to-accent-500 text-white px-4 py-1 rounded-full font-bold text-xs tracking-wide shadow-lg">
                     {t.pricing?.mensual?.badge}
                   </div>
                 </div>
 
-                {/* Decorative elements */}
-                <div className="absolute top-20 right-10 w-32 h-32 bg-[#07C59A] rounded-full opacity-10 blur-3xl"></div>
-                <div className="absolute bottom-10 left-10 w-40 h-40 bg-[#07C59A] rounded-full opacity-10 blur-3xl"></div>
+                <div className="absolute top-20 right-10 w-32 h-32 bg-primary-500 rounded-full opacity-10 blur-3xl"></div>
                 
                 <div className="relative z-10 mb-6">
-                  <h3 className="text-xl font-bold mb-4">{t.pricing?.mensual?.title}</h3>
+                  <h3 className="text-xl font-bold text-white mb-4">{t.pricing?.mensual?.title}</h3>
                   <div className="flex items-baseline gap-1 mb-2">
-                    <span className="text-5xl font-bold leading-none">€{t.pricing?.mensual?.price}</span>
-                    <span className="text-white/70 text-lg font-normal ml-1">{t.pricing?.mensual?.period}</span>
+                    <span className="text-5xl font-bold text-white leading-none">€{t.pricing?.mensual?.price}</span>
+                    <span className="text-gray-400 text-lg font-normal ml-1">{t.pricing?.mensual?.period}</span>
                   </div>
                 </div>
                 
                 <div className="relative z-10 space-y-3 mb-8 flex-1">
                   {t.pricing?.mensual?.features?.map((feature: string, index: number) => (
                     <div key={index} className="flex items-start gap-3">
-                      <FaCheckCircle className="text-[#07C59A] flex-shrink-0 mt-1" />
-                      <span className="text-sm">{feature}</span>
+                      <FaCheckCircle className="text-primary-400 flex-shrink-0 mt-0.5" />
+                      <span className="text-gray-200 text-sm">{feature}</span>
                     </div>
                   ))}
                 </div>
 
-                <Link href={`/${lang}/test`} className="relative z-10 block w-full bg-[#07C59A] hover:bg-[#069e7b] text-white font-bold py-4 px-6 rounded-xl text-center transition-all duration-300 shadow-2xl shadow-[#07C59A]/30 hover:shadow-[#07C59A]/50 mt-auto">
+                <Link href={`/${lang}/test`} className="relative z-10 block w-full btn-primary text-center py-4 mt-auto">
                   {t.pricing?.button}
                 </Link>
               </div>
             </div>
 
-            {/* Nota inferior */}
-            <p className="text-center text-sm text-gray-600 mt-8">
+            <p className="text-center text-sm text-gray-500 mt-8">
               {t.pricing?.note}
             </p>
           </div>
         </section>
 
         {/* FAQ */}
-        <section className="py-20 bg-white">
+        <section id="faq" className={`py-24 transition-all duration-700 ${visibleSections.has('faq') ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
           <div className="container-custom max-w-4xl">
             <div className="text-center mb-16">
-              <h2 className="text-4xl font-bold text-gray-900 mb-4">
+              <h2 className="text-4xl lg:text-5xl font-bold text-white mb-4">
                 {t.faq.title}
               </h2>
-              <p className="text-xl text-gray-600">
+              <p className="text-xl text-gray-400">
                 {t.faq.subtitle}
               </p>
             </div>
 
-            <div className="space-y-6">
-              {/* Question 1 */}
-              <div className="bg-gray-50 rounded-xl p-6 hover:shadow-lg transition-shadow">
-                <h3 className="text-xl font-semibold text-gray-900 mb-3 flex items-start gap-3">
-                  <span className="text-[#07C59A] text-2xl flex-shrink-0">?</span>
-                  {t.faq.q1}
-                </h3>
-                <p className="text-gray-600 ml-8">{t.faq.a1}</p>
-              </div>
-
-              {/* Question 2 */}
-              <div className="bg-gray-50 rounded-xl p-6 hover:shadow-lg transition-shadow">
-                <h3 className="text-xl font-semibold text-gray-900 mb-3 flex items-start gap-3">
-                  <span className="text-[#07C59A] text-2xl flex-shrink-0">?</span>
-                  {t.faq.q2}
-                </h3>
-                <p className="text-gray-600 ml-8">{t.faq.a2}</p>
-              </div>
-
-              {/* Question 3 */}
-              <div className="bg-gray-50 rounded-xl p-6 hover:shadow-lg transition-shadow">
-                <h3 className="text-xl font-semibold text-gray-900 mb-3 flex items-start gap-3">
-                  <span className="text-[#07C59A] text-2xl flex-shrink-0">?</span>
-                  {t.faq.q3}
-                </h3>
-                <p className="text-gray-600 ml-8">{t.faq.a3}</p>
-              </div>
-
-              {/* Question 4 */}
-              <div className="bg-gray-50 rounded-xl p-6 hover:shadow-lg transition-shadow">
-                <h3 className="text-xl font-semibold text-gray-900 mb-3 flex items-start gap-3">
-                  <span className="text-[#07C59A] text-2xl flex-shrink-0">?</span>
-                  {t.faq.q4}
-                </h3>
-                <p className="text-gray-600 ml-8">{t.faq.a4}</p>
-              </div>
-
-              {/* Question 5 */}
-              <div className="bg-gray-50 rounded-xl p-6 hover:shadow-lg transition-shadow">
-                <h3 className="text-xl font-semibold text-gray-900 mb-3 flex items-start gap-3">
-                  <span className="text-[#07C59A] text-2xl flex-shrink-0">?</span>
-                  {t.faq.q5}
-                </h3>
-                <p className="text-gray-600 ml-8">{t.faq.a5}</p>
-              </div>
-
-              {/* Question 6 */}
-              <div className="bg-gray-50 rounded-xl p-6 hover:shadow-lg transition-shadow">
-                <h3 className="text-xl font-semibold text-gray-900 mb-3 flex items-start gap-3">
-                  <span className="text-[#07C59A] text-2xl flex-shrink-0">?</span>
-                  {t.faq.q6}
-                </h3>
-                <p className="text-gray-600 ml-8">{t.faq.a6}</p>
-              </div>
+            <div className="space-y-4">
+              {[
+                { q: t.faq.q1, a: t.faq.a1 },
+                { q: t.faq.q2, a: t.faq.a2 },
+                { q: t.faq.q3, a: t.faq.a3 },
+                { q: t.faq.q4, a: t.faq.a4 },
+                { q: t.faq.q5, a: t.faq.a5 },
+                { q: t.faq.q6, a: t.faq.a6 },
+              ].map((faq, idx) => (
+                <div key={idx} className="glass p-6 hover:border-primary-500/20 transition-all duration-300">
+                  <h3 className="text-lg font-semibold text-white mb-3 flex items-start gap-3">
+                    <span className="text-primary-400 font-bold flex-shrink-0">?</span>
+                    {faq.q}
+                  </h3>
+                  <p className="text-gray-400 ml-7 text-sm leading-relaxed">{faq.a}</p>
+                </div>
+              ))}
             </div>
           </div>
         </section>
 
-        {/* Datos de interés - IQ Statistics */}
-        <section className="py-20 bg-gradient-to-br from-gray-50 to-white">
+        {/* Datos de interés */}
+        <section id="stats" className={`py-24 transition-all duration-700 ${visibleSections.has('stats') ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
           <div className="container-custom max-w-7xl">
             <div className="text-center mb-16">
-              <h2 className="text-4xl font-bold text-gray-900 mb-4">
+              <h2 className="text-4xl lg:text-5xl font-bold text-white mb-4">
                 {t.interestData?.title}
               </h2>
-              <p className="text-xl text-gray-600">
+              <p className="text-xl text-gray-400">
                 {t.interestData?.subtitle}
               </p>
             </div>
 
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 mb-12">
-              {/* CI promedio por edad */}
-              <div className="bg-white rounded-2xl shadow-xl p-8">
-                <h3 className="text-2xl font-bold text-gray-900 mb-6">{t.interestData?.ageChart}</h3>
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-12">
+              <div className="glass p-8">
+                <h3 className="text-xl font-bold text-white mb-6">{t.interestData?.ageChart}</h3>
                 <ResponsiveContainer width="100%" height={300}>
                   <BarChart data={[
-                    { age: '< 18 años', iq: 95 },
-                    { age: '18-39 años', iq: 105 },
-                    { age: '40-59 años', iq: 98 },
-                    { age: '60-79 años', iq: 90 },
-                    { age: '+80 años', iq: 80 }
+                    { age: '< 18', iq: 95 },
+                    { age: '18-39', iq: 105 },
+                    { age: '40-59', iq: 98 },
+                    { age: '60-79', iq: 90 },
+                    { age: '+80', iq: 80 }
                   ]}>
-                    <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" />
-                    <XAxis 
-                      dataKey="age" 
-                      tick={{ fill: '#374151', fontSize: 12 }}
-                    />
-                    <YAxis 
-                      domain={[0, 120]}
-                      tick={{ fill: '#6b7280', fontSize: 12 }}
-                    />
+                    <CartesianGrid strokeDasharray="3 3" stroke="#1E293B" />
+                    <XAxis dataKey="age" tick={{ fill: '#94A3B8', fontSize: 12 }} />
+                    <YAxis domain={[0, 120]} tick={{ fill: '#64748B', fontSize: 12 }} />
                     <Tooltip
                       contentStyle={{
-                        backgroundColor: 'white',
-                        border: '2px solid #e5e7eb',
+                        backgroundColor: '#1E293B',
+                        border: '1px solid rgba(99, 102, 241, 0.3)',
                         borderRadius: '12px',
-                        padding: '12px'
+                        padding: '12px',
+                        color: '#fff'
                       }}
                     />
-                    <Bar 
-                      dataKey="iq" 
-                      fill="#07C59A"
-                      radius={[8, 8, 0, 0]}
-                      name="CI promedio"
-                    />
+                    <Bar dataKey="iq" fill="url(#barGradient)" radius={[8, 8, 0, 0]} name="CI promedio" />
+                    <defs>
+                      <linearGradient id="barGradient" x1="0" y1="0" x2="0" y2="1">
+                        <stop offset="0%" stopColor="#6366F1" />
+                        <stop offset="100%" stopColor="#8B5CF6" />
+                      </linearGradient>
+                    </defs>
                   </BarChart>
                 </ResponsiveContainer>
               </div>
 
-              {/* CI promedio por país */}
-              <div className="bg-white rounded-2xl shadow-xl p-8">
-                <h3 className="text-2xl font-bold text-gray-900 mb-6">{t.interestData?.countryChart}</h3>
+              <div className="glass p-8">
+                <h3 className="text-xl font-bold text-white mb-6">{t.interestData?.countryChart}</h3>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                   {[
                     { country: 'China', flag: '🇨🇳', iq: 105 },
@@ -730,12 +492,12 @@ export default function Home() {
                     { country: 'Ucrania', flag: '🇺🇦', iq: 92 },
                     { country: 'Argentina', flag: '🇦🇷', iq: 86 }
                   ].map((item) => (
-                    <div key={item.country} className="flex items-center justify-between p-3 rounded-xl bg-gray-50 hover:bg-gray-100 transition-colors">
+                    <div key={item.country} className="flex items-center justify-between p-3 rounded-xl bg-white/5 hover:bg-white/10 transition-colors border border-white/5">
                       <div className="flex items-center gap-3">
-                        <span className="text-3xl">{item.flag}</span>
-                        <span className="font-semibold text-gray-900 text-sm">{item.country}</span>
+                        <span className="text-2xl">{item.flag}</span>
+                        <span className="font-medium text-gray-300 text-sm">{item.country}</span>
                       </div>
-                      <div className="text-2xl font-bold text-[#07C59A]">
+                      <div className="text-xl font-bold text-gradient">
                         {item.iq}
                       </div>
                     </div>
@@ -744,28 +506,29 @@ export default function Home() {
               </div>
             </div>
 
-            {/* Nota informativa */}
-            <div className="bg-blue-50 border-l-4 border-blue-500 p-6 rounded-r-lg max-w-4xl mx-auto">
-              <p className="text-sm text-blue-800">
-                <strong>📊 </strong>{t.interestData?.note}
+            <div className="glass p-6 max-w-4xl mx-auto border-l-4 border-primary-500">
+              <p className="text-sm text-gray-400">
+                <strong className="text-gray-300">📊 </strong>{t.interestData?.note}
               </p>
             </div>
           </div>
         </section>
 
         {/* CTA Final */}
-        <section className="py-20 bg-gradient-to-br from-[#07C59A] to-[#069e7b] text-white">
-          <div className="container-custom text-center">
-            <h2 className="text-4xl font-bold mb-6">
+        <section className="py-24 relative overflow-hidden">
+          <div className="absolute inset-0 bg-gradient-to-br from-primary-600/20 to-accent-600/20 pointer-events-none"></div>
+          <div className="absolute inset-0 neural-bg pointer-events-none"></div>
+          <div className="container-custom text-center relative z-10">
+            <h2 className="text-4xl lg:text-5xl font-bold text-white mb-6">
               {t.cta.title}
             </h2>
-            <p className="text-xl mb-8 opacity-90">
+            <p className="text-xl text-gray-300 mb-10 max-w-2xl mx-auto">
               {t.cta.subtitle}
             </p>
-                <Link href={`/${lang}/test`} className="bg-white text-[#07C59A] hover:bg-gray-100 font-semibold py-4 px-12 rounded-lg text-lg transition-all duration-200 shadow-lg hover:shadow-xl inline-block">
-                  {t.cta.button}
-                </Link>
-            <p className="mt-6 text-sm opacity-75">
+            <Link href={`/${lang}/test`} className="btn-primary text-lg py-4 px-12 inline-block">
+              {t.cta.button}
+            </Link>
+            <p className="mt-6 text-sm text-gray-400">
               {t.cta.details}
             </p>
           </div>
@@ -776,4 +539,3 @@ export default function Home() {
     </>
   )
 }
-

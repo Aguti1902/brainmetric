@@ -1,7 +1,7 @@
 'use client'
 
-import { useEffect, useState } from 'react'
-import { useRouter } from 'next/navigation'
+import { useEffect, useState, Suspense } from 'react'
+import { useRouter, useSearchParams } from 'next/navigation'
 import MinimalHeader from '@/components/MinimalHeader'
 import { getIQCategory, getIQDescription, visualQuestions as questions } from '@/lib/visual-questions'
 import { FaFacebook, FaTwitter, FaLinkedin, FaDownload, FaTrophy, FaBrain, FaLightbulb, FaEye, FaSearch, FaBolt, FaChartBar, FaMemory } from 'react-icons/fa'
@@ -9,53 +9,129 @@ import { PieChart, Pie, Cell, ResponsiveContainer, BarChart, Bar, XAxis, YAxis, 
 import { useTranslations } from '@/hooks/useTranslations'
 import { getTestHistory } from '@/lib/test-history'
 
-export default function ResultadoPage() {
+function ResultadoContent() {
   const router = useRouter()
+  const searchParams = useSearchParams()
   const { t, loading, lang } = useTranslations()
   const [userIQ, setUserIQ] = useState<number>(0)
   const [correctAnswers, setCorrectAnswers] = useState<number>(0)
   const [userEmail, setUserEmail] = useState<string>('')
   const [userName, setUserName] = useState<string>('')
   const [isLoading, setIsLoading] = useState(true)
+  const [verifyingPayment, setVerifyingPayment] = useState(false)
 
   useEffect(() => {
+    const sessionId = searchParams.get('session_id')
+    const paymentParam = searchParams.get('payment')
+
+    // Si viene de Stripe Checkout, verificar la sesión
+    if (sessionId && paymentParam === 'success') {
+      setVerifyingPayment(true)
+      verifyStripeSession(sessionId)
+      return
+    }
+
+    // Si ya tiene paymentCompleted en localStorage, mostrar resultado
     const paymentCompleted = localStorage.getItem('paymentCompleted')
     if (!paymentCompleted) {
       router.push(`/${lang}/test`)
       return
     }
 
-    // Detectar tipo de test completado
-    const testType = localStorage.getItem('testType') || localStorage.getItem('currentTestType') || 'iq'
-    console.log('📊 Tipo de test en página de resultado:', testType)
+    loadResults()
+  }, [router, lang, searchParams])
 
-    // Si es un test diferente a IQ, redirigir a su página específica de resultados
+  const verifyStripeSession = async (sessionId: string) => {
+    try {
+      const response = await fetch(`/api/stripe/verify-session?session_id=${sessionId}`)
+      const data = await response.json()
+
+      if (data.retry) {
+        // El webhook aún no procesó, reintentar
+        setTimeout(() => verifyStripeSession(sessionId), 2000)
+        return
+      }
+
+      if (!response.ok || !data.success) {
+        console.error('❌ Error verificando sesión:', data.error)
+        // Si falla la verificación, intentar continuar con localStorage
+        const paymentCompleted = localStorage.getItem('paymentCompleted')
+        if (paymentCompleted) {
+          setVerifyingPayment(false)
+          loadResults()
+          return
+        }
+        router.push(`/${lang}/resultado-estimado`)
+        return
+      }
+
+      // Guardar token y datos del usuario
+      localStorage.setItem('auth_token', data.token)
+      localStorage.setItem('paymentCompleted', 'true')
+      if (data.user?.email) localStorage.setItem('userEmail', data.user.email)
+      if (data.user?.userName) localStorage.setItem('userName', data.user.userName)
+
+      // Limpiar session_id de la URL sin recargar
+      const url = new URL(window.location.href)
+      url.searchParams.delete('session_id')
+      url.searchParams.delete('payment')
+      window.history.replaceState({}, '', url.toString())
+
+      // Disparar eventos de conversión
+      fireConversionEvents()
+
+      setVerifyingPayment(false)
+      loadResults()
+    } catch (err) {
+      console.error('❌ Error en verificación:', err)
+      setVerifyingPayment(false)
+      loadResults()
+    }
+  }
+
+  const fireConversionEvents = () => {
+    if (typeof window !== 'undefined' && (window as any).gtag) {
+      ;(window as any).gtag('event', 'purchase', {
+        transaction_id: localStorage.getItem('transactionId'),
+        value: 0.50,
+        currency: 'EUR',
+      })
+      ;(window as any).gtag('event', 'conversion', {
+        send_to: 'AW-17232820139/qMCRCP_NnK4bEKvvn5lA',
+        value: 0.50,
+        currency: 'EUR',
+        transaction_id: localStorage.getItem('transactionId') || '',
+      })
+    }
+    if (typeof window !== 'undefined' && (window as any).fbq) {
+      ;(window as any).fbq('track', 'Purchase', { value: 0.50, currency: 'EUR' })
+    }
+  }
+
+  const loadResults = () => {
+    const testType = localStorage.getItem('testType') || localStorage.getItem('currentTestType') || 'iq'
+
     if (testType !== 'iq') {
-      // Asegurar que las páginas de resultados sepan que el pago está completado
       localStorage.setItem('isPremiumTest', 'true')
       router.push(`/${lang}/tests/${testType}/results`)
       return
     }
 
-    // Verificar si se quiere ver un test específico del historial
     const viewTestId = localStorage.getItem('viewTestId')
-    
     if (viewTestId) {
       const history = getTestHistory()
       const specificTest = history.tests.find(t => t.id === viewTestId)
-      
       if (specificTest) {
         setUserIQ(specificTest.iq)
         setCorrectAnswers(specificTest.correctAnswers)
         setUserEmail(history.email || localStorage.getItem('userEmail') || '')
         setUserName(history.userName || localStorage.getItem('userName') || 'Usuario')
         setIsLoading(false)
-        localStorage.removeItem('viewTestId') // Limpiar después de usar
+        localStorage.removeItem('viewTestId')
         return
       }
     }
 
-    // Si no, cargar el último test de IQ
     const iq = parseInt(localStorage.getItem('userIQ') || '0')
     const correct = parseInt(localStorage.getItem('correctAnswers') || '0')
     const email = localStorage.getItem('userEmail') || ''
@@ -66,35 +142,16 @@ export default function ResultadoPage() {
     setUserEmail(email)
     setUserName(name)
     setIsLoading(false)
+  }
 
-    // Enviar evento de conversión a analytics
-    if (typeof window !== 'undefined' && (window as any).gtag) {
-      // Evento de compra general para Google Analytics
-      ;(window as any).gtag('event', 'purchase', {
-        transaction_id: localStorage.getItem('transactionId'),
-        value: 0.50,
-        currency: 'EUR'
-      })
-      
-      // Evento de conversión para Google Ads
-      ;(window as any).gtag('event', 'conversion', {
-        'send_to': 'AW-17232820139/qMCRCP_NnK4bEKvvn5lA',
-        'value': 0.50,
-        'currency': 'EUR',
-        'transaction_id': localStorage.getItem('transactionId') || ''
-      })
+  useEffect(() => {
+    if (!verifyingPayment && userIQ) {
+      fireConversionEvents()
     }
-
-    if (typeof window !== 'undefined' && (window as any).fbq) {
-      ;(window as any).fbq('track', 'Purchase', {
-        value: 0.50,
-        currency: 'EUR'
-      })
-    }
-  }, [router, lang])
+  }, [verifyingPayment, userIQ])
 
   const shareOnFacebook = () => {
-    const url = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(window.location.origin)}&quote=${encodeURIComponent(`¡Acabo de descubrir que mi CI es ${userIQ}! Descubre el tuyo en MindMetric`)}`
+    const url = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(window.location.origin)}&quote=${encodeURIComponent(`¡Acabo de descubrir que mi CI es ${userIQ}! Descubre el tuyo en Brain Metric`)}`
     window.open(url, '_blank', 'width=600,height=400')
   }
 
@@ -121,8 +178,8 @@ export default function ResultadoPage() {
     })
     
     // Colores corporativos
-    const greenColor: [number, number, number] = [33, 139, 142] // #07C59A
-    const blueColor: [number, number, number] = [3, 28, 67] // #113240
+    const greenColor: [number, number, number] = [33, 139, 142] // #6366F1
+    const blueColor: [number, number, number] = [3, 28, 67] // #0F172A
     
     // Fondo degradado (simulado con rectángulos)
     doc.setFillColor(240, 250, 250)
@@ -137,7 +194,7 @@ export default function ResultadoPage() {
     doc.setDrawColor(...greenColor)
     doc.rect(12, 12, 273, 186)
     
-    // Cargar y añadir el logo (isotipo de MindMetric)
+    // Cargar y añadir el logo (isotipo de Brain Metric)
     try {
       const logoImg = new Image()
       logoImg.src = '/images/MINDMETRIC/Isotipo.png'
@@ -240,23 +297,25 @@ export default function ResultadoPage() {
     // Texto de firma
     doc.setFontSize(9)
     doc.setTextColor(100, 100, 100)
-    const footerText = t.certificate?.footer || 'MindMetric - Professional Intelligence Test'
+    const footerText = t.certificate?.footer || 'Brain Metric - Professional Intelligence Test'
     doc.text(footerText, 148.5, 193, { align: 'center' })
-    doc.text('mindmetric.io', 148.5, 198, { align: 'center' })
+    doc.text('brainmetric.io', 148.5, 198, { align: 'center' })
     
     // Guardar el PDF
     const fileName = t.certificate?.fileName || 'Certificate_IQ'
     doc.save(`${fileName}_${userName.replace(/\s+/g, '_')}_${userIQ}.pdf`)
   }
 
-  if (isLoading || loading || !t) {
+  if (isLoading || loading || !t || verifyingPayment) {
     return (
       <>
         <MinimalHeader email={userEmail} />
         <div className="min-h-screen bg-gray-50 flex items-center justify-center">
           <div className="text-center">
             <div className="animate-spin rounded-full h-16 w-16 border-b-2 border-primary-600 mx-auto mb-4"></div>
-            <p className="text-gray-600">Loading...</p>
+            <p className="text-gray-600">
+              {verifyingPayment ? 'Verificando pago...' : 'Cargando...'}
+            </p>
           </div>
         </div>
       </>
@@ -270,7 +329,7 @@ export default function ResultadoPage() {
   const distributionData = t ? [
     { name: `${t.result.veryLow} (<70)`, value: 2.2, color: '#ef4444', range: '<70' },
     { name: `${t.result.low} (70-85)`, value: 13.6, color: '#f97316', range: '70-85' },
-    { name: `${t.result.average} (85-115)`, value: 68, color: '#07C59A', range: '85-115' },
+    { name: `${t.result.average} (85-115)`, value: 68, color: '#6366F1', range: '85-115' },
     { name: `${t.result.superior} (115-130)`, value: 13.6, color: '#8b5cf6', range: '115-130' },
     { name: `${t.result.verySuperior} (>130)`, value: 2.2, color: '#10b981', range: '>130' }
   ] : []
@@ -310,7 +369,7 @@ export default function ResultadoPage() {
     }
   ] : []
 
-  const COLORS = ['#ef4444', '#f97316', '#07C59A', '#8b5cf6', '#10b981']
+  const COLORS = ['#ef4444', '#f97316', '#6366F1', '#8b5cf6', '#10b981']
   
   // Determinar posición en la curva de distribución
   const getUserPercentile = (iq: number) => {
@@ -344,7 +403,7 @@ export default function ResultadoPage() {
           {/* Main IQ Score Card - Hero */}
           <div className="bg-white rounded-3xl shadow-2xl overflow-hidden mb-8 animate-fadeIn">
             {/* Gradient Header */}
-            <div className="bg-gradient-to-r from-[#07C59A] via-[#069e7b] to-[#113240] p-6 md:p-12 text-white text-center relative overflow-hidden">
+            <div className="bg-gradient-to-r from-[#6366F1] via-[#4F46E5] to-[#0F172A] p-6 md:p-12 text-white text-center relative overflow-hidden">
               {/* Decorative circles */}
               <div className="absolute top-0 right-0 w-32 h-32 md:w-64 md:h-64 bg-white opacity-5 rounded-full -mr-16 md:-mr-32 -mt-16 md:-mt-32"></div>
               <div className="absolute bottom-0 left-0 w-24 h-24 md:w-48 md:h-48 bg-white opacity-5 rounded-full -ml-12 md:-ml-24 -mb-12 md:-mb-24"></div>
@@ -392,7 +451,7 @@ export default function ResultadoPage() {
 
             {/* Description Card */}
             <div className="p-8 md:p-12">
-              <div className="bg-gradient-to-br from-[#e6f5f5] to-white rounded-2xl p-8 border-2 border-[#07C59A]/20">
+              <div className="bg-gradient-to-br from-[#e6f5f5] to-white rounded-2xl p-8 border-2 border-[#6366F1]/20">
                 <h3 className="text-2xl font-bold text-gray-900 mb-4 flex items-center gap-3">
                   <span className="text-3xl">📊</span>
                   {t.result.analysisTitle}
@@ -424,15 +483,15 @@ export default function ResultadoPage() {
                                       FaBolt;
                 
                 return (
-                  <div key={index} className="bg-gradient-to-br from-gray-50 to-white rounded-xl p-4 md:p-6 border-2 border-gray-100 hover:border-[#07C59A] transition-all duration-300">
+                  <div key={index} className="bg-gradient-to-br from-gray-50 to-white rounded-xl p-4 md:p-6 border-2 border-gray-100 hover:border-[#6366F1] transition-all duration-300">
                     <div className="flex items-center justify-between mb-3 md:mb-4">
-                      <IconComponent className="text-2xl md:text-3xl lg:text-4xl text-[#07C59A]" />
-                      <span className="text-xl md:text-2xl lg:text-3xl font-bold text-[#07C59A]">{cat.score}%</span>
+                      <IconComponent className="text-2xl md:text-3xl lg:text-4xl text-[#6366F1]" />
+                      <span className="text-xl md:text-2xl lg:text-3xl font-bold text-[#6366F1]">{cat.score}%</span>
                     </div>
                     <h4 className="font-bold text-gray-900 mb-2 text-sm md:text-base">{cat.name}</h4>
                     <div className="w-full bg-gray-200 rounded-full h-2 md:h-3">
                       <div 
-                        className="bg-gradient-to-r from-[#07C59A] to-[#069e7b] h-2 md:h-3 rounded-full transition-all duration-1000"
+                        className="bg-gradient-to-r from-[#6366F1] to-[#4F46E5] h-2 md:h-3 rounded-full transition-all duration-1000"
                         style={{ width: `${cat.score}%` }}
                       ></div>
                     </div>
@@ -476,7 +535,7 @@ export default function ResultadoPage() {
                   <div 
                     key={index} 
                     className={`flex items-center justify-between p-2 rounded ${
-                      userIQ >= parseInt(item.range.replace(/[<>]/g, '').split('-')[0] || '0') ? 'bg-[#07C59A]/10 font-semibold' : ''
+                      userIQ >= parseInt(item.range.replace(/[<>]/g, '').split('-')[0] || '0') ? 'bg-[#6366F1]/10 font-semibold' : ''
                     }`}
                   >
                     <div className="flex items-center gap-3">
@@ -502,10 +561,10 @@ export default function ResultadoPage() {
                   <XAxis dataKey="category" style={{ fontSize: '12px' }} />
                   <YAxis domain={[0, 8]} />
                   <Tooltip 
-                    contentStyle={{ backgroundColor: '#fff', border: '2px solid #07C59A', borderRadius: '8px' }}
+                    contentStyle={{ backgroundColor: '#fff', border: '2px solid #6366F1', borderRadius: '8px' }}
                   />
                           <Legend wrapperStyle={{ fontSize: '12px' }} formatter={(value) => value === 'correctas' ? t.result.correct : t.result.incorrect} />
-                  <Bar dataKey="correctas" fill="#07C59A" name={t.result.correct} radius={[8, 8, 0, 0]} />
+                  <Bar dataKey="correctas" fill="#6366F1" name={t.result.correct} radius={[8, 8, 0, 0]} />
                   <Bar dataKey="incorrectas" fill="#ef4444" name={t.result.incorrect} radius={[8, 8, 0, 0]} />
                   </BarChart>
                 </ResponsiveContainer>
@@ -522,7 +581,7 @@ export default function ResultadoPage() {
                     <div className="text-xs text-gray-600">{t.result.incorrect}</div>
                   </div>
                   <div>
-                    <div className="text-2xl font-bold text-[#07C59A]">{percentageCorrect}%</div>
+                    <div className="text-2xl font-bold text-[#6366F1]">{percentageCorrect}%</div>
                     <div className="text-xs text-gray-600">{t.result.accuracy}</div>
                   </div>
                 </div>
@@ -532,22 +591,22 @@ export default function ResultadoPage() {
 
           {/* Certificate Card */}
           <div className="bg-white rounded-3xl shadow-2xl overflow-hidden mb-8">
-            <div className="bg-gradient-to-r from-[#113240] to-[#052547] p-6 md:p-8 text-white text-center">
+            <div className="bg-gradient-to-r from-[#0F172A] to-[#1E1B4B] p-6 md:p-8 text-white text-center">
               <FaDownload className="text-4xl md:text-6xl mx-auto mb-3 md:mb-4" />
               <h2 className="text-xl md:text-2xl lg:text-3xl font-bold mb-2">{t.result.certificateTitle}</h2>
               <p className="text-sm md:text-base lg:text-lg opacity-90">{t.result.certificateSubtitle}</p>
             </div>
             <div className="p-4 md:p-8">
               {/* Certificate Preview */}
-              <div className="border-4 border-[#07C59A] rounded-xl p-8 bg-gradient-to-br from-white to-gray-50 mb-6">
+              <div className="border-4 border-[#6366F1] rounded-xl p-8 bg-gradient-to-br from-white to-gray-50 mb-6">
                 <div className="text-center">
                   <div className="text-6xl mb-4">🏆</div>
                   <h3 className="text-2xl font-bold text-gray-900 mb-2">{t.certificate.title}</h3>
                   <p className="text-gray-600 mb-4">{t.certificate.certifies}</p>
-                  <p className="text-3xl font-bold text-[#07C59A] mb-4">{userName}</p>
+                  <p className="text-3xl font-bold text-[#6366F1] mb-4">{userName}</p>
                   <p className="text-gray-600 mb-2">{t.certificate.completed}</p>
                   <p className="text-gray-600 mb-4">{t.certificate.obtained}</p>
-                  <div className="text-6xl font-black text-[#113240] mb-4">{userIQ}</div>
+                  <div className="text-6xl font-black text-[#0F172A] mb-4">{userIQ}</div>
                   <p className="text-lg font-semibold text-gray-800 mb-6">{t.certificate.category}: {category}</p>
                   <p className="text-sm text-gray-500">
                     {t.certificate.issueDate}: {new Date().toLocaleDateString(
@@ -566,7 +625,7 @@ export default function ResultadoPage() {
               
               <button
                 onClick={downloadCertificate}
-                className="w-full bg-gradient-to-r from-[#07C59A] to-[#069e7b] hover:from-[#069e7b] hover:to-[#04775c] text-white px-8 py-4 rounded-xl font-bold text-lg shadow-lg hover:shadow-xl transition-all duration-200 flex items-center justify-center gap-3"
+                className="w-full bg-gradient-to-r from-[#6366F1] to-[#4F46E5] hover:from-[#4F46E5] hover:to-[#04775c] text-white px-8 py-4 rounded-xl font-bold text-lg shadow-lg hover:shadow-xl transition-all duration-200 flex items-center justify-center gap-3"
               >
                 <FaDownload className="text-2xl" />
                 {t.result.downloadCertificate}
@@ -614,6 +673,21 @@ export default function ResultadoPage() {
         </div>
       </div>
     </>
+  )
+}
+
+export default function ResultadoPage() {
+  return (
+    <Suspense fallback={
+      <div className="min-h-screen bg-secondary-950 flex items-center justify-center">
+        <div className="text-center">
+          <div className="w-16 h-16 border-4 border-primary-500 border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
+          <p className="text-gray-400">Cargando resultado...</p>
+        </div>
+      </div>
+    }>
+      <ResultadoContent />
+    </Suspense>
   )
 }
 

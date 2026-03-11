@@ -48,7 +48,7 @@
     "step3Desc": "Accédez à votre QI exact, analyse détaillée et graphiques comparatifs. Partagez vos résultats sur les réseaux sociaux."
   },
   "features": {
-    "title": "Pourquoi MindMetric ?",
+    "title": "Pourquoi Brain Metric ?",
     "subtitle": "La façon la plus précise et accessible de connaître votre QI",
     "validated": "Scientifiquement Validé",
     "validatedDesc": "Notre test est basé sur des principes psychométriques reconnus et validés par des experts en intelligence.",
@@ -194,7 +194,7 @@
   },
   "test": {
     "title": "Test d'Intelligence",
-    "welcomeTitle": "Test d'Intelligence MindMetric",
+    "welcomeTitle": "Test d'Intelligence Brain Metric",
     "welcomeSubtitle": "Avant de commencer, dites-nous votre nom",
     "namePlaceholder": "Votre nom",
     "startButton": "Commencer le Test",
@@ -398,7 +398,7 @@
     "fullNamePlaceholder": "Jean Dupont",
     "email": "Email d'Inscription",
     "emailPlaceholder": "votre@email.com",
-    "emailHelper": "Utilisez le même email avec lequel vous vous êtes inscrit sur MindMetric",
+    "emailHelper": "Utilisez le même email avec lequel vous vous êtes inscrit sur Brain Metric",
     "reason": "Raison de l'Annulation (Optionnel)",
     "reasonPlaceholder": "Dites-nous pourquoi vous annulez. Vos commentaires nous aident à nous améliorer.",
     "confirmButton": "Confirmer l'Annulation",
@@ -439,13 +439,13 @@
   "certificate": {
     "title": "CERTIFICAT D'INTELLIGENCE",
     "certifies": "Certifie que",
-    "completed": "a réussi le test d'intelligence MindMetric",
+    "completed": "a réussi le test d'intelligence Brain Metric",
     "obtained": "obtenant un Quotient Intellectuel de",
     "category": "Catégorie",
     "correctAnswers": "réponses correctes",
     "percentile": "Percentile",
     "issueDate": "Date d'émission",
-    "footer": "MindMetric - Test d'Intelligence Professionnel",
+    "footer": "Brain Metric - Test d'Intelligence Professionnel",
     "fileName": "Certificat_QI"
   },
   "account": {
@@ -501,7 +501,7 @@
     "cancelNoticeMessage": "Votre accès premium restera actif jusqu'à la fin de votre période de facturation en cours. Aucun autre frais ne sera effectué après cette date."
   },
   "legal": {
-    "noticeTranslation": "Ce document juridique est principalement disponible en espagnol. Pour des demandes dans d'autres langues, veuillez contacter support@mindmetric.io"
+    "noticeTranslation": "Ce document juridique est principalement disponible en espagnol. Pour des demandes dans d'autres langues, veuillez contacter support@brainmetric.io"
   },
   "login": {
     "title": "Se Connecter",

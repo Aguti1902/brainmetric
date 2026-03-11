@@ -13,7 +13,7 @@ export default function TerminosPage() {
         <Header />
         <div className="min-h-screen flex items-center justify-center">
           <div className="text-center">
-            <div className="w-16 h-16 border-4 border-[#07C59A] border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
+            <div className="w-16 h-16 border-4 border-[#6366F1] border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
             <p className="text-gray-600">Loading...</p>
           </div>
         </div>
@@ -40,7 +40,7 @@ export default function TerminosPage() {
             <section>
               <h2 className="text-2xl font-bold text-gray-900 mb-4">1. Acceptance of Terms</h2>
               <p>
-                By accessing and using MindMetric ("the Site"), you agree to be bound by these Terms and Conditions. 
+                By accessing and using Brain Metric ("the Site"), you agree to be bound by these Terms and Conditions. 
                 If you do not agree with any part of these terms, you should not use our service.
               </p>
             </section>
@@ -48,7 +48,7 @@ export default function TerminosPage() {
             <section>
               <h2 className="text-2xl font-bold text-gray-900 mb-4">2. Service Description</h2>
               <p>
-                MindMetric offers an online intelligence test that allows users to evaluate their Intelligence Quotient (IQ) 
+                Brain Metric offers an online intelligence test that allows users to evaluate their Intelligence Quotient (IQ) 
                 through a series of visual logic and reasoning questions.
               </p>
               <p>
@@ -122,7 +122,7 @@ export default function TerminosPage() {
             <section>
               <h2 className="text-2xl font-bold text-gray-900 mb-4">6. Test Results</h2>
               <p>
-                The IQ test results provided by MindMetric are estimates based on your responses to the questionnaire. 
+                The IQ test results provided by Brain Metric are estimates based on your responses to the questionnaire. 
                 These results are for informational and entertainment purposes and should not be considered as professional 
                 medical or psychological diagnosis.
               </p>
@@ -136,14 +136,14 @@ export default function TerminosPage() {
               <h2 className="text-2xl font-bold text-gray-900 mb-4">7. Intellectual Property</h2>
               <p>
                 All content on the Site, including but not limited to texts, graphics, logos, images, test questions, 
-                and software, is the property of MindMetric or its licensors and is protected by intellectual property laws.
+                and software, is the property of Brain Metric or its licensors and is protected by intellectual property laws.
               </p>
             </section>
 
             <section>
               <h2 className="text-2xl font-bold text-gray-900 mb-4">8. Limitation of Liability</h2>
               <p>
-                To the maximum extent permitted by law, MindMetric shall not be liable for any direct, indirect, incidental, 
+                To the maximum extent permitted by law, Brain Metric shall not be liable for any direct, indirect, incidental, 
                 special, or consequential damages resulting from the use or inability to use our service.
               </p>
             </section>
@@ -170,7 +170,7 @@ export default function TerminosPage() {
               <p>
                 If you have any questions about these Terms and Conditions, please contact us through our{' '}
                 <a href={`/${lang}/contacto`} className="text-primary-600 underline">contact page</a> or email us at{' '}
-                <a href="mailto:support@mindmetric.io" className="text-primary-600 underline">support@mindmetric.io</a>.
+                <a href="mailto:support@brainmetric.io" className="text-primary-600 underline">support@brainmetric.io</a>.
               </p>
             </section>
 

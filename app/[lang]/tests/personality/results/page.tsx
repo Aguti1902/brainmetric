@@ -205,18 +205,18 @@ export default function PersonalityResultsPage() {
           </div>
 
           {/* Summary */}
-          <div className="bg-gradient-to-r from-[#113240] to-[#052547] rounded-2xl shadow-2xl p-12 text-white mb-8">
+          <div className="bg-gradient-to-r from-[#0F172A] to-[#1E1B4B] rounded-2xl shadow-2xl p-12 text-white mb-8">
             <h2 className="text-4xl font-bold mb-6 text-center">Resumen de tu Personalidad</h2>
             
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
               <div className="bg-white/10 backdrop-blur-sm rounded-xl p-6">
-                <h3 className="font-bold text-xl mb-3 text-[#07C59A]">Tus Fortalezas</h3>
+                <h3 className="font-bold text-xl mb-3 text-[#6366F1]">Tus Fortalezas</h3>
                 <ul className="space-y-2 text-sm">
                   {dimensions
                     .filter(d => d.score >= 60)
                     .map(d => (
                       <li key={d.key} className="flex items-center gap-2">
-                        <span className="text-[#07C59A]">✓</span>
+                        <span className="text-[#6366F1]">✓</span>
                         <span>{d.name} elevado/a ({d.score}%)</span>
                       </li>
                     ))}
@@ -256,14 +256,14 @@ export default function PersonalityResultsPage() {
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <button
                 onClick={() => router.push(`/${lang}/tests`)}
-                className="flex items-center justify-center gap-2 bg-white text-[#113240] hover:bg-gray-100 px-8 py-4 rounded-lg font-bold transition-all"
+                className="flex items-center justify-center gap-2 bg-white text-[#0F172A] hover:bg-gray-100 px-8 py-4 rounded-lg font-bold transition-all"
               >
                 <FaBrain />
                 Hacer Otro Test
               </button>
               <button
                 onClick={() => router.push(`/${lang}/cuenta`)}
-                className="flex items-center justify-center gap-2 bg-[#07C59A] hover:bg-[#069e7b] text-white px-8 py-4 rounded-lg font-bold transition-all"
+                className="flex items-center justify-center gap-2 bg-[#6366F1] hover:bg-[#4F46E5] text-white px-8 py-4 rounded-lg font-bold transition-all"
               >
                 Ver Mi Historial
               </button>

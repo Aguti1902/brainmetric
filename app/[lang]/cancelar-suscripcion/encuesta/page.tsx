@@ -96,7 +96,7 @@ export default function EncuestaSatisfaccionPage() {
             </h1>
             
             <p className="text-sm md:text-base text-gray-600 text-center mb-6">
-              En una escala del 0 al 10, ¿cuál es tu grado de satisfacción con MindMetric?
+              En una escala del 0 al 10, ¿cuál es tu grado de satisfacción con Brain Metric?
             </p>
 
             {/* Escala de Satisfacción - Compacta */}
@@ -146,7 +146,7 @@ export default function EncuestaSatisfaccionPage() {
               <button
                 onClick={handleSkip}
                 disabled={submitting}
-                className="w-full text-[#07C59A] hover:text-[#069e7b] font-semibold text-sm md:text-base transition disabled:opacity-50"
+                className="w-full text-[#6366F1] hover:text-[#4F46E5] font-semibold text-sm md:text-base transition disabled:opacity-50"
               >
                 Omitir
               </button>

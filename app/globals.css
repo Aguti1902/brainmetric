@@ -4,70 +4,83 @@
 
 @layer base {
   body {
-    @apply bg-gray-50 text-gray-900;
+    @apply bg-secondary-950 text-white antialiased;
   }
 }
 
 @layer components {
   .btn-primary {
-    @apply bg-[#113240] hover:bg-[#052547] text-white font-semibold py-3 px-8 rounded-lg transition-all duration-200 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5;
+    @apply bg-gradient-to-r from-primary-500 to-accent-500 hover:from-primary-600 hover:to-accent-600 text-white font-semibold py-3.5 px-8 rounded-xl transition-all duration-300 shadow-lg shadow-primary-500/25 hover:shadow-xl hover:shadow-primary-500/40 transform hover:-translate-y-0.5;
   }
-  
+
   .btn-secondary {
-    @apply bg-white hover:bg-gray-50 text-[#07C59A] font-semibold py-3 px-8 rounded-lg border-2 border-[#07C59A] transition-all duration-200;
+    @apply bg-white/10 backdrop-blur-sm hover:bg-white/20 text-white font-semibold py-3.5 px-8 rounded-xl border border-white/20 transition-all duration-300;
   }
-  
+
   .container-custom {
     @apply max-w-7xl mx-auto px-4 sm:px-6 lg:px-8;
   }
-  
+
   .card {
-    @apply bg-white rounded-xl shadow-md p-6;
+    @apply bg-white/5 backdrop-blur-md rounded-2xl border border-white/10 p-6 hover:border-primary-500/30 transition-all duration-300;
   }
-  
+
+  .card-light {
+    @apply bg-white rounded-2xl shadow-xl p-6;
+  }
+
+  .glass {
+    @apply bg-white/5 backdrop-blur-xl border border-white/10 rounded-2xl;
+  }
+
   .border-3 {
     border-width: 3px;
   }
-}
 
-/* Animaciones personalizadas */
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-    transform: translateY(20px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
+  .text-gradient {
+    @apply bg-clip-text text-transparent bg-gradient-to-r from-primary-400 to-accent-400;
   }
 }
 
-@keyframes pulse {
-  0%, 100% {
-    opacity: 1;
-  }
-  50% {
-    opacity: 0.5;
-  }
+.progress-bar {
+  transition: width 0.3s ease-in-out;
 }
 
-@keyframes slideInRight {
-  from {
-    opacity: 0;
-    transform: translateX(20px);
-  }
-  to {
-    opacity: 1;
-    transform: translateX(0);
-  }
+@keyframes gradient-shift {
+  0%, 100% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+}
+
+.animate-gradient {
+  background-size: 200% 200%;
+  animation: gradient-shift 8s ease infinite;
 }
 
 .animate-fadeIn {
   animation: fadeIn 0.6s ease-out;
 }
 
-/* Estilos para el progreso del test */
-.progress-bar {
-  transition: width 0.3s ease-in-out;
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
 }
 
+@keyframes neuralPulse {
+  0%, 100% { opacity: 0.3; }
+  50% { opacity: 0.8; }
+}
+
+@keyframes pulseSlow {
+  0%, 100% { opacity: 0.3; transform: scale(1); }
+  50% { opacity: 0.6; transform: scale(1.08); }
+}
+.animate-pulse-slow {
+  animation: pulseSlow 4s ease-in-out infinite;
+}
+
+.neural-bg {
+  background-image:
+    radial-gradient(ellipse at 20% 50%, rgba(99, 102, 241, 0.08) 0%, transparent 50%),
+    radial-gradient(ellipse at 80% 20%, rgba(139, 92, 246, 0.06) 0%, transparent 50%),
+    radial-gradient(ellipse at 40% 80%, rgba(99, 102, 241, 0.04) 0%, transparent 50%);
+}

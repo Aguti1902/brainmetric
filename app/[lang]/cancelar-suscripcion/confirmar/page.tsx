@@ -87,11 +87,11 @@ export default function ConfirmarCancelacionPage() {
               <div className="space-y-4">
                 
                 {/* Estadística impactante */}
-                <div className="bg-[#07C59A]/10 border-2 border-[#07C59A] rounded-xl p-4">
+                <div className="bg-[#6366F1]/10 border-2 border-[#6366F1] rounded-xl p-4">
                   <div className="flex items-center gap-3 mb-3">
-                    <FaChartLine className="text-3xl text-[#07C59A] flex-shrink-0" />
+                    <FaChartLine className="text-3xl text-[#6366F1] flex-shrink-0" />
                     <div>
-                      <p className="text-4xl font-bold text-[#113240]">87%</p>
+                      <p className="text-4xl font-bold text-[#0F172A]">87%</p>
                       <p className="text-xs text-gray-600">de nuestros usuarios</p>
                     </div>
                   </div>
@@ -169,13 +169,13 @@ export default function ConfirmarCancelacionPage() {
                 </div>
 
                 {/* Ayuda */}
-                <div className="bg-gradient-to-br from-[#07C59A]/10 to-[#07C59A]/5 border border-[#07C59A]/30 rounded-xl p-3 text-center">
+                <div className="bg-gradient-to-br from-[#6366F1]/10 to-[#6366F1]/5 border border-[#6366F1]/30 rounded-xl p-3 text-center">
                   <p className="text-gray-700 text-xs mb-2">
                     ¿Tienes algún problema con tu suscripción?
                   </p>
                   <a 
                     href={`/${lang}/contacto`}
-                    className="text-[#07C59A] hover:text-[#069e7b] font-semibold text-sm underline"
+                    className="text-[#6366F1] hover:text-[#4F46E5] font-semibold text-sm underline"
                   >
                     Contacta con soporte →
                   </a>
@@ -189,7 +189,7 @@ export default function ConfirmarCancelacionPage() {
             <div className="border-t border-gray-200 p-6 space-y-3">
               <button
                 onClick={handleGoBack}
-                className="w-full bg-gradient-to-r from-[#07C59A] to-[#069e7b] hover:from-[#069e7b] hover:to-[#058f6e] text-white py-4 px-6 rounded-xl font-bold text-base md:text-lg transition shadow-lg hover:shadow-xl flex items-center justify-center gap-2"
+                className="w-full bg-gradient-to-r from-[#6366F1] to-[#4F46E5] hover:from-[#4F46E5] hover:to-[#058f6e] text-white py-4 px-6 rounded-xl font-bold text-base md:text-lg transition shadow-lg hover:shadow-xl flex items-center justify-center gap-2"
               >
                 <FaArrowLeft />
                 Volver y Mantener mi Premium

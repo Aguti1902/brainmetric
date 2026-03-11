@@ -69,7 +69,7 @@ export default function DashboardTab() {
     return (
       <div className="flex items-center justify-center min-h-screen">
         <div className="text-center">
-          <div className="animate-spin rounded-full h-16 w-16 border-b-2 border-[#07C59A] mx-auto mb-4"></div>
+          <div className="animate-spin rounded-full h-16 w-16 border-b-2 border-[#6366F1] mx-auto mb-4"></div>
           <p className="text-gray-600">Cargando métricas...</p>
         </div>
       </div>
@@ -99,7 +99,7 @@ export default function DashboardTab() {
         <button
           onClick={loadDashboardData}
           disabled={loading}
-          className="px-4 py-2 bg-[#07C59A] text-white rounded-lg hover:bg-[#069e7b] transition-colors flex items-center gap-2 disabled:opacity-50"
+          className="px-4 py-2 bg-[#6366F1] text-white rounded-lg hover:bg-[#4F46E5] transition-colors flex items-center gap-2 disabled:opacity-50"
         >
           <FaSync className={loading ? 'animate-spin' : ''} />
           Actualizar Ahora
@@ -213,7 +213,7 @@ export default function DashboardTab() {
         {/* Bar Chart - Ingresos Mensuales */}
         <div className="bg-white rounded-xl p-6 shadow-lg">
           <h3 className="text-lg font-bold text-gray-900 mb-4 flex items-center gap-2">
-            <FaChartLine className="text-[#07C59A]" />
+            <FaChartLine className="text-[#6366F1]" />
             Ingresos Mensuales
           </h3>
           <div className="h-80">
@@ -224,7 +224,7 @@ export default function DashboardTab() {
                 <YAxis />
                 <Tooltip formatter={(value: number) => [`€${value.toFixed(2)}`, 'Ingresos']} />
                 <Legend />
-                <Bar dataKey="revenue" fill="#07C59A" name="Ingresos (€)" />
+                <Bar dataKey="revenue" fill="#6366F1" name="Ingresos (€)" />
               </BarChart>
             </ResponsiveContainer>
           </div>
@@ -322,7 +322,7 @@ export default function DashboardTab() {
       <div className="bg-white rounded-xl p-6 shadow-lg">
         <div className="flex items-center justify-between mb-6">
           <h3 className="text-lg font-bold text-gray-900 flex items-center gap-2">
-            <FaCreditCard className="text-[#07C59A]" />
+            <FaCreditCard className="text-[#6366F1]" />
             Transacciones Recientes
           </h3>
         </div>
