@@ -354,26 +354,6 @@ function CheckoutPaymentContent() {
   return (
     <div className="min-h-screen bg-secondary-950 neural-bg">
 
-      {/* ── Banner contador ── */}
-      <div className={`w-full py-2 px-4 text-center text-sm font-semibold transition-colors duration-500 ${
-        expired
-          ? 'bg-gray-700/80 text-gray-300'
-          : parseInt(mm) === 0 && parseInt(ss) <= 59
-            ? 'bg-red-600/90 text-white animate-pulse'
-            : 'bg-gradient-to-r from-orange-600 to-red-600 text-white'
-      }`}>
-        {expired ? (
-          '⏰ La oferta ha expirado'
-        ) : (
-          <span className="flex items-center justify-center gap-2 flex-wrap">
-            🔥 <span>Oferta especial — precio de lanzamiento solo por:</span>
-            <span className="inline-flex items-center gap-1 bg-white/20 px-3 py-0.5 rounded-full font-mono text-base font-bold tracking-widest">
-              {mm}:{ss}
-            </span>
-          </span>
-        )}
-      </div>
-
       {/* Header */}
       <header className="bg-secondary-900/80 backdrop-blur-xl border-b border-white/10 py-4 px-6">
         <div className="max-w-5xl mx-auto flex items-center justify-between">
@@ -510,15 +490,39 @@ function CheckoutPaymentContent() {
             {/* RIGHT — Stripe */}
             <div className="order-1 lg:order-2">
 
-              {/* Contador urgencia dentro del panel */}
-              {!expired && (
-                <div className="mb-4 bg-orange-500/10 border border-orange-500/30 rounded-xl px-4 py-3 flex items-center justify-between">
-                  <span className="text-orange-300 text-sm font-medium">⏳ Oferta expira en</span>
-                  <span className="font-mono text-orange-200 font-bold text-lg tracking-widest bg-orange-500/20 px-3 py-1 rounded-lg">
-                    {mm}:{ss}
-                  </span>
-                </div>
-              )}
+              {/* Tarjeta de oferta con contador */}
+              <div className={`mb-4 rounded-2xl p-4 border transition-all duration-500 ${
+                expired
+                  ? 'bg-white/5 border-white/10'
+                  : 'bg-gradient-to-r from-violet-600/20 to-fuchsia-600/20 border-violet-500/30'
+              }`}>
+                {expired ? (
+                  <p className="text-center text-gray-400 text-sm">La oferta de lanzamiento ha expirado</p>
+                ) : (
+                  <div className="flex items-center justify-between gap-4">
+                    {/* Precios */}
+                    <div>
+                      <p className="text-xs text-gray-400 mb-0.5">🎉 Precio especial de lanzamiento</p>
+                      <div className="flex items-baseline gap-2">
+                        <span className="text-gray-500 line-through text-base">19,99€</span>
+                        <span className="text-2xl font-black bg-clip-text text-transparent bg-gradient-to-r from-violet-300 to-fuchsia-300">
+                          0,50€
+                        </span>
+                      </div>
+                      <p className="text-xs text-violet-400/80 mt-0.5">Ahorra 19,49€ hoy</p>
+                    </div>
+                    {/* Contador */}
+                    <div className="text-center flex-shrink-0">
+                      <p className="text-xs text-gray-400 mb-1">Expira en</p>
+                      <div className={`font-mono font-black text-2xl tracking-widest px-3 py-1.5 rounded-xl bg-black/30 border border-white/10 ${
+                        parseInt(mm) === 0 ? 'text-red-400 animate-pulse' : 'text-white'
+                      }`}>
+                        {mm}:{ss}
+                      </div>
+                    </div>
+                  </div>
+                )}
+              </div>
 
               <div className="bg-[#1a1a2e] rounded-2xl border border-white/10 p-6">
                 <div className="flex items-center gap-2 mb-5">
