@@ -7,6 +7,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
+    "stripe:listen": "stripe listen --forward-to localhost:3000/api/stripe/webhook",
     "verify-stripe": "node verify-stripe-setup.js",
     "update-trial": "node update-trial-days.js",
     "create-test-user": "node create-test-user.js"

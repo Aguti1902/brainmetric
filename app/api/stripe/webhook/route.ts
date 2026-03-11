@@ -28,6 +28,16 @@ async function getStripeWithSecret(): Promise<{ stripe: Stripe; webhookSecret: s
   }
 }
 
+async function getCustomerEmail(stripe: Stripe, customerId: string): Promise<string> {
+  try {
+    const customer = await stripe.customers.retrieve(customerId)
+    if ((customer as Stripe.DeletedCustomer).deleted) return ''
+    return (customer as Stripe.Customer).email || ''
+  } catch {
+    return ''
+  }
+}
+
 async function createOrUpdateUser(
   email: string,
   userName: string,
@@ -39,7 +49,6 @@ async function createOrUpdateUser(
   const existingUser = await db.getUserByEmail(email)
 
   if (existingUser) {
-    // Actualizar usuario existente con datos de suscripción
     await db.updateUser(existingUser.id, {
       subscriptionStatus: 'trial',
       subscriptionId: stripeSubscriptionId,
@@ -48,7 +57,6 @@ async function createOrUpdateUser(
     return { user: existingUser, isNew: false, password: null }
   }
 
-  // Crear nuevo usuario
   const password = Math.random().toString(36).slice(-12)
   const hashedPassword = await bcrypt.hash(password, 10)
 
@@ -153,10 +161,12 @@ export async function POST(request: NextRequest) {
   }
 
   let event: Stripe.Event
+  let stripe: Stripe
 
   try {
-    const { stripe, webhookSecret } = await getStripeWithSecret()
-    event = stripe.webhooks.constructEvent(body, sig, webhookSecret)
+    const result = await getStripeWithSecret()
+    stripe = result.stripe
+    event = stripe.webhooks.constructEvent(body, sig, result.webhookSecret)
   } catch (err: any) {
     console.error('❌ [webhook] Error verificando firma:', err.message)
     return NextResponse.json({ error: `Webhook Error: ${err.message}` }, { status: 400 })
@@ -196,11 +206,29 @@ export async function POST(request: NextRequest) {
         break
       }
 
-      case 'customer.subscription.deleted': {
+      case 'customer.subscription.updated': {
         const subscription = event.data.object as Stripe.Subscription
-        const email = (subscription.metadata?.email as string) || ''
+        const email = await getCustomerEmail(stripe, subscription.customer as string)
 
-        if (email) {
+        if (!email) {
+          console.warn('⚠️ [webhook] No se pudo obtener email para suscripción:', subscription.id)
+          break
+        }
+
+        if (subscription.status === 'active') {
+          const accessUntil = new Date()
+          accessUntil.setDate(accessUntil.getDate() + 30)
+          const user = await db.getUserByEmail(email)
+          if (user) {
+            await db.updateUser(user.id, {
+              subscriptionStatus: 'active',
+              accessUntil: accessUntil.toISOString(),
+            })
+            console.log('✅ [webhook] Suscripción activada para:', email)
+          }
+        }
+
+        if (subscription.status === 'canceled' || subscription.status === 'unpaid') {
           const user = await db.getUserByEmail(email)
           if (user) {
             await db.updateUser(user.id, {
@@ -210,14 +238,42 @@ export async function POST(request: NextRequest) {
             console.log('✅ [webhook] Suscripción cancelada para:', email)
           }
         }
+
+        if (subscription.status === 'past_due') {
+          const user = await db.getUserByEmail(email)
+          if (user) {
+            await db.updateUser(user.id, { subscriptionStatus: 'expired' })
+            console.log('⚠️ [webhook] Suscripción en mora para:', email)
+          }
+        }
+
+        break
+      }
+
+      case 'customer.subscription.deleted': {
+        const subscription = event.data.object as Stripe.Subscription
+        const email = await getCustomerEmail(stripe, subscription.customer as string)
+
+        if (!email) {
+          console.warn('⚠️ [webhook] No se pudo obtener email para suscripción eliminada:', subscription.id)
+          break
+        }
+
+        const user = await db.getUserByEmail(email)
+        if (user) {
+          await db.updateUser(user.id, {
+            subscriptionStatus: 'cancelled',
+            subscriptionId: null as any,
+          })
+          console.log('✅ [webhook] Suscripción eliminada para:', email)
+        }
         break
       }
 
       case 'invoice.payment_succeeded': {
         const invoice = event.data.object as Stripe.Invoice
 
-        // El primer pago del trial NO debe activar la suscripción (billing_reason = 'subscription_create')
-        // Solo procesar renovaciones reales
+        // El primer pago del trial no activa la suscripción — solo procesar renovaciones
         if ((invoice as any).billing_reason === 'subscription_create') break
 
         const customerEmail = invoice.customer_email || ''
@@ -237,42 +293,19 @@ export async function POST(request: NextRequest) {
         break
       }
 
-      case 'customer.subscription.updated': {
-        const subscription = event.data.object as Stripe.Subscription
-        const customerEmail = (subscription as any).customer_email || ''
-
-        // Cuando el trial termina y pasa a activo
-        if (subscription.status === 'active' && customerEmail) {
-          const accessUntil = new Date()
-          accessUntil.setDate(accessUntil.getDate() + 30)
-          const user = await db.getUserByEmail(customerEmail)
-          if (user) {
-            await db.updateUser(user.id, {
-              subscriptionStatus: 'active',
-              accessUntil: accessUntil.toISOString(),
-            })
-            console.log('✅ [webhook] Suscripción activada tras trial para:', customerEmail)
-          }
-        }
-
-        // Cuando cancela al final del período
-        if (subscription.status === 'canceled' && customerEmail) {
-          const user = await db.getUserByEmail(customerEmail)
-          if (user) {
-            await db.updateUser(user.id, {
-              subscriptionStatus: 'cancelled',
-              subscriptionId: null as any,
-            })
-            console.log('✅ [webhook] Suscripción cancelada para:', customerEmail)
-          }
-        }
-        break
-      }
-
       case 'invoice.payment_failed': {
         const invoice = event.data.object as Stripe.Invoice
         const customerEmail = invoice.customer_email || ''
+
         console.warn(`⚠️ [webhook] Pago fallido para: ${customerEmail} | invoice: ${invoice.id}`)
+
+        if (customerEmail) {
+          const user = await db.getUserByEmail(customerEmail)
+          if (user) {
+            await db.updateUser(user.id, { subscriptionStatus: 'expired' })
+            console.log('⚠️ [webhook] Usuario marcado como pago pendiente:', customerEmail)
+          }
+        }
         break
       }
 
