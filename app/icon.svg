@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" fill="none">
+  <rect width="64" height="64" rx="14" fill="#0F172A"/>
+  <g transform="translate(8, 8) scale(0.75)">
+    <!-- Brain outline -->
+    <path d="M32 6C22 6 16 12 14 18c-3 1-6 4-6 9 0 4 2 7 5 9-1 2-1 5 0 7 1 3 4 5 7 6l4 4c2 2 5 3 8 3s6-1 8-3l4-4c3-1 6-3 7-6 1-2 1-5 0-7 3-2 5-5 5-9 0-5-3-8-6-9-2-6-8-12-18-12z" fill="none" stroke="#2DD4A8" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/>
+    <!-- Chart bars -->
+    <rect x="22" y="30" width="4" height="12" rx="1" fill="#2DD4A8"/>
+    <rect x="30" y="24" width="4" height="18" rx="1" fill="#3CEABC"/>
+    <rect x="38" y="18" width="4" height="24" rx="1" fill="#2DD4A8"/>
+  </g>
+</svg>
