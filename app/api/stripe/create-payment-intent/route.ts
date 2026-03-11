@@ -73,13 +73,14 @@ export async function POST(request: NextRequest) {
     }
 
     // PaymentIntent por el acceso inicial (0.50€)
-    // setup_future_usage guarda el método de pago para la suscripción posterior
+    // Incluimos card, apple_pay y google_pay explícitamente para que
+    // PaymentRequestButtonElement los detecte correctamente
     const paymentIntent = await stripe.paymentIntents.create({
       amount: setupFeeAmount, // 50 = 0.50€
       currency: 'eur',
       customer: customer.id,
       setup_future_usage: 'off_session',
-      automatic_payment_methods: { enabled: true },
+      payment_method_types: ['card'],
       metadata: meta,
       receipt_email: email,
     })

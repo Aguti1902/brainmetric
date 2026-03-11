@@ -6,7 +6,7 @@ import { loadStripe, Stripe as StripeType } from '@stripe/stripe-js'
 import {
   Elements,
   PaymentElement,
-  ExpressCheckoutElement,
+  PaymentRequestButtonElement,
   useStripe,
   useElements,
 } from '@stripe/react-stripe-js'
@@ -109,25 +109,77 @@ const stripeAppearance = {
 // ─── Formulario de pago (debe estar dentro de <Elements>) ────────────────────
 function PaymentForm({
   lang,
+  clientSecret,
   onError,
 }: {
   lang: string
+  clientSecret: string
   onError: (msg: string) => void
 }) {
   const stripe   = useStripe()
   const elements = useElements()
   const router   = useRouter()
 
-  const [loading,      setLoading]      = useState(false)
-  const [cardReady,    setCardReady]    = useState(false)
-  const [hasWallets,   setHasWallets]   = useState(false)
+  const [loading,        setLoading]       = useState(false)
+  const [cardReady,      setCardReady]     = useState(false)
+  const [paymentRequest, setPaymentRequest] = useState<any>(null)
+  const [hasWallets,     setHasWallets]    = useState(false)
 
   const returnUrl = typeof window !== 'undefined'
     ? `${window.location.origin}/${lang}/resultado?payment=success`
     : `https://brainmetric.io/${lang}/resultado?payment=success`
 
-  const handlePayment = async () => {
-    if (!stripe || !elements) return
+  // ── Inicializar Payment Request (Apple Pay / Google Pay vía browser API) ──
+  useEffect(() => {
+    if (!stripe || !clientSecret) return
+
+    const pr = stripe.paymentRequest({
+      country: 'ES',
+      currency: 'eur',
+      total: { label: 'Acceso Brain Metric — 0,50 €', amount: 50 },
+      requestPayerName: false,
+      requestPayerEmail: false,
+    })
+
+    pr.canMakePayment().then((result) => {
+      if (result) {
+        setPaymentRequest(pr)
+        setHasWallets(true)
+      }
+    })
+
+    pr.on('paymentmethod', async (ev: any) => {
+      try {
+        // Confirmar directamente con el payment method del wallet
+        const { error, paymentIntent } = await stripe.confirmPayment({
+          clientSecret,
+          confirmParams: {
+            payment_method: ev.paymentMethod.id,
+            return_url: returnUrl,
+          },
+          redirect: 'if_required',
+        } as any)
+
+        if (error) {
+          ev.complete('fail')
+          onError(error.message || 'Error al procesar el pago')
+        } else {
+          ev.complete('success')
+          if (paymentIntent?.status === 'succeeded') {
+            router.push(`/${lang}/resultado?payment=success&payment_intent=${paymentIntent.id}`)
+          }
+        }
+      } catch (err: any) {
+        ev.complete('fail')
+        onError(err.message || 'Error inesperado')
+      }
+    })
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [stripe, clientSecret])
+
+  // ── Pago con tarjeta ──────────────────────────────────────────────────────
+  const handleCardPayment = async () => {
+    if (!stripe || !elements || loading) return
     setLoading(true)
     onError('')
 
@@ -148,35 +200,30 @@ function PaymentForm({
     }
   }
 
-  // Express checkout (Apple Pay / Google Pay)
-  const handleExpressConfirm = async () => {
-    await handlePayment()
-  }
-
   return (
     <div className="space-y-4">
 
-      {/* ── Botones de wallet (Apple Pay / Google Pay) ── */}
-      <ExpressCheckoutElement
-        onReady={(event) => {
-          setHasWallets(!!(event.availablePaymentMethods &&
-            Object.values(event.availablePaymentMethods).some(Boolean)))
-        }}
-        onConfirm={handleExpressConfirm}
-        options={{
-          buttonType:  { applePay: 'plain', googlePay: 'plain' },
-          buttonTheme: { applePay: 'black', googlePay: 'black' },
-          layout: { maxColumns: 2, maxRows: 1 },
-        }}
-      />
-
-      {/* Separador — solo si hay wallets disponibles */}
-      {hasWallets && (
-        <div className="flex items-center gap-3">
-          <div className="flex-1 h-px bg-white/10" />
-          <span className="text-gray-500 text-xs">o paga con tarjeta</span>
-          <div className="flex-1 h-px bg-white/10" />
-        </div>
+      {/* ── Apple Pay / Google Pay ── */}
+      {hasWallets && paymentRequest && (
+        <>
+          <PaymentRequestButtonElement
+            options={{
+              paymentRequest,
+              style: {
+                paymentRequestButton: {
+                  type: 'default',
+                  theme: 'dark',
+                  height: '52px',
+                },
+              },
+            }}
+          />
+          <div className="flex items-center gap-3">
+            <div className="flex-1 h-px bg-white/10" />
+            <span className="text-gray-500 text-xs">o paga con tarjeta</span>
+            <div className="flex-1 h-px bg-white/10" />
+          </div>
+        </>
       )}
 
       {/* ── Formulario de tarjeta ── */}
@@ -185,7 +232,6 @@ function PaymentForm({
           onReady={() => setCardReady(true)}
           options={{
             layout: { type: 'tabs', defaultCollapsed: false },
-            // ocultamos wallets aquí porque ya los mostramos arriba con ExpressCheckoutElement
             wallets: { applePay: 'never', googlePay: 'never' },
           }}
         />
@@ -197,10 +243,10 @@ function PaymentForm({
         </div>
       )}
 
-      {/* ── Botón de pago con tarjeta ── */}
+      {/* ── Botón de pago ── */}
       <button
         type="button"
-        onClick={handlePayment}
+        onClick={handleCardPayment}
         disabled={!stripe || !elements || loading || !cardReady}
         className="w-full py-4 rounded-xl font-bold text-white text-base transition-all duration-200
           bg-gradient-to-r from-primary-600 to-accent-500
@@ -518,7 +564,7 @@ function CheckoutPaymentContent() {
                       ) as any,
                     }}
                   >
-                    <PaymentForm lang={lang} onError={setSessionError} />
+                    <PaymentForm lang={lang} clientSecret={clientSecret} onError={setSessionError} />
                   </Elements>
                 )}
               </div>
