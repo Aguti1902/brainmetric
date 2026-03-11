@@ -13,6 +13,40 @@ import {
 
 export const dynamic = 'force-dynamic'
 
+const TIMER_SECONDS = 5 * 60 // 5 minutos
+
+const reviews = [
+  { name: 'Laura S.',     flag: '🇪🇸', stars: 5, text: '"Rápido, fácil y muy informativo. Me sorprendió mi puntuación."' },
+  { name: 'Carlos M.',    flag: '🇲🇽', stars: 5, text: '"El análisis es muy detallado. Lo recomiendo a todos."' },
+  { name: 'Ana R.',       flag: '🇦🇷', stars: 5, text: '"Nunca pensé que sería tan preciso. ¡Increíble!"' },
+  { name: 'David P.',     flag: '🇨🇴', stars: 5, text: '"El certificado quedó genial. Mi jefe quedó impresionado."' },
+  { name: 'Sofía T.',     flag: '🇪🇸', stars: 5, text: '"Muy buena experiencia. La comparativa mundial es lo mejor."' },
+]
+
+function useCountdown(seconds: number) {
+  const [timeLeft, setTimeLeft] = useState<number>(() => {
+    if (typeof window === 'undefined') return seconds
+    const saved = sessionStorage.getItem('checkout_timer')
+    if (saved) {
+      const remaining = Math.floor((parseInt(saved) - Date.now()) / 1000)
+      return remaining > 0 ? remaining : 0
+    }
+    const end = Date.now() + seconds * 1000
+    sessionStorage.setItem('checkout_timer', String(end))
+    return seconds
+  })
+
+  useEffect(() => {
+    if (timeLeft <= 0) return
+    const id = setInterval(() => setTimeLeft(t => Math.max(0, t - 1)), 1000)
+    return () => clearInterval(id)
+  }, [timeLeft])
+
+  const mm = String(Math.floor(timeLeft / 60)).padStart(2, '0')
+  const ss = String(timeLeft % 60).padStart(2, '0')
+  return { mm, ss, expired: timeLeft === 0, timeLeft }
+}
+
 const testConfig: Record<string, { title: string; subtitle: string; icon: string }> = {
   iq:          { title: 'Descubre tu nivel de inteligencia',   subtitle: 'Acceso completo a tu análisis de CI',       icon: '🧠' },
   personality: { title: 'Descubre tu perfil de personalidad', subtitle: 'Conoce los 5 rasgos de tu personalidad',    icon: '🎭' },
@@ -262,9 +296,37 @@ function CheckoutPaymentContent() {
   }, [email, lang, testType])
 
   const config = testConfig[testType] || testConfig['iq']
+  const { mm, ss, expired } = useCountdown(TIMER_SECONDS)
+  const [reviewIdx, setReviewIdx] = useState(0)
+
+  // Rotar reseñas cada 4 s
+  useEffect(() => {
+    const id = setInterval(() => setReviewIdx(i => (i + 1) % reviews.length), 4000)
+    return () => clearInterval(id)
+  }, [])
 
   return (
     <div className="min-h-screen bg-secondary-950 neural-bg">
+
+      {/* ── Banner contador ── */}
+      <div className={`w-full py-2 px-4 text-center text-sm font-semibold transition-colors duration-500 ${
+        expired
+          ? 'bg-gray-700/80 text-gray-300'
+          : parseInt(mm) === 0 && parseInt(ss) <= 59
+            ? 'bg-red-600/90 text-white animate-pulse'
+            : 'bg-gradient-to-r from-orange-600 to-red-600 text-white'
+      }`}>
+        {expired ? (
+          '⏰ La oferta ha expirado'
+        ) : (
+          <span className="flex items-center justify-center gap-2 flex-wrap">
+            🔥 <span>Oferta especial — precio de lanzamiento solo por:</span>
+            <span className="inline-flex items-center gap-1 bg-white/20 px-3 py-0.5 rounded-full font-mono text-base font-bold tracking-widest">
+              {mm}:{ss}
+            </span>
+          </span>
+        )}
+      </div>
 
       {/* Header */}
       <header className="bg-secondary-900/80 backdrop-blur-xl border-b border-white/10 py-4 px-6">
@@ -294,8 +356,10 @@ function CheckoutPaymentContent() {
 
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-start">
 
-            {/* LEFT — resumen + beneficios */}
+            {/* LEFT — resumen + beneficios + reseñas */}
             <div className="space-y-5 order-2 lg:order-1">
+
+              {/* Resumen del pedido */}
               <div className="bg-white/5 backdrop-blur-xl rounded-2xl border border-white/10 p-5">
                 <h3 className="font-bold text-white mb-4">Resumen del pedido</h3>
                 <div className="space-y-3 text-sm">
@@ -320,6 +384,7 @@ function CheckoutPaymentContent() {
                 </p>
               </div>
 
+              {/* Beneficios */}
               <div className="bg-white/5 backdrop-blur-xl rounded-2xl border border-white/10 p-5">
                 <h3 className="font-bold text-white mb-4">¿Qué incluye?</h3>
                 <div className="space-y-3">
@@ -338,6 +403,57 @@ function CheckoutPaymentContent() {
                 </div>
               </div>
 
+              {/* Reseñas de usuarios */}
+              <div className="bg-white/5 backdrop-blur-xl rounded-2xl border border-white/10 p-5">
+                <div className="flex items-center gap-2 mb-4">
+                  <span className="text-lg">⭐</span>
+                  <h3 className="font-bold text-white">Lo que dicen nuestros usuarios</h3>
+                  <span className="ml-auto text-xs text-gray-500 bg-white/5 px-2 py-0.5 rounded-full">
+                    4.9 / 5
+                  </span>
+                </div>
+
+                {/* Reseña activa con transición */}
+                <div className="relative min-h-[90px]">
+                  {reviews.map((r, i) => (
+                    <div
+                      key={i}
+                      className={`absolute inset-0 transition-all duration-500 ${
+                        i === reviewIdx ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-2 pointer-events-none'
+                      }`}
+                    >
+                      <div className="flex items-start gap-3">
+                        <div className="w-9 h-9 rounded-full bg-gradient-to-br from-primary-500 to-accent-500 flex items-center justify-center text-white font-bold text-sm flex-shrink-0">
+                          {r.name.charAt(0)}
+                        </div>
+                        <div>
+                          <div className="flex items-center gap-2 mb-1">
+                            <span className="text-white text-sm font-semibold">{r.name}</span>
+                            <span>{r.flag}</span>
+                            <span className="text-yellow-400 text-xs">{'★'.repeat(r.stars)}</span>
+                          </div>
+                          <p className="text-gray-400 text-sm leading-relaxed">{r.text}</p>
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+
+                {/* Puntos de navegación */}
+                <div className="flex justify-center gap-1.5 mt-4">
+                  {reviews.map((_, i) => (
+                    <button
+                      key={i}
+                      onClick={() => setReviewIdx(i)}
+                      className={`w-1.5 h-1.5 rounded-full transition-all duration-300 ${
+                        i === reviewIdx ? 'bg-primary-400 w-4' : 'bg-white/20'
+                      }`}
+                    />
+                  ))}
+                </div>
+              </div>
+
+              {/* Garantía */}
               <div className="bg-yellow-500/10 border border-yellow-500/20 rounded-xl p-4 text-center text-sm">
                 <span className="text-xl">🛡️</span>
                 <span className="font-semibold text-yellow-300 ml-2">Garantía de devolución</span>
@@ -347,6 +463,17 @@ function CheckoutPaymentContent() {
 
             {/* RIGHT — Stripe */}
             <div className="order-1 lg:order-2">
+
+              {/* Contador urgencia dentro del panel */}
+              {!expired && (
+                <div className="mb-4 bg-orange-500/10 border border-orange-500/30 rounded-xl px-4 py-3 flex items-center justify-between">
+                  <span className="text-orange-300 text-sm font-medium">⏳ Oferta expira en</span>
+                  <span className="font-mono text-orange-200 font-bold text-lg tracking-widest bg-orange-500/20 px-3 py-1 rounded-lg">
+                    {mm}:{ss}
+                  </span>
+                </div>
+              )}
+
               <div className="bg-[#1a1a2e] rounded-2xl border border-white/10 p-6">
                 <div className="flex items-center gap-2 mb-5">
                   <span className="text-lg">🔒</span>
