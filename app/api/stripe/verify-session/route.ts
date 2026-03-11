@@ -7,8 +7,10 @@ export const dynamic = 'force-dynamic'
 
 async function getStripeClient() {
   const config = await db.getAllConfig()
-  const mode = config.payment_mode || 'test'
-  const secretKey = mode === 'live' ? config.stripe_live_secret_key : config.stripe_test_secret_key
+  const mode = config.payment_mode || process.env.STRIPE_MODE || 'test'
+  const secretKey = mode === 'live'
+    ? (config.stripe_live_secret_key || process.env.STRIPE_SECRET_KEY || '')
+    : (config.stripe_test_secret_key || process.env.STRIPE_SECRET_KEY || '')
   if (!secretKey) throw new Error(`Clave de Stripe no configurada para modo "${mode}"`)
   return new Stripe(secretKey, { apiVersion: '2024-04-10' as any })
 }
@@ -55,7 +57,7 @@ export async function GET(request: NextRequest) {
     }
 
     // Generar token de autenticación
-    const token = generateToken({ email: user.email, userId: user.id })
+    const token = generateToken(user.id, user.email)
 
     return NextResponse.json({
       success: true,
