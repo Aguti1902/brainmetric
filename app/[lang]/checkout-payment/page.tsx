@@ -1,54 +1,51 @@
 'use client'
 
-import { useEffect, useState, Suspense } from 'react'
-import { useSearchParams, useRouter } from 'next/navigation'
-import { FaLock, FaBrain, FaChartLine, FaShieldAlt, FaCreditCard, FaStar } from 'react-icons/fa'
+import { useEffect, useState, useCallback, Suspense } from 'react'
+import { useSearchParams } from 'next/navigation'
+import { loadStripe } from '@stripe/stripe-js'
+import { EmbeddedCheckout, EmbeddedCheckoutProvider } from '@stripe/react-stripe-js'
 
 export const dynamic = 'force-dynamic'
 
-const reviews = [
-  { name: 'María G.', rating: 5, text: 'Muy profesional y detallado. Me ayudó a entenderme mejor.', country: '🇪🇸' },
-  { name: 'Carlos R.', rating: 5, text: 'Resultados precisos y el certificado es muy útil.', country: '🇲🇽' },
-  { name: 'Ana P.', rating: 5, text: 'Excelente experiencia, lo recomiendo totalmente.', country: '🇦🇷' },
-  { name: 'David M.', rating: 5, text: 'El análisis por categorías es muy completo.', country: '🇨🇴' },
-  { name: 'Laura S.', rating: 5, text: 'Rápido, fácil y muy informativo.', country: '🇨🇱' },
-]
-
 const testConfig: Record<string, { title: string; subtitle: string; icon: string }> = {
-  iq:          { title: 'Desbloquea tu Resultado de CI',          subtitle: 'Acceso completo a tu análisis de CI',          icon: '🧠' },
-  personality: { title: 'Desbloquea tu Perfil de Personalidad',   subtitle: 'Descubre los 5 rasgos de tu personalidad',     icon: '🎭' },
-  adhd:        { title: 'Desbloquea tu Evaluación de TDAH',       subtitle: 'Análisis completo de síntomas de TDAH',        icon: '⚡' },
-  anxiety:     { title: 'Desbloquea tu Evaluación de Ansiedad',   subtitle: 'Evaluación de niveles de ansiedad',            icon: '💆' },
-  depression:  { title: 'Desbloquea tu Evaluación de Depresión',  subtitle: 'Evaluación de síntomas depresivos',            icon: '🌱' },
-  eq:          { title: 'Desbloquea tu Inteligencia Emocional',   subtitle: 'Descubre tu inteligencia emocional',           icon: '❤️' },
+  iq:          { title: 'Descubre tu nivel de inteligencia',      subtitle: 'Acceso completo a tu análisis de CI',       icon: '🧠' },
+  personality: { title: 'Descubre tu perfil de personalidad',     subtitle: 'Conoce los 5 rasgos de tu personalidad',    icon: '🎭' },
+  adhd:        { title: 'Descubre tu evaluación de TDAH',         subtitle: 'Análisis completo de síntomas de TDAH',     icon: '⚡' },
+  anxiety:     { title: 'Descubre tu nivel de ansiedad',          subtitle: 'Evaluación personalizada de ansiedad',      icon: '💆' },
+  depression:  { title: 'Descubre tu evaluación de depresión',    subtitle: 'Análisis de síntomas depresivos',           icon: '🌱' },
+  eq:          { title: 'Descubre tu inteligencia emocional',     subtitle: 'Conoce tu cociente emocional completo',     icon: '❤️' },
 }
 
 function CheckoutPaymentContent() {
-  const searchParams = useSearchParams()
-  const router = useRouter()
-  const [email, setEmail]           = useState('')
-  const [testType, setTestType]     = useState('iq')
-  const [lang, setLang]             = useState('es')
-  const [isLoading, setIsLoading]   = useState(false)
-  const [error, setError]           = useState('')
-  const [currentReview, setCurrentReview] = useState(0)
+  const searchParams  = useSearchParams()
+  const [email, setEmail]       = useState('')
+  const [testType, setTestType] = useState('iq')
+  const [lang, setLang]         = useState('es')
+  const [stripePromise, setStripePromise] = useState<any>(null)
+  const [loadingSession, setLoadingSession] = useState(true)
+  const [sessionError, setSessionError]     = useState('')
 
-  useEffect(() => {
-    const interval = setInterval(() => setCurrentReview(p => (p + 1) % reviews.length), 4500)
-    return () => clearInterval(interval)
-  }, [])
-
+  // Cargar datos de URL params
   useEffect(() => {
     const e  = searchParams.get('email')    || ''
     const tt = searchParams.get('testType') || 'iq'
     const l  = searchParams.get('lang')     || 'es'
-    setEmail(e); setTestType(tt); setLang(l)
-    if (!e) setError('Email no proporcionado')
+    setEmail(e)
+    setTestType(tt)
+    setLang(l)
   }, [searchParams])
 
-  const handleCheckout = async () => {
-    setIsLoading(true)
-    setError('')
+  // Inicializar Stripe con la clave pública
+  useEffect(() => {
+    const pk = process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY
+    if (pk) setStripePromise(loadStripe(pk))
+  }, [])
+
+  // Crear la sesión embebida
+  const fetchClientSecret = useCallback(async (): Promise<string> => {
+    if (!email) throw new Error('Email no disponible')
+    setLoadingSession(true)
+    setSessionError('')
     try {
       let testData: any = {}
       try {
@@ -59,31 +56,34 @@ function CheckoutPaymentContent() {
         }
       } catch {}
 
-      const res = await fetch('/api/stripe/create-checkout', {
+      const res = await fetch('/api/stripe/create-embedded-checkout', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          email, lang, testType,
-          planType: 'monthly',
+          email,
+          lang,
+          testType,
           userName: email.split('@')[0],
           userIQ: localStorage.getItem('userIQ') || 100,
           testData,
         }),
       })
       const data = await res.json()
-      if (!res.ok) throw new Error(data.error || 'Error creando la sesión de pago')
-      if (data.url) window.location.href = data.url
-      else throw new Error('No se recibió URL de checkout')
+      if (!res.ok) throw new Error(data.error || 'Error creando sesión de pago')
+      setLoadingSession(false)
+      return data.clientSecret as string
     } catch (e: any) {
-      setError(e.message || 'Error al iniciar el pago.')
-      setIsLoading(false)
+      setSessionError(e.message || 'Error al cargar el checkout')
+      setLoadingSession(false)
+      throw e
     }
-  }
+  }, [email, lang, testType])
 
   const config = testConfig[testType] || testConfig['iq']
 
   return (
     <div className="min-h-screen bg-secondary-950 neural-bg">
+
       {/* Header */}
       <header className="bg-secondary-900/80 backdrop-blur-xl border-b border-white/10 py-4 px-6">
         <div className="max-w-5xl mx-auto flex items-center justify-between">
@@ -100,140 +100,106 @@ function CheckoutPaymentContent() {
         </div>
       </header>
 
-      <div className="py-10 px-4">
+      <div className="py-8 px-4">
         <div className="max-w-5xl mx-auto">
 
           {/* Hero */}
-          <div className="text-center mb-10">
+          <div className="text-center mb-8">
             <div className="text-5xl mb-3">{config.icon}</div>
             <h1 className="text-3xl md:text-4xl font-bold text-white mb-2">{config.title}</h1>
-            <p className="text-gray-400 text-lg">{config.subtitle}</p>
+            <p className="text-gray-400 text-base">{config.subtitle}</p>
           </div>
 
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-start">
 
-            {/* LEFT — beneficios + reviews */}
+            {/* LEFT — beneficios + resumen */}
             <div className="space-y-5 order-2 lg:order-1">
-              <div className="bg-white/5 backdrop-blur-xl rounded-2xl border border-white/10 p-6">
-                <h3 className="text-lg font-bold text-white mb-4">¿Qué incluye tu suscripción?</h3>
+
+              {/* Resumen del pedido */}
+              <div className="bg-white/5 backdrop-blur-xl rounded-2xl border border-white/10 p-5">
+                <h3 className="text-base font-bold text-white mb-4">Resumen del pedido</h3>
+                <div className="space-y-3 text-sm">
+                  <div className="flex justify-between items-center">
+                    <span className="text-gray-300">Acceso a tu resultado</span>
+                    <span className="text-white font-bold">0,50€</span>
+                  </div>
+                  <div className="flex justify-between items-start">
+                    <div>
+                      <span className="text-gray-300">2 días Premium gratis</span>
+                      <p className="text-xs text-gray-500 mt-0.5">Luego 19,99€/mes · Cancela cuando quieras</p>
+                    </div>
+                    <span className="text-primary-400 font-bold ml-4">GRATIS</span>
+                  </div>
+                  <div className="border-t border-white/10 pt-3 flex justify-between items-center">
+                    <span className="font-bold text-white">Total hoy</span>
+                    <span className="text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-primary-400 to-accent-400">0,50€</span>
+                  </div>
+                </div>
+                <p className="text-xs text-gray-500 mt-3 text-center">
+                  Cancela antes de los 2 días y no se te cobrará nada más
+                </p>
+              </div>
+
+              {/* Beneficios */}
+              <div className="bg-white/5 backdrop-blur-xl rounded-2xl border border-white/10 p-5">
+                <h3 className="text-base font-bold text-white mb-4">¿Qué incluye?</h3>
                 <div className="space-y-3">
                   {[
-                    { icon: '🧠', title: 'Resultado Completo',       desc: 'Tu puntuación exacta y análisis detallado' },
-                    { icon: '📊', title: 'Análisis por Categorías',   desc: 'Gráficos y comparativas detalladas' },
-                    { icon: '🏆', title: 'Certificado Oficial',       desc: 'Descargable y compartible' },
-                    { icon: '🌍', title: 'Comparación Mundial',       desc: 'Ve cómo te comparas globalmente' },
-                    { icon: '🔓', title: 'Acceso a Todos los Tests',  desc: 'CI, Personalidad, TDAH, Ansiedad y más' },
+                    { icon: '📊', title: 'Resultado completo y detallado' },
+                    { icon: '🏆', title: 'Certificado oficial descargable' },
+                    { icon: '🌍', title: 'Comparación mundial' },
+                    { icon: '🔓', title: 'Acceso a todos los tests' },
+                    { icon: '📈', title: 'Análisis por categorías' },
                   ].map((f, i) => (
-                    <div key={i} className="flex items-start gap-3">
-                      <span className="text-2xl">{f.icon}</span>
-                      <div>
-                        <p className="font-semibold text-white text-sm">{f.title}</p>
-                        <p className="text-gray-400 text-xs">{f.desc}</p>
-                      </div>
+                    <div key={i} className="flex items-center gap-3">
+                      <span className="text-xl">{f.icon}</span>
+                      <span className="text-gray-300 text-sm">{f.title}</span>
                     </div>
                   ))}
                 </div>
               </div>
 
-              {/* Reviews */}
-              <div className="bg-white/5 backdrop-blur-xl rounded-2xl border border-white/10 p-5">
-                <h3 className="text-sm font-bold text-white mb-3">⭐ Lo que dicen nuestros usuarios</h3>
-                <div className="overflow-hidden">
-                  <div className="flex transition-transform duration-500" style={{ transform: `translateX(-${currentReview * 100}%)` }}>
-                    {reviews.map((r, i) => (
-                      <div key={i} className="w-full flex-shrink-0">
-                        <div className="bg-white/5 rounded-xl p-4 border border-white/5">
-                          <div className="flex items-center gap-2 mb-1">
-                            <div className="flex text-yellow-400 text-xs">{'★'.repeat(r.rating)}</div>
-                            <span>{r.country}</span>
-                          </div>
-                          <p className="text-gray-300 text-sm italic">"{r.text}"</p>
-                          <p className="text-gray-500 text-xs mt-1 font-semibold">— {r.name}</p>
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-                <div className="flex justify-center gap-2 mt-3">
-                  {reviews.map((_, i) => (
-                    <button key={i} onClick={() => setCurrentReview(i)}
-                      className={`w-1.5 h-1.5 rounded-full transition-colors ${i === currentReview ? 'bg-primary-500' : 'bg-gray-600'}`} />
-                  ))}
-                </div>
-              </div>
-            </div>
-
-            {/* RIGHT — pago */}
-            <div className="order-1 lg:order-2">
-              <div className="bg-white/5 backdrop-blur-xl rounded-2xl border border-white/10 p-7 shadow-2xl">
-
-                <h3 className="text-xl font-bold text-white mb-5 flex items-center gap-2">
-                  <FaLock className="text-primary-400" /> Pago Seguro
-                </h3>
-
-                {/* Resumen del pedido */}
-                <div className="bg-white/5 rounded-xl p-5 mb-6 border border-white/5">
-                  <h4 className="text-sm font-bold text-white mb-3">Resumen del pedido</h4>
-                  <div className="space-y-2 text-sm">
-                    <div className="flex justify-between">
-                      <span className="text-gray-400">Acceso inicial (desbloquear resultado)</span>
-                      <span className="text-white font-semibold">0,50€</span>
-                    </div>
-                    <div className="flex justify-between items-start">
-                      <div>
-                        <span className="text-gray-400">Trial Premium — 2 días gratis</span>
-                        <p className="text-xs text-gray-500 mt-0.5">Luego 19,99€/mes · Cancela cuando quieras</p>
-                      </div>
-                      <span className="text-primary-400 font-semibold ml-4">GRATIS</span>
-                    </div>
-                    <div className="border-t border-white/10 pt-3 flex justify-between items-center">
-                      <span className="font-bold text-white text-base">Total hoy</span>
-                      <span className="text-3xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-primary-400 to-accent-400">0,50€</span>
-                    </div>
-                  </div>
-                  <p className="text-xs text-gray-500 mt-2 text-center">
-                    Cancela antes de los 2 días y no se te cobrará nada más.
-                  </p>
-                </div>
-
-                {error && (
-                  <div className="bg-red-500/10 border border-red-500/30 text-red-300 px-4 py-3 rounded-xl text-sm mb-4">
-                    {error}
-                  </div>
-                )}
-
-                <button
-                  onClick={handleCheckout}
-                  disabled={isLoading || !email}
-                  className={`w-full py-4 px-6 rounded-xl font-bold text-lg text-white transition-all duration-300 flex items-center justify-center gap-3 ${
-                    isLoading || !email
-                      ? 'bg-gray-600 cursor-not-allowed'
-                      : 'bg-gradient-to-r from-primary-500 to-accent-500 hover:from-primary-600 hover:to-accent-600 shadow-lg shadow-primary-500/25 hover:shadow-xl hover:-translate-y-0.5'
-                  }`}
-                >
-                  {isLoading ? (
-                    <><div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin" /> Redirigiendo a Stripe...</>
-                  ) : (
-                    <><FaCreditCard /> Pagar 0,50€ y comenzar trial</>
-                  )}
-                </button>
-
-                <p className="text-center text-xs text-gray-500 mt-2">Serás redirigido a la pasarela segura de Stripe</p>
-
-                <div className="flex items-center justify-center gap-5 pt-4 mt-4 border-t border-white/5">
-                  <div className="flex items-center gap-1.5 text-xs text-gray-400"><FaLock className="text-primary-400" /><span>SSL</span></div>
-                  <div className="flex items-center gap-1.5 text-xs text-gray-400"><FaShieldAlt className="text-primary-400" /><span>Seguro</span></div>
-                  <div className="flex items-center gap-1.5 text-xs text-gray-400"><FaCreditCard className="text-primary-400" /><span>PCI DSS</span></div>
-                  <div className="text-xs text-gray-500">Powered by <strong className="text-gray-400">Stripe</strong></div>
-                </div>
-              </div>
-
-              <div className="mt-3 bg-yellow-500/10 border border-yellow-500/20 rounded-xl p-3 text-center">
-                <span className="text-lg">🛡️</span>
+              {/* Garantía */}
+              <div className="bg-yellow-500/10 border border-yellow-500/20 rounded-xl p-4 text-center">
+                <span className="text-xl">🛡️</span>
                 <span className="font-semibold text-yellow-300 text-sm ml-2">Garantía de devolución</span>
                 <a href={`/${lang}/reembolso`} className="text-xs text-yellow-400/70 underline ml-2">Ver política</a>
               </div>
             </div>
+
+            {/* RIGHT — Stripe Embedded Checkout */}
+            <div className="order-1 lg:order-2">
+              <div className="bg-white/5 backdrop-blur-xl rounded-2xl border border-white/10 overflow-hidden">
+
+                {sessionError ? (
+                  <div className="p-8 text-center">
+                    <p className="text-red-400 text-sm mb-4">{sessionError}</p>
+                    <button
+                      onClick={() => fetchClientSecret()}
+                      className="px-6 py-2 bg-primary-500 text-white rounded-lg text-sm hover:bg-primary-600"
+                    >
+                      Reintentar
+                    </button>
+                  </div>
+                ) : !email ? (
+                  <div className="p-8 flex items-center justify-center">
+                    <div className="w-8 h-8 border-2 border-primary-500 border-t-transparent rounded-full animate-spin" />
+                  </div>
+                ) : stripePromise ? (
+                  <EmbeddedCheckoutProvider
+                    stripe={stripePromise}
+                    options={{ fetchClientSecret }}
+                  >
+                    <EmbeddedCheckout />
+                  </EmbeddedCheckoutProvider>
+                ) : (
+                  <div className="p-8 flex items-center justify-center">
+                    <div className="w-8 h-8 border-2 border-primary-500 border-t-transparent rounded-full animate-spin" />
+                  </div>
+                )}
+              </div>
+            </div>
+
           </div>
         </div>
       </div>
