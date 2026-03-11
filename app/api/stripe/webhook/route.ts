@@ -215,31 +215,55 @@ export async function POST(request: NextRequest) {
 
       case 'invoice.payment_succeeded': {
         const invoice = event.data.object as Stripe.Invoice
-        const subscriptionId = invoice.subscription as string
-        if (!subscriptionId) break
 
-        // Extender el acceso 30 días más
+        // El primer pago del trial NO debe activar la suscripción (billing_reason = 'subscription_create')
+        // Solo procesar renovaciones reales
+        if ((invoice as any).billing_reason === 'subscription_create') break
+
+        const customerEmail = invoice.customer_email || ''
+        if (!customerEmail) break
+
         const accessUntil = new Date()
         accessUntil.setDate(accessUntil.getDate() + 30)
 
-        // Buscar usuario por subscriptionId en la BD
-        const dbConfig = await db.getAllConfig()
-        const mode = dbConfig.payment_mode || 'test'
-        const secretKey = mode === 'live' ? dbConfig.stripe_live_secret_key : dbConfig.stripe_test_secret_key
-        if (!secretKey) break
+        const user = await db.getUserByEmail(customerEmail)
+        if (user) {
+          await db.updateUser(user.id, {
+            subscriptionStatus: 'active',
+            accessUntil: accessUntil.toISOString(),
+          })
+          console.log('✅ [webhook] Renovación procesada para:', customerEmail)
+        }
+        break
+      }
 
-        const stripe = new Stripe(secretKey, { apiVersion: '2024-04-10' as any })
-        const subscription = await stripe.subscriptions.retrieve(subscriptionId)
-        const customerEmail = (subscription.metadata?.email as string) || ''
+      case 'customer.subscription.updated': {
+        const subscription = event.data.object as Stripe.Subscription
+        const customerEmail = (subscription as any).customer_email || ''
 
-        if (customerEmail) {
+        // Cuando el trial termina y pasa a activo
+        if (subscription.status === 'active' && customerEmail) {
+          const accessUntil = new Date()
+          accessUntil.setDate(accessUntil.getDate() + 30)
           const user = await db.getUserByEmail(customerEmail)
           if (user) {
             await db.updateUser(user.id, {
               subscriptionStatus: 'active',
               accessUntil: accessUntil.toISOString(),
             })
-            console.log('✅ [webhook] Pago de renovación procesado para:', customerEmail)
+            console.log('✅ [webhook] Suscripción activada tras trial para:', customerEmail)
+          }
+        }
+
+        // Cuando cancela al final del período
+        if (subscription.status === 'canceled' && customerEmail) {
+          const user = await db.getUserByEmail(customerEmail)
+          if (user) {
+            await db.updateUser(user.id, {
+              subscriptionStatus: 'cancelled',
+              subscriptionId: null as any,
+            })
+            console.log('✅ [webhook] Suscripción cancelada para:', customerEmail)
           }
         }
         break
@@ -247,7 +271,8 @@ export async function POST(request: NextRequest) {
 
       case 'invoice.payment_failed': {
         const invoice = event.data.object as Stripe.Invoice
-        console.warn('⚠️ [webhook] Pago fallido para invoice:', invoice.id)
+        const customerEmail = invoice.customer_email || ''
+        console.warn(`⚠️ [webhook] Pago fallido para: ${customerEmail} | invoice: ${invoice.id}`)
         break
       }
 
