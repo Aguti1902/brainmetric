@@ -21,10 +21,19 @@ function ResultadoContent() {
   const [verifyingPayment, setVerifyingPayment] = useState(false)
 
   useEffect(() => {
-    const sessionId = searchParams.get('session_id')
-    const paymentParam = searchParams.get('payment')
+    const sessionId      = searchParams.get('session_id')
+    const paymentIntentId = searchParams.get('payment_intent')
+    const redirectStatus  = searchParams.get('redirect_status')
+    const paymentParam    = searchParams.get('payment')
 
-    // Si viene de Stripe Checkout, verificar la sesión
+    // Redireccionado desde Stripe con payment_intent (nuevo flujo PaymentElement)
+    if (paymentIntentId && (redirectStatus === 'succeeded' || paymentParam === 'success')) {
+      setVerifyingPayment(true)
+      verifyPaymentIntent(paymentIntentId)
+      return
+    }
+
+    // Redireccionado desde Stripe Checkout (flujo anterior — mantener compatibilidad)
     if (sessionId && paymentParam === 'success') {
       setVerifyingPayment(true)
       verifyStripeSession(sessionId)
@@ -41,20 +50,13 @@ function ResultadoContent() {
     loadResults()
   }, [router, lang, searchParams])
 
-  const verifyStripeSession = async (sessionId: string) => {
+  const verifyPaymentIntent = async (paymentIntentId: string, attempt = 0) => {
     try {
-      const response = await fetch(`/api/stripe/verify-session?session_id=${sessionId}`)
+      const response = await fetch(`/api/stripe/verify-payment-intent?payment_intent=${paymentIntentId}`)
       const data = await response.json()
 
-      if (data.retry) {
-        // El webhook aún no procesó, reintentar
-        setTimeout(() => verifyStripeSession(sessionId), 2000)
-        return
-      }
-
       if (!response.ok || !data.success) {
-        console.error('❌ Error verificando sesión:', data.error)
-        // Si falla la verificación, intentar continuar con localStorage
+        console.error('❌ Error verificando payment intent:', data.error)
         const paymentCompleted = localStorage.getItem('paymentCompleted')
         if (paymentCompleted) {
           setVerifyingPayment(false)
@@ -65,21 +67,67 @@ function ResultadoContent() {
         return
       }
 
-      // Guardar token y datos del usuario
+      // El usuario aún no fue creado por el webhook, reintentar hasta 5 veces
+      if (!data.userCreated && attempt < 5) {
+        setTimeout(() => verifyPaymentIntent(paymentIntentId, attempt + 1), 2000)
+        return
+      }
+
+      if (data.token) localStorage.setItem('auth_token', data.token)
+      localStorage.setItem('paymentCompleted', 'true')
+      if (data.user?.email)    localStorage.setItem('userEmail', data.user.email)
+      if (data.user?.userName) localStorage.setItem('userName',  data.user.userName)
+
+      const url = new URL(window.location.href)
+      url.searchParams.delete('payment_intent')
+      url.searchParams.delete('payment_intent_client_secret')
+      url.searchParams.delete('redirect_status')
+      url.searchParams.delete('payment')
+      window.history.replaceState({}, '', url.toString())
+
+      fireConversionEvents()
+      setVerifyingPayment(false)
+      loadResults()
+    } catch (err) {
+      console.error('❌ Error en verificación de payment intent:', err)
+      setVerifyingPayment(false)
+      loadResults()
+    }
+  }
+
+  const verifyStripeSession = async (sessionId: string) => {
+    try {
+      const response = await fetch(`/api/stripe/verify-session?session_id=${sessionId}`)
+      const data = await response.json()
+
+      if (data.retry) {
+        setTimeout(() => verifyStripeSession(sessionId), 2000)
+        return
+      }
+
+      if (!response.ok || !data.success) {
+        console.error('❌ Error verificando sesión:', data.error)
+        const paymentCompleted = localStorage.getItem('paymentCompleted')
+        if (paymentCompleted) {
+          setVerifyingPayment(false)
+          loadResults()
+          return
+        }
+        router.push(`/${lang}/resultado-estimado`)
+        return
+      }
+
       localStorage.setItem('auth_token', data.token)
       localStorage.setItem('paymentCompleted', 'true')
       if (data.user?.email) localStorage.setItem('userEmail', data.user.email)
       if (data.user?.userName) localStorage.setItem('userName', data.user.userName)
 
-      // Limpiar session_id de la URL sin recargar
       const url = new URL(window.location.href)
       url.searchParams.delete('session_id')
       url.searchParams.delete('payment')
       window.history.replaceState({}, '', url.toString())
 
-      // Disparar eventos de conversión
       fireConversionEvents()
-
       setVerifyingPayment(false)
       loadResults()
     } catch (err) {

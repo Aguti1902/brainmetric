@@ -293,6 +293,67 @@ export async function POST(request: NextRequest) {
         break
       }
 
+      case 'payment_intent.succeeded': {
+        const pi = event.data.object as Stripe.PaymentIntent
+
+        // Solo procesar si es el pago de acceso inicial (tiene priceId en metadata)
+        const piEmail    = pi.metadata?.email    || ''
+        const priceId    = pi.metadata?.priceId  || ''
+        const trialDaysS = pi.metadata?.trialDays || '2'
+        const piUserName = pi.metadata?.userName  || ''
+        const piLang     = pi.metadata?.lang      || 'es'
+        const piIQ       = parseInt(pi.metadata?.userIQ || '0')
+
+        if (!piEmail || !priceId) {
+          console.log('ℹ️ [webhook] payment_intent sin metadata de suscripción, ignorando')
+          break
+        }
+
+        console.log(`💳 [webhook] payment_intent.succeeded | email: ${piEmail}`)
+
+        // Crear suscripción con el método de pago guardado
+        const customerId = pi.customer as string
+        const paymentMethodId = typeof pi.payment_method === 'string'
+          ? pi.payment_method
+          : pi.payment_method?.id || ''
+
+        let subscriptionId = ''
+
+        if (customerId && paymentMethodId && priceId) {
+          try {
+            // Establecer método de pago por defecto
+            await stripe.customers.update(customerId, {
+              invoice_settings: { default_payment_method: paymentMethodId },
+            })
+
+            const subscription = await stripe.subscriptions.create({
+              customer: customerId,
+              items: [{ price: priceId }],
+              default_payment_method: paymentMethodId,
+              trial_period_days: parseInt(trialDaysS),
+              trial_settings: { end_behavior: { missing_payment_method: 'cancel' } },
+              metadata: pi.metadata,
+            })
+            subscriptionId = subscription.id
+            console.log(`✅ [webhook] Suscripción creada: ${subscriptionId}`)
+          } catch (subErr: any) {
+            console.error('❌ [webhook] Error creando suscripción:', subErr.message)
+          }
+        }
+
+        const { user, isNew, password } = await createOrUpdateUser(
+          piEmail, piUserName, piIQ, piLang,
+          customerId, subscriptionId
+        )
+
+        if (isNew && password) {
+          await sendWelcomeEmail(piEmail, piUserName, piIQ, piLang, password)
+          console.log('📧 [webhook] Email de bienvenida enviado a:', piEmail)
+        }
+
+        break
+      }
+
       case 'invoice.payment_failed': {
         const invoice = event.data.object as Stripe.Invoice
         const customerEmail = invoice.customer_email || ''
