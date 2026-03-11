@@ -6,6 +6,7 @@ import { loadStripe, Stripe as StripeType } from '@stripe/stripe-js'
 import {
   Elements,
   PaymentElement,
+  ExpressCheckoutElement,
   useStripe,
   useElements,
 } from '@stripe/react-stripe-js'
@@ -17,11 +18,10 @@ const testConfig: Record<string, { title: string; subtitle: string; icon: string
   personality: { title: 'Descubre tu perfil de personalidad', subtitle: 'Conoce los 5 rasgos de tu personalidad',    icon: '🎭' },
   adhd:        { title: 'Descubre tu evaluación de TDAH',     subtitle: 'Análisis completo de síntomas de TDAH',     icon: '⚡' },
   anxiety:     { title: 'Descubre tu nivel de ansiedad',      subtitle: 'Evaluación personalizada de ansiedad',      icon: '💆' },
-  depression:  { title: 'Descubre tu evaluación de depresión','subtitle': 'Análisis de síntomas depresivos',          icon: '🌱' },
+  depression:  { title: 'Descubre tu evaluación de depresión', subtitle: 'Análisis de síntomas depresivos',          icon: '🌱' },
   eq:          { title: 'Descubre tu inteligencia emocional', subtitle: 'Conoce tu cociente emocional completo',     icon: '❤️' },
 }
 
-// ─── Appearance para que Stripe se funda con el diseño oscuro ────────────────
 const stripeAppearance = {
   theme: 'night' as const,
   variables: {
@@ -64,47 +64,38 @@ const stripeAppearance = {
       border: '1px solid #7C3AED',
       color: '#F9FAFB',
     },
-    '.TabLabel': { color: '#D1D5DB' },
-    '.TabLabel--selected': { color: '#F9FAFB' },
     '.Error': { color: '#F87171' },
-    '.RedirectText': { color: '#9CA3AF' },
-    '.TermsText': { color: '#6B7280' },
     '.Block': {
       backgroundColor: 'rgba(255,255,255,0.04)',
       border: '1px solid rgba(255,255,255,0.08)',
     },
-    '.CheckboxInput': {
-      backgroundColor: 'rgba(255,255,255,0.07)',
-      border: '1px solid rgba(255,255,255,0.15)',
-    },
-    '.CheckboxInput--checked': { backgroundColor: '#7C3AED', border: '1px solid #7C3AED' },
   },
 }
 
-// ─── Formulario de pago (necesita estar dentro de <Elements>) ────────────────
+// ─── Formulario de pago (debe estar dentro de <Elements>) ────────────────────
 function PaymentForm({
-  email,
   lang,
   onError,
 }: {
-  email: string
   lang: string
   onError: (msg: string) => void
 }) {
-  const stripe = useStripe()
+  const stripe   = useStripe()
   const elements = useElements()
-  const router = useRouter()
-  const [loading, setLoading] = useState(false)
-  const [ready, setReady] = useState(false)
+  const router   = useRouter()
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault()
-    if (!stripe || !elements || loading) return
+  const [loading,      setLoading]      = useState(false)
+  const [cardReady,    setCardReady]    = useState(false)
+  const [hasWallets,   setHasWallets]   = useState(false)
 
+  const returnUrl = typeof window !== 'undefined'
+    ? `${window.location.origin}/${lang}/resultado?payment=success`
+    : `https://brainmetric.io/${lang}/resultado?payment=success`
+
+  const handlePayment = async () => {
+    if (!stripe || !elements) return
     setLoading(true)
     onError('')
-
-    const returnUrl = `${window.location.origin}/${lang}/resultado?payment=success`
 
     const { error, paymentIntent } = await stripe.confirmPayment({
       elements,
@@ -118,36 +109,65 @@ function PaymentForm({
       return
     }
 
-    // Pago sin redirección (tarjeta sin 3DS)
     if (paymentIntent?.status === 'succeeded') {
       router.push(`/${lang}/resultado?payment=success&payment_intent=${paymentIntent.id}`)
-      return
     }
+  }
 
-    setLoading(false)
+  // Express checkout (Apple Pay / Google Pay)
+  const handleExpressConfirm = async () => {
+    await handlePayment()
   }
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-5">
-      <div className={`transition-opacity duration-300 ${ready ? 'opacity-100' : 'opacity-0'}`}>
+    <div className="space-y-4">
+
+      {/* ── Botones de wallet (Apple Pay / Google Pay) ── */}
+      <ExpressCheckoutElement
+        onReady={(event) => {
+          setHasWallets(!!(event.availablePaymentMethods &&
+            Object.values(event.availablePaymentMethods).some(Boolean)))
+        }}
+        onConfirm={handleExpressConfirm}
+        options={{
+          buttonType:  { applePay: 'plain', googlePay: 'plain' },
+          buttonTheme: { applePay: 'black', googlePay: 'black' },
+          layout: { maxColumns: 2, maxRows: 1 },
+        }}
+      />
+
+      {/* Separador — solo si hay wallets disponibles */}
+      {hasWallets && (
+        <div className="flex items-center gap-3">
+          <div className="flex-1 h-px bg-white/10" />
+          <span className="text-gray-500 text-xs">o paga con tarjeta</span>
+          <div className="flex-1 h-px bg-white/10" />
+        </div>
+      )}
+
+      {/* ── Formulario de tarjeta ── */}
+      <div className={`transition-opacity duration-300 ${cardReady ? 'opacity-100' : 'opacity-0 h-0 overflow-hidden'}`}>
         <PaymentElement
-          onReady={() => setReady(true)}
+          onReady={() => setCardReady(true)}
           options={{
             layout: { type: 'tabs', defaultCollapsed: false },
-            wallets: { applePay: 'auto', googlePay: 'auto' },
+            // ocultamos wallets aquí porque ya los mostramos arriba con ExpressCheckoutElement
+            wallets: { applePay: 'never', googlePay: 'never' },
           }}
         />
       </div>
 
-      {!ready && (
+      {!cardReady && (
         <div className="flex items-center justify-center py-10">
           <div className="w-7 h-7 border-2 border-primary-500 border-t-transparent rounded-full animate-spin" />
         </div>
       )}
 
+      {/* ── Botón de pago con tarjeta ── */}
       <button
-        type="submit"
-        disabled={!stripe || !elements || loading || !ready}
+        type="button"
+        onClick={handlePayment}
+        disabled={!stripe || !elements || loading || !cardReady}
         className="w-full py-4 rounded-xl font-bold text-white text-base transition-all duration-200
           bg-gradient-to-r from-primary-600 to-accent-500
           hover:from-primary-500 hover:to-accent-400
@@ -166,44 +186,37 @@ function PaymentForm({
 
       <p className="text-center text-xs text-gray-500">
         Al continuar aceptas los{' '}
-        <a href={`/${lang}/terminos`} className="underline hover:text-gray-300">Términos</a>{' '}
-        y la{' '}
+        <a href={`/${lang}/terminos`} className="underline hover:text-gray-300">Términos</a> y la{' '}
         <a href={`/${lang}/privacidad`} className="underline hover:text-gray-300">Política de privacidad</a>
       </p>
-    </form>
+    </div>
   )
 }
 
 // ─── Página principal ─────────────────────────────────────────────────────────
 function CheckoutPaymentContent() {
   const searchParams = useSearchParams()
-  const [email, setEmail]         = useState('')
-  const [testType, setTestType]   = useState('iq')
-  const [lang, setLang]           = useState('es')
-  const [clientSecret, setClientSecret]   = useState('')
-  const [stripePromise, setStripePromise] = useState<Promise<StripeType | null> | null>(null)
-  const [sessionError, setSessionError]   = useState('')
+
+  const [email,          setEmail]          = useState('')
+  const [testType,       setTestType]       = useState('iq')
+  const [lang,           setLang]           = useState('es')
+  const [clientSecret,   setClientSecret]   = useState('')
+  const [stripePromise,  setStripePromise]  = useState<Promise<StripeType | null> | null>(null)
+  const [sessionError,   setSessionError]   = useState('')
   const [loadingSession, setLoadingSession] = useState(true)
   const initRef = useRef(false)
 
   useEffect(() => {
-    const e  = searchParams.get('email')    || ''
-    const tt = searchParams.get('testType') || 'iq'
-    const l  = searchParams.get('lang')     || 'es'
-    setEmail(e)
-    setTestType(tt)
-    setLang(l)
+    setEmail(searchParams.get('email')    || '')
+    setTestType(searchParams.get('testType') || 'iq')
+    setLang(searchParams.get('lang')     || 'es')
   }, [searchParams])
 
-  // Inicializar Stripe una sola vez
   useEffect(() => {
     const pk = process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY
-    if (pk && !stripePromise) {
-      setStripePromise(loadStripe(pk))
-    }
+    if (pk) setStripePromise(loadStripe(pk))
   }, [])
 
-  // Crear PaymentIntent cuando tenemos el email
   useEffect(() => {
     if (!email || initRef.current) return
     initRef.current = true
@@ -219,7 +232,6 @@ function CheckoutPaymentContent() {
               answers: p.answers || [],
               timeElapsed: p.timeElapsed || 0,
               correctAnswers: p.correctAnswers || 0,
-              categoryScores: p.categoryScores || {},
             }
           }
         } catch {}
@@ -284,8 +296,6 @@ function CheckoutPaymentContent() {
 
             {/* LEFT — resumen + beneficios */}
             <div className="space-y-5 order-2 lg:order-1">
-
-              {/* Resumen del pedido */}
               <div className="bg-white/5 backdrop-blur-xl rounded-2xl border border-white/10 p-5">
                 <h3 className="font-bold text-white mb-4">Resumen del pedido</h3>
                 <div className="space-y-3 text-sm">
@@ -310,7 +320,6 @@ function CheckoutPaymentContent() {
                 </p>
               </div>
 
-              {/* Beneficios */}
               <div className="bg-white/5 backdrop-blur-xl rounded-2xl border border-white/10 p-5">
                 <h3 className="font-bold text-white mb-4">¿Qué incluye?</h3>
                 <div className="space-y-3">
@@ -329,7 +338,6 @@ function CheckoutPaymentContent() {
                 </div>
               </div>
 
-              {/* Garantía */}
               <div className="bg-yellow-500/10 border border-yellow-500/20 rounded-xl p-4 text-center text-sm">
                 <span className="text-xl">🛡️</span>
                 <span className="font-semibold text-yellow-300 ml-2">Garantía de devolución</span>
@@ -337,13 +345,13 @@ function CheckoutPaymentContent() {
               </div>
             </div>
 
-            {/* RIGHT — Stripe PaymentElement */}
+            {/* RIGHT — Stripe */}
             <div className="order-1 lg:order-2">
               <div className="bg-[#1a1a2e] rounded-2xl border border-white/10 p-6">
                 <div className="flex items-center gap-2 mb-5">
                   <span className="text-lg">🔒</span>
                   <h2 className="font-bold text-white">Pago seguro</h2>
-                  <span className="ml-auto text-xs text-gray-500 flex items-center gap-1">
+                  <span className="ml-auto text-xs text-gray-500">
                     Powered by <strong className="text-gray-400">Stripe</strong>
                   </span>
                 </div>
@@ -352,18 +360,23 @@ function CheckoutPaymentContent() {
                   <div className="text-center py-6">
                     <p className="text-red-400 text-sm mb-4">{sessionError}</p>
                     <button
-                      onClick={() => { initRef.current = false; setSessionError(''); setLoadingSession(true) }}
+                      onClick={() => {
+                        initRef.current = false
+                        setSessionError('')
+                        setLoadingSession(true)
+                        setClientSecret('')
+                      }}
                       className="px-5 py-2 bg-primary-600 text-white rounded-lg text-sm hover:bg-primary-500"
                     >
                       Reintentar
                     </button>
                   </div>
-                ) : loadingSession || !clientSecret ? (
+                ) : loadingSession || !clientSecret || !stripePromise ? (
                   <div className="flex flex-col items-center justify-center py-14 gap-4">
                     <div className="w-8 h-8 border-2 border-primary-500 border-t-transparent rounded-full animate-spin" />
                     <p className="text-sm text-gray-400">Preparando pago seguro...</p>
                   </div>
-                ) : stripePromise ? (
+                ) : (
                   <Elements
                     stripe={stripePromise}
                     options={{
@@ -378,20 +391,15 @@ function CheckoutPaymentContent() {
                       ) as any,
                     }}
                   >
-                    <PaymentForm
-                      email={email}
-                      lang={lang}
-                      onError={setSessionError}
-                    />
+                    <PaymentForm lang={lang} onError={setSessionError} />
                   </Elements>
-                ) : null}
+                )}
               </div>
 
-              {/* Badges de seguridad */}
               <div className="flex items-center justify-center gap-4 mt-4 text-xs text-gray-500">
-                <span className="flex items-center gap-1">🔒 SSL</span>
-                <span className="flex items-center gap-1">✅ PCI DSS</span>
-                <span className="flex items-center gap-1">🛡️ Seguro</span>
+                <span>🔒 SSL</span>
+                <span>✅ PCI DSS</span>
+                <span>🛡️ Seguro</span>
               </div>
             </div>
           </div>
