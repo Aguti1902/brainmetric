@@ -18,24 +18,22 @@ const plans = [
   {
     id: 'monthly',
     name: 'Plan Mensual',
-    price: '9,99€',
+    price: '19,99€',
     period: '/mes',
     billing: 'Facturación mensual',
     badge: '⭐ Más popular',
     badgeColor: 'bg-primary-500',
     highlight: true,
-    saving: null,
   },
   {
     id: 'biweekly',
     name: 'Plan Quincenal',
-    price: '5,99€',
+    price: '9,99€',
     period: '/15 días',
     billing: 'Facturación cada 15 días',
     badge: '💡 Más flexible',
     badgeColor: 'bg-accent-500',
     highlight: false,
-    saving: null,
   },
 ]
 
