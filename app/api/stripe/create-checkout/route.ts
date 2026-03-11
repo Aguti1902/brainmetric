@@ -6,22 +6,26 @@ export const dynamic = 'force-dynamic'
 
 async function getStripeClient() {
   const config = await db.getAllConfig()
-  const mode = config.payment_mode || 'test'
+  const mode = config.payment_mode || process.env.STRIPE_MODE || 'test'
 
   const secretKey = mode === 'live'
-    ? config.stripe_live_secret_key
-    : config.stripe_test_secret_key
+    ? (config.stripe_live_secret_key || process.env.STRIPE_SECRET_KEY || '')
+    : (config.stripe_test_secret_key || process.env.STRIPE_SECRET_KEY || '')
 
   if (!secretKey) {
-    throw new Error(`No hay clave secreta de Stripe configurada para el modo "${mode}". Configúrala en el panel de administración.`)
+    throw new Error(`No hay clave secreta de Stripe configurada para el modo "${mode}". Añádela en el panel de administración o en las variables de entorno.`)
   }
+
+  const priceId = mode === 'live'
+    ? (config.stripe_live_price_id || process.env.STRIPE_PRICE_ID || '')
+    : (config.stripe_test_price_id || process.env.STRIPE_PRICE_ID || '')
 
   return {
     stripe: new Stripe(secretKey, { apiVersion: '2024-04-10' as any }),
     config,
     mode,
-    priceId: mode === 'live' ? config.stripe_live_price_id : config.stripe_test_price_id,
-    trialDays: parseInt(config.trial_days || '2'),
+    priceId,
+    trialDays: parseInt(config.trial_days || process.env.STRIPE_TRIAL_DAYS || '2'),
   }
 }
 

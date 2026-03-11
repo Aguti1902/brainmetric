@@ -10,7 +10,9 @@ export const metadata: Metadata = {
   description: 'Unlock your cognitive potential with Brain Metric\'s advanced intelligence assessment. Get precise, personalized results in minutes through scientifically validated testing.',
   keywords: 'intelligence test, IQ assessment, cognitive analysis, brain metric, professional IQ test, mental evaluation',
   icons: {
-    icon: '/images/FAVICON2.png',
+    icon: '/images/brain-icon.svg',
+    shortcut: '/images/brain-icon.svg',
+    apple: '/images/brain-icon.svg',
   }
 }
 
@@ -22,7 +24,8 @@ export default function RootLayout({
   return (
     <html lang="es">
       <head>
-        <link rel="icon" href="/images/FAVICON2.png" type="image/png" />
+        <link rel="icon" href="/images/brain-icon.svg" type="image/svg+xml" />
+        <link rel="icon" href="/images/brain-icon.svg" sizes="any" />
       </head>
       <body className={inter.className}>
         <GTMNoscript />
