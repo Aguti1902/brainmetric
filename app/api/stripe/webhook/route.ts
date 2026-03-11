@@ -7,22 +7,17 @@ import bcrypt from 'bcryptjs'
 
 export const dynamic = 'force-dynamic'
 
-// Necesario para que Stripe pueda leer el body raw
-export const config = {
-  api: { bodyParser: false },
-}
-
 async function getStripeWithSecret(): Promise<{ stripe: Stripe; webhookSecret: string }> {
   const dbConfig = await db.getAllConfig()
-  const mode = dbConfig.payment_mode || 'test'
+  const mode = dbConfig.payment_mode || process.env.STRIPE_MODE || 'test'
 
   const secretKey = mode === 'live'
-    ? dbConfig.stripe_live_secret_key
-    : dbConfig.stripe_test_secret_key
+    ? (dbConfig.stripe_live_secret_key || process.env.STRIPE_SECRET_KEY || '')
+    : (dbConfig.stripe_test_secret_key || process.env.STRIPE_SECRET_KEY || '')
 
   const webhookSecret = mode === 'live'
-    ? dbConfig.stripe_live_webhook_secret
-    : dbConfig.stripe_test_webhook_secret
+    ? (dbConfig.stripe_live_webhook_secret || process.env.STRIPE_WEBHOOK_SECRET || '')
+    : (dbConfig.stripe_test_webhook_secret || process.env.STRIPE_WEBHOOK_SECRET || '')
 
   if (!secretKey) throw new Error(`Clave secreta de Stripe no configurada para modo "${mode}"`)
   if (!webhookSecret) throw new Error(`Webhook secret de Stripe no configurado para modo "${mode}"`)
