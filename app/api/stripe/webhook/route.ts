@@ -5,9 +5,15 @@ import { sendEmail, emailTemplates } from '@/lib/email-service'
 import { getEmailTranslation } from '@/lib/email-translations'
 import bcrypt from 'bcryptjs'
 
-// Envía email en background sin bloquear la respuesta del webhook
-function sendEmailSafe(emailData: Parameters<typeof sendEmail>[0]) {
-  sendEmail(emailData).catch(err => console.error('❌ [webhook] Error enviando email:', err.message))
+// Envía email y espera resultado — en Vercel el proceso se corta al hacer return,
+// por lo que debemos await antes de responder
+async function sendEmailSafe(emailData: Parameters<typeof sendEmail>[0]) {
+  try {
+    const result = await sendEmail(emailData)
+    if (!result.success) console.error('❌ [webhook] Error enviando email:', result.error)
+  } catch (err: any) {
+    console.error('❌ [webhook] Error enviando email:', err.message)
+  }
 }
 
 export const dynamic = 'force-dynamic'

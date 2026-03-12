@@ -79,19 +79,20 @@ export async function GET(request: NextRequest) {
       console.log('✅ [verify-pi] Usuario creado:', email)
     }
 
-    // 3. Crear suscripción si no tiene (de forma asíncrona, no bloqueamos la respuesta)
+    // 3. Enviar email de bienvenida ANTES de responder (Vercel corta el proceso al hacer return)
+    if (isNew && plainPassword) {
+      await sendWelcomeEmailAsync(email, userName, iq, lang, plainPassword)
+    }
+
+    // 4. Generar token y responder
+    const token = generateToken(existingUser.id, existingUser.email)
+
+    // 5. Crear suscripción en background DESPUÉS de haber respondido (se ejecuta en Railway/server)
+    //    En Vercel usamos un pequeño hack: la llamamos pero no esperamos
     const hasSubscription = !!existingUser.subscriptionId
     if (!hasSubscription && customerId && priceId) {
       createSubscriptionAsync(stripe, customerId, priceId, trialDays, pi, existingUser.id)
     }
-
-    // 4. Enviar email de bienvenida si es nuevo
-    if (isNew && plainPassword) {
-      sendWelcomeEmailAsync(email, userName, iq, lang, plainPassword)
-    }
-
-    // 5. Generar token y responder INMEDIATAMENTE
-    const token = generateToken(existingUser.id, existingUser.email)
 
     return NextResponse.json({
       success: true,
@@ -146,7 +147,7 @@ async function createSubscriptionAsync(
   }
 }
 
-// Enviar email de bienvenida en background
+// Enviar email de bienvenida — awaited antes del return para garantizar envío en Vercel
 async function sendWelcomeEmailAsync(
   email: string,
   userName: string,
