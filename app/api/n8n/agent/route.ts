@@ -1,6 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { Pool } from 'pg'
+import Stripe from 'stripe'
 import { sendEmail, emailTemplates } from '@/lib/email-service'
+import { db } from '@/lib/database-postgres'
 
 export const dynamic = 'force-dynamic'
 
@@ -10,13 +12,23 @@ function getPool() {
   return new Pool({ connectionString, ssl: { rejectUnauthorized: false }, max: 5 })
 }
 
+async function getStripe(): Promise<Stripe> {
+  const config = await db.getAllConfig()
+  const mode = config.payment_mode || process.env.STRIPE_MODE || 'live'
+  const secretKey = mode === 'live'
+    ? (config.stripe_live_secret_key || process.env.STRIPE_SECRET_KEY || '')
+    : (config.stripe_test_secret_key || process.env.STRIPE_SECRET_KEY || '')
+  return new Stripe(secretKey, { apiVersion: '2024-04-10' as any })
+}
+
 /**
  * Endpoint unificado para el agente de IA de n8n.
  * Seguridad: requiere N8N_API_KEY en header x-api-key
  *
  * Acciones:
  * - lookup:  busca usuario por email, devuelve datos de suscripción
- * - cancel:  cancela suscripción (actualiza BD + email)
+ * - refund:  crea reembolso en Stripe por payment_intent o charge
+ * - cancel:  cancela suscripción en Stripe + BD + email
  */
 export async function POST(request: NextRequest) {
   const pool = getPool()
@@ -27,10 +39,47 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
     }
 
-    const { action, email } = await request.json()
+    const { action, email, transaction_id, amount } = await request.json()
 
     if (!action || !email) {
       return NextResponse.json({ error: 'action y email requeridos' }, { status: 400 })
+    }
+
+    // --- REFUND ---
+    if (action === 'refund') {
+      if (!transaction_id) {
+        return NextResponse.json({ success: false, error: 'transaction_id requerido para reembolso' })
+      }
+
+      try {
+        const stripe = await getStripe()
+        const amountCents = amount ? Math.round(amount * 100) : undefined
+
+        let refund: Stripe.Refund
+
+        if (transaction_id.startsWith('pi_')) {
+          // Payment Intent — obtener el charge asociado
+          const pi = await stripe.paymentIntents.retrieve(transaction_id)
+          const chargeId = typeof pi.latest_charge === 'string' ? pi.latest_charge : pi.latest_charge?.id
+          if (!chargeId) throw new Error('No se encontró el cargo del PaymentIntent')
+          refund = await stripe.refunds.create({ charge: chargeId, ...(amountCents && { amount: amountCents }) })
+        } else if (transaction_id.startsWith('ch_')) {
+          refund = await stripe.refunds.create({ charge: transaction_id, ...(amountCents && { amount: amountCents }) })
+        } else {
+          return NextResponse.json({ success: false, error: 'transaction_id debe empezar por pi_ o ch_' })
+        }
+
+        console.log(`✅ [n8n-refund] Reembolso creado: ${refund.id} para ${email}`)
+        return NextResponse.json({
+          success: true,
+          refund_id: refund.id,
+          amount_refunded: (refund.amount / 100).toFixed(2),
+          status: refund.status,
+        })
+      } catch (err: any) {
+        console.error('❌ [n8n-refund] Error Stripe:', err.message)
+        return NextResponse.json({ success: false, error: err.message })
+      }
     }
 
     // --- LOOKUP ---
@@ -107,7 +156,7 @@ export async function POST(request: NextRequest) {
       })
     }
 
-    return NextResponse.json({ error: 'Acción no válida. Usa: lookup, cancel' }, { status: 400 })
+    return NextResponse.json({ error: 'Acción no válida. Usa: lookup, refund, cancel' }, { status: 400 })
 
   } catch (error: any) {
     console.error('❌ [n8n-agent] Error:', error.message)
