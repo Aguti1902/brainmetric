@@ -154,8 +154,14 @@ function PaymentForm({
         <PaymentElement
           onReady={() => setCardReady(true)}
           options={{
-            layout: { type: 'tabs', defaultCollapsed: false },
+            layout: {
+              type: 'accordion',
+              defaultCollapsed: false,
+              radios: true,
+              spacedAccordionItems: true,
+            },
             wallets: { applePay: 'auto', googlePay: 'auto' },
+            paymentMethodOrder: ['apple_pay', 'google_pay', 'card', 'klarna', 'link'],
           }}
         />
       </div>
