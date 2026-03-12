@@ -76,7 +76,6 @@ export async function POST(request: NextRequest) {
       amount: setupFeeAmount,
       currency: 'eur',
       customer: customer.id,
-      setup_future_usage: 'off_session',
       automatic_payment_methods: { enabled: true },
       metadata: meta,
       receipt_email: email,

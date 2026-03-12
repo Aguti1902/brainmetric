@@ -20,11 +20,17 @@ export async function POST(request: NextRequest) {
 
     const stripe = new Stripe(secretKey, { apiVersion: '2024-04-10' as any })
 
-    const domain = await stripe.applePayDomains.create({
-      domain_name: 'brainmetric.io',
-    })
+    const results = []
+    for (const d of ['brainmetric.io', 'www.brainmetric.io']) {
+      try {
+        const domain = await stripe.applePayDomains.create({ domain_name: d })
+        results.push({ domain: d, id: domain.id, status: 'created' })
+      } catch (err: any) {
+        results.push({ domain: d, error: err.message })
+      }
+    }
 
-    return NextResponse.json({ success: true, domain, mode })
+    return NextResponse.json({ success: true, results, mode })
   } catch (error: any) {
     console.error('❌ [register-apple-pay]', error.message)
     return NextResponse.json({ error: error.message }, { status: 500 })

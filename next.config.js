@@ -4,6 +4,17 @@ const nextConfig = {
   images: {
     domains: [],
   },
+  async headers() {
+    return [
+      {
+        source: '/.well-known/:path*',
+        headers: [
+          { key: 'Content-Type', value: 'text/plain' },
+          { key: 'Cache-Control', value: 'public, max-age=86400' },
+        ],
+      },
+    ]
+  },
 }
 
 module.exports = nextConfig
