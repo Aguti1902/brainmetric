@@ -239,7 +239,7 @@ function ResultadoContent() {
     // Cargar y añadir el logo (isotipo de Brain Metric)
     try {
       const logoImg = new Image()
-      logoImg.src = '/images/MINDMETRIC/Isotipo.png'
+      logoImg.src = '/images/BRAINMETRIC/LOGO.png'
       await new Promise((resolve, reject) => {
         logoImg.onload = resolve
         logoImg.onerror = reject

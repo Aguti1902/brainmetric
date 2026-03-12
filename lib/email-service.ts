@@ -68,7 +68,7 @@ export const emailTemplates = {
                 <!-- Header -->
                 <tr>
                   <td style="background: linear-gradient(135deg, #0F172A 0%, #6366F1 100%); padding: 40px 30px; text-align: center;">
-                    <img src="https://www.brainmetric.io/images/MINDMETRIC/Logo_blanco.png" alt="Brain Metric" style="height: 40px; width: auto; margin: 0 auto; display: block;" />
+                    <img src="https://www.brainmetric.io/images/BRAINMETRIC/Logo_blanco.png" alt="Brain Metric" style="height: 40px; width: auto; margin: 0 auto; display: block;" />
                   </td>
                 </tr>
                 
@@ -158,7 +158,7 @@ export const emailTemplates = {
                 <!-- Header -->
                 <tr>
                   <td style="background: linear-gradient(135deg, #0F172A 0%, #6366F1 100%); padding: 40px 30px; text-align: center;">
-                    <img src="https://www.brainmetric.io/images/MINDMETRIC/Logo_blanco.png" alt="Brain Metric" style="height: 32px; width: auto; margin: 0 auto 20px auto; display: block;" />
+                    <img src="https://www.brainmetric.io/images/BRAINMETRIC/Logo_blanco.png" alt="Brain Metric" style="height: 32px; width: auto; margin: 0 auto 20px auto; display: block;" />
                     <h1 style="color: #ffffff; margin: 0; font-size: 32px; font-weight: 700;">
                       🎁 ${lang === 'es' ? '¡Tu Resultado te Espera!' : 'Your Result Awaits!'}
                     </h1>
@@ -258,7 +258,7 @@ export const emailTemplates = {
                 <!-- Header -->
                 <tr>
                   <td style="background: linear-gradient(135deg, #0F172A 0%, #6366F1 100%); padding: 40px 30px; text-align: center;">
-                    <img src="https://www.brainmetric.io/images/MINDMETRIC/Logo_blanco.png" alt="Brain Metric" style="height: 32px; width: auto; margin: 0 auto 20px auto; display: block;" />
+                    <img src="https://www.brainmetric.io/images/BRAINMETRIC/Logo_blanco.png" alt="Brain Metric" style="height: 32px; width: auto; margin: 0 auto 20px auto; display: block;" />
                     <h1 style="color: #ffffff; margin: 0; font-size: 32px; font-weight: 700;">
                       🎉 ${lang === 'es' ? '¡Pago Confirmado!' : 'Payment Confirmed!'}
                     </h1>
@@ -361,7 +361,7 @@ export const emailTemplates = {
                 <!-- Header -->
                 <tr>
                   <td style="background: linear-gradient(135deg, #0F172A 0%, #6366F1 100%); padding: 40px 30px; text-align: center;">
-                    <img src="https://www.brainmetric.io/images/MINDMETRIC/Logo_blanco.png" alt="Brain Metric" style="height: 32px; width: auto; margin: 0 auto 20px auto; display: block;" />
+                    <img src="https://www.brainmetric.io/images/BRAINMETRIC/Logo_blanco.png" alt="Brain Metric" style="height: 32px; width: auto; margin: 0 auto 20px auto; display: block;" />
                     <h1 style="color: #ffffff; margin: 0; font-size: 32px; font-weight: 700;">
                       🚀 ${lang === 'es' ? '¡Premium Activado!' : 'Premium Activated!'}
                     </h1>
@@ -464,7 +464,7 @@ export const emailTemplates = {
                 <!-- Header -->
                 <tr>
                   <td style="background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%); padding: 40px 30px; text-align: center;">
-                    <img src="https://www.brainmetric.io/images/MINDMETRIC/Logo_blanco.png" alt="Brain Metric" style="height: 32px; width: auto; margin: 0 auto 20px auto; display: block;" />
+                    <img src="https://www.brainmetric.io/images/BRAINMETRIC/Logo_blanco.png" alt="Brain Metric" style="height: 32px; width: auto; margin: 0 auto 20px auto; display: block;" />
                     <h1 style="color: #ffffff; margin: 0; font-size: 32px; font-weight: 700;">
                       ⏰ ${lang === 'es' ? 'Trial Termina Mañana' : 'Trial Ends Tomorrow'}
                     </h1>
@@ -566,7 +566,7 @@ export const emailTemplates = {
                 <!-- Header -->
                 <tr>
                   <td style="background: linear-gradient(135deg, #10b981 0%, #059669 100%); padding: 40px 30px; text-align: center;">
-                    <img src="https://www.brainmetric.io/images/MINDMETRIC/Logo_blanco.png" alt="Brain Metric" style="height: 32px; width: auto; margin: 0 auto 20px auto; display: block;" />
+                    <img src="https://www.brainmetric.io/images/BRAINMETRIC/Logo_blanco.png" alt="Brain Metric" style="height: 32px; width: auto; margin: 0 auto 20px auto; display: block;" />
                     <h1 style="color: #ffffff; margin: 0; font-size: 32px; font-weight: 700;">
                       ✅ ${lang === 'es' ? '¡Suscripción Activada!' : 'Subscription Activated!'}
                     </h1>
@@ -663,7 +663,7 @@ export const emailTemplates = {
                 <!-- Header -->
                 <tr>
                   <td style="background: linear-gradient(135deg, #10b981 0%, #059669 100%); padding: 40px 30px; text-align: center;">
-                    <img src="https://www.brainmetric.io/images/MINDMETRIC/Logo_blanco.png" alt="Brain Metric" style="height: 32px; width: auto; margin: 0 auto 20px auto; display: block;" />
+                    <img src="https://www.brainmetric.io/images/BRAINMETRIC/Logo_blanco.png" alt="Brain Metric" style="height: 32px; width: auto; margin: 0 auto 20px auto; display: block;" />
                     <h1 style="color: #ffffff; margin: 0; font-size: 32px; font-weight: 700;">
                       ✅ ${lang === 'es' ? 'Pago Recibido' : 'Payment Received'}
                     </h1>
@@ -757,7 +757,7 @@ export const emailTemplates = {
                 <!-- Header -->
                 <tr>
                   <td style="background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%); padding: 40px 30px; text-align: center;">
-                    <img src="https://www.brainmetric.io/images/MINDMETRIC/Logo_blanco.png" alt="Brain Metric" style="height: 32px; width: auto; margin: 0 auto 20px auto; display: block;" />
+                    <img src="https://www.brainmetric.io/images/BRAINMETRIC/Logo_blanco.png" alt="Brain Metric" style="height: 32px; width: auto; margin: 0 auto 20px auto; display: block;" />
                     <h1 style="color: #ffffff; margin: 0; font-size: 32px; font-weight: 700;">
                       ⚠️ ${lang === 'es' ? 'Problema con el Pago' : 'Payment Issue'}
                     </h1>
@@ -863,7 +863,7 @@ export const emailTemplates = {
                 <!-- Header -->
                 <tr>
                   <td style="background: linear-gradient(135deg, #6b7280 0%, #4b5563 100%); padding: 40px 30px; text-align: center;">
-                    <img src="https://www.brainmetric.io/images/MINDMETRIC/Logo_blanco.png" alt="Brain Metric" style="height: 32px; width: auto; margin: 0 auto 20px auto; display: block;" />
+                    <img src="https://www.brainmetric.io/images/BRAINMETRIC/Logo_blanco.png" alt="Brain Metric" style="height: 32px; width: auto; margin: 0 auto 20px auto; display: block;" />
                     <h1 style="color: #ffffff; margin: 0; font-size: 32px; font-weight: 700;">
                       ✅ ${lang === 'es' ? 'Suscripción Cancelada' : 'Subscription Cancelled'}
                     </h1>
@@ -965,7 +965,7 @@ export const emailTemplates = {
                 <!-- Header -->
                 <tr>
                   <td style="background: linear-gradient(135deg, #0F172A 0%, #6366F1 100%); padding: 40px 30px; text-align: center;">
-                    <img src="https://www.brainmetric.io/images/MINDMETRIC/Logo_blanco.png" alt="Brain Metric" style="height: 32px; width: auto; margin: 0 auto 20px auto; display: block;" />
+                    <img src="https://www.brainmetric.io/images/BRAINMETRIC/Logo_blanco.png" alt="Brain Metric" style="height: 32px; width: auto; margin: 0 auto 20px auto; display: block;" />
                     <h1 style="color: #ffffff; margin: 0; font-size: 32px; font-weight: 700;">
                       🎉 ${lang === 'es' ? '¡Cuenta Creada!' : 'Account Created!'}
                     </h1>
@@ -1095,7 +1095,7 @@ export const emailTemplates = {
           <tr><td align="center" style="padding:40px 20px;">
             <table style="max-width:600px;background:#fff;border-radius:12px;overflow:hidden;box-shadow:0 4px 6px rgba(0,0,0,0.1);">
               <tr><td style="background:linear-gradient(135deg,#8B5CF6 0%,#6D28D9 100%);padding:40px 30px;text-align:center;">
-                <img src="https://www.brainmetric.io/images/MINDMETRIC/Logo_blanco.png" alt="Brain Metric" style="height:32px;margin:0 auto 20px;display:block;"/>
+                <img src="https://www.brainmetric.io/images/BRAINMETRIC/Logo_blanco.png" alt="Brain Metric" style="height:32px;margin:0 auto 20px;display:block;"/>
                 <h1 style="color:#fff;margin:0;font-size:28px;">🎯 ${lang === 'es' ? 'Tu Perfil de Personalidad' : 'Your Personality Profile'}</h1>
               </td></tr>
               <tr><td style="padding:40px 30px;text-align:center;">
@@ -1145,7 +1145,7 @@ export const emailTemplates = {
           <tr><td align="center" style="padding:40px 20px;">
             <table style="max-width:600px;background:#fff;border-radius:12px;overflow:hidden;box-shadow:0 4px 6px rgba(0,0,0,0.1);">
               <tr><td style="background:linear-gradient(135deg,#F59E0B 0%,#D97706 100%);padding:40px 30px;text-align:center;">
-                <img src="https://www.brainmetric.io/images/MINDMETRIC/Logo_blanco.png" alt="Brain Metric" style="height:32px;margin:0 auto 20px;display:block;"/>
+                <img src="https://www.brainmetric.io/images/BRAINMETRIC/Logo_blanco.png" alt="Brain Metric" style="height:32px;margin:0 auto 20px;display:block;"/>
                 <h1 style="color:#fff;margin:0;font-size:28px;">🎯 ${lang === 'es' ? 'Evaluación de TDAH' : 'ADHD Assessment'}</h1>
               </td></tr>
               <tr><td style="padding:40px 30px;text-align:center;">
@@ -1195,7 +1195,7 @@ export const emailTemplates = {
           <tr><td align="center" style="padding:40px 20px;">
             <table style="max-width:600px;background:#fff;border-radius:12px;overflow:hidden;box-shadow:0 4px 6px rgba(0,0,0,0.1);">
               <tr><td style="background:linear-gradient(135deg,#3B82F6 0%,#1D4ED8 100%);padding:40px 30px;text-align:center;">
-                <img src="https://www.brainmetric.io/images/MINDMETRIC/Logo_blanco.png" alt="Brain Metric" style="height:32px;margin:0 auto 20px;display:block;"/>
+                <img src="https://www.brainmetric.io/images/BRAINMETRIC/Logo_blanco.png" alt="Brain Metric" style="height:32px;margin:0 auto 20px;display:block;"/>
                 <h1 style="color:#fff;margin:0;font-size:28px;">💙 ${lang === 'es' ? 'Evaluación de Ansiedad' : 'Anxiety Assessment'}</h1>
               </td></tr>
               <tr><td style="padding:40px 30px;text-align:center;">
@@ -1245,7 +1245,7 @@ export const emailTemplates = {
           <tr><td align="center" style="padding:40px 20px;">
             <table style="max-width:600px;background:#fff;border-radius:12px;overflow:hidden;box-shadow:0 4px 6px rgba(0,0,0,0.1);">
               <tr><td style="background:linear-gradient(135deg,#6366F1 0%,#4F46E5 100%);padding:40px 30px;text-align:center;">
-                <img src="https://www.brainmetric.io/images/MINDMETRIC/Logo_blanco.png" alt="Brain Metric" style="height:32px;margin:0 auto 20px;display:block;"/>
+                <img src="https://www.brainmetric.io/images/BRAINMETRIC/Logo_blanco.png" alt="Brain Metric" style="height:32px;margin:0 auto 20px;display:block;"/>
                 <h1 style="color:#fff;margin:0;font-size:28px;">🌟 ${lang === 'es' ? 'Evaluación de Depresión' : 'Depression Assessment'}</h1>
               </td></tr>
               <tr><td style="padding:40px 30px;text-align:center;">
@@ -1295,7 +1295,7 @@ export const emailTemplates = {
           <tr><td align="center" style="padding:40px 20px;">
             <table style="max-width:600px;background:#fff;border-radius:12px;overflow:hidden;box-shadow:0 4px 6px rgba(0,0,0,0.1);">
               <tr><td style="background:linear-gradient(135deg,#EC4899 0%,#DB2777 100%);padding:40px 30px;text-align:center;">
-                <img src="https://www.brainmetric.io/images/MINDMETRIC/Logo_blanco.png" alt="Brain Metric" style="height:32px;margin:0 auto 20px;display:block;"/>
+                <img src="https://www.brainmetric.io/images/BRAINMETRIC/Logo_blanco.png" alt="Brain Metric" style="height:32px;margin:0 auto 20px;display:block;"/>
                 <h1 style="color:#fff;margin:0;font-size:28px;">❤️ ${lang === 'es' ? 'Inteligencia Emocional' : 'Emotional Intelligence'}</h1>
               </td></tr>
               <tr><td style="padding:40px 30px;text-align:center;">

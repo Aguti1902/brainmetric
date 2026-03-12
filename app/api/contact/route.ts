@@ -47,7 +47,7 @@ export async function POST(request: NextRequest) {
                   <!-- Header -->
                   <tr>
                     <td style="background: linear-gradient(135deg, #0F172A 0%, #6366F1 100%); padding: 30px; text-align: center;">
-                      <img src="https://www.mindmetric.io/images/MINDMETRIC/Logo_blanco.png" alt="MindMetric" style="height: 40px; width: auto; margin: 0 auto; display: block;" />
+                      <img src="https://www.brainmetric.io/images/BRAINMETRIC/Logo_blanco.png" alt="MindMetric" style="height: 40px; width: auto; margin: 0 auto; display: block;" />
                       <h1 style="color: #ffffff; margin: 20px 0 0 0; font-size: 24px; font-weight: 700;">
                         📬 Nuevo Mensaje de Contacto
                       </h1>

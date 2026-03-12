@@ -1,6 +1,7 @@
 'use client'
 
 import Link from 'next/link'
+import Image from 'next/image'
 import { FaFacebook, FaTwitter, FaInstagram } from 'react-icons/fa'
 import { useTranslations } from '@/hooks/useTranslations'
 
@@ -14,16 +15,14 @@ export default function Footer() {
       <div className="container-custom py-12">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
           <div className="col-span-1 md:col-span-2">
-            <div className="flex items-center gap-2 mb-4">
-              <div className="w-8 h-8 bg-gradient-to-br from-primary-500 to-accent-500 rounded-lg flex items-center justify-center">
-                <svg className="w-4 h-4 text-white" viewBox="0 0 24 24" fill="currentColor">
-                  <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
-                </svg>
-              </div>
-              <span className="text-lg font-bold">
-                <span className="text-white">Brain</span>
-                <span className="text-gradient"> Metric</span>
-              </span>
+            <div className="mb-4">
+              <Image
+                src="/images/BRAINMETRIC/LOGO.png"
+                alt="Brain Metric"
+                width={150}
+                height={42}
+                className="h-9 w-auto object-contain"
+              />
             </div>
             <p className="text-gray-400 mb-4 max-w-md">
               {t.footer.description}

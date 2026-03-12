@@ -1,6 +1,7 @@
 'use client'
 
 import Link from 'next/link'
+import Image from 'next/image'
 import { useState, useEffect } from 'react'
 import { FaBars, FaTimes, FaUser, FaSignOutAlt } from 'react-icons/fa'
 import LanguageSelector from './LanguageSelector'
@@ -56,16 +57,15 @@ export default function Header() {
     }`}>
       <nav className="container-custom py-4">
         <div className="flex justify-between items-center">
-          <Link href={`/${lang}`} className="flex items-center gap-2">
-            <div className="w-9 h-9 bg-gradient-to-br from-primary-500 to-accent-500 rounded-lg flex items-center justify-center">
-              <svg className="w-5 h-5 text-white" viewBox="0 0 24 24" fill="currentColor">
-                <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
-              </svg>
-            </div>
-            <span className="text-xl font-bold">
-              <span className="text-white">Brain</span>
-              <span className="text-gradient"> Metric</span>
-            </span>
+          <Link href={`/${lang}`} className="flex items-center">
+            <Image
+              src="/images/BRAINMETRIC/LOGO.png"
+              alt="Brain Metric"
+              width={160}
+              height={44}
+              className="h-9 w-auto object-contain"
+              priority
+            />
           </Link>
 
           <div className="hidden md:flex items-center space-x-6">

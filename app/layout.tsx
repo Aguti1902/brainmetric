@@ -11,10 +11,11 @@ export const metadata: Metadata = {
   keywords: 'intelligence test, IQ assessment, cognitive analysis, brain metric, professional IQ test, mental evaluation',
   icons: {
     icon: [
-      { url: '/icon.svg', type: 'image/svg+xml' },
-      { url: '/images/FAVICON2.png', type: 'image/png' },
+      { url: '/images/BRAINMETRIC/FAVICONNUEVO.png', type: 'image/png', sizes: '32x32' },
+      { url: '/images/BRAINMETRIC/FAVICONNUEVO.png', type: 'image/png', sizes: '16x16' },
     ],
-    apple: '/images/FAVICON2.png',
+    apple: '/images/BRAINMETRIC/FAVICONNUEVO.png',
+    shortcut: '/images/BRAINMETRIC/FAVICONNUEVO.png',
   }
 }
 
@@ -26,9 +27,9 @@ export default function RootLayout({
   return (
     <html lang="es">
       <head>
-        <link rel="icon" href="/icon.svg" type="image/svg+xml" />
-        <link rel="icon" href="/images/FAVICON2.png" type="image/png" />
-        <link rel="apple-touch-icon" href="/images/FAVICON2.png" />
+        <link rel="icon" href="/images/BRAINMETRIC/FAVICONNUEVO.png" type="image/png" sizes="32x32" />
+        <link rel="shortcut icon" href="/images/BRAINMETRIC/FAVICONNUEVO.png" />
+        <link rel="apple-touch-icon" href="/images/BRAINMETRIC/FAVICONNUEVO.png" />
       </head>
       <body className={inter.className}>
         <GTMNoscript />
