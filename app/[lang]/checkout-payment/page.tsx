@@ -280,15 +280,12 @@ function CheckoutPaymentContent() {
       {/* Header */}
       <header className="bg-secondary-900/80 backdrop-blur-xl border-b border-white/10 py-4 px-6">
         <div className="max-w-5xl mx-auto flex items-center justify-between">
-          <div className="flex items-center gap-3">
-            <div className="w-9 h-9 bg-gradient-to-br from-primary-500 to-accent-500 rounded-lg flex items-center justify-center text-lg">
-              🧠
-            </div>
-            <span className="text-xl font-bold">
-              <span className="text-white">Brain</span>
-              <span className="bg-clip-text text-transparent bg-gradient-to-r from-primary-400 to-accent-400"> Metric</span>
-            </span>
-          </div>
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src="/images/BRAINMETRIC/LOGO.png"
+            alt="Brain Metric"
+            className="h-9 w-auto object-contain"
+          />
           {email && <div className="text-sm text-gray-400 truncate max-w-[200px]">{email}</div>}
         </div>
       </header>
