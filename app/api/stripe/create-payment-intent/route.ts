@@ -72,15 +72,12 @@ export async function POST(request: NextRequest) {
       testData: testData ? JSON.stringify(testData).substring(0, 400) : '',
     }
 
-    // PaymentIntent por el acceso inicial (0.50€)
-    // Incluimos card, apple_pay y google_pay explícitamente para que
-    // PaymentRequestButtonElement los detecte correctamente
     const paymentIntent = await stripe.paymentIntents.create({
-      amount: setupFeeAmount, // 50 = 0.50€
+      amount: setupFeeAmount,
       currency: 'eur',
       customer: customer.id,
       setup_future_usage: 'off_session',
-      payment_method_types: ['card'],
+      automatic_payment_methods: { enabled: true },
       metadata: meta,
       receipt_email: email,
     })
