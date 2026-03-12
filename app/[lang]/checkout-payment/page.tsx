@@ -265,7 +265,7 @@ function CheckoutPaymentContent() {
   }, [email, lang, testType])
 
   const config = testConfig[testType] || testConfig['iq']
-  const { mm, ss, expired } = useCountdown(TIMER_SECONDS)
+  const { mm, ss } = useCountdown(TIMER_SECONDS)
   const [reviewIdx, setReviewIdx] = useState(0)
 
   // Rotar reseñas cada 4 s
@@ -414,15 +414,8 @@ function CheckoutPaymentContent() {
             <div className="order-1 lg:order-2">
 
               {/* Tarjeta de oferta con contador */}
-              <div className={`mb-4 rounded-2xl p-4 border transition-all duration-500 ${
-                expired
-                  ? 'bg-white/5 border-white/10'
-                  : 'bg-gradient-to-r from-violet-600/20 to-fuchsia-600/20 border-violet-500/30'
-              }`}>
-                {expired ? (
-                  <p className="text-center text-gray-400 text-sm">La oferta de lanzamiento ha expirado</p>
-                ) : (
-                  <div className="flex items-center justify-between gap-4">
+              <div className="mb-4 rounded-2xl p-4 border transition-all duration-500 bg-gradient-to-r from-violet-600/20 to-fuchsia-600/20 border-violet-500/30">
+                <div className="flex items-center justify-between gap-4">
                     {/* Precios */}
                     <div>
                       <p className="text-xs text-gray-400 mb-0.5">🎉 Precio especial de lanzamiento</p>
@@ -444,7 +437,6 @@ function CheckoutPaymentContent() {
                       </div>
                     </div>
                   </div>
-                )}
               </div>
 
               <div className="bg-[#1a1a2e] rounded-2xl border border-white/10 p-6">
