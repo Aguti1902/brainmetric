@@ -3,8 +3,7 @@ import Stripe from 'stripe'
 import { db } from '@/lib/database-postgres'
 import { generateToken } from '@/lib/auth'
 import bcrypt from 'bcryptjs'
-import { sendEmail } from '@/lib/email-service'
-import { getEmailTranslation } from '@/lib/email-translations'
+import { sendEmail, emailTemplates } from '@/lib/email-service'
 
 export const dynamic = 'force-dynamic'
 
@@ -147,7 +146,7 @@ async function createSubscriptionAsync(
   }
 }
 
-// Enviar email en background
+// Enviar email de bienvenida en background
 async function sendWelcomeEmailAsync(
   email: string,
   userName: string,
@@ -156,36 +155,9 @@ async function sendWelcomeEmailAsync(
   password: string
 ) {
   try {
-    const t = (key: any) => getEmailTranslation(lang || 'es', key)
-    const appUrl = process.env.NEXT_PUBLIC_APP_URL || 'https://brainmetric.io'
-    const loginUrl = `${appUrl}/${lang}/cuenta`
-
-    await sendEmail({
-      to: email,
-      subject: t('welcomeSubject'),
-      html: `<!DOCTYPE html><html><body style="margin:0;padding:0;font-family:system-ui,sans-serif;background:#f5f5f5;">
-        <table style="width:100%;"><tr><td align="center" style="padding:40px 20px;">
-        <table style="max-width:600px;background:#fff;border-radius:12px;overflow:hidden;box-shadow:0 4px 6px rgba(0,0,0,.1);">
-          <tr><td style="background:linear-gradient(135deg,#0F172A,#6366F1);padding:40px 30px;text-align:center;">
-            <h1 style="color:#fff;margin:0;font-size:28px;">Brain Metric</h1></td></tr>
-          <tr><td style="padding:40px 30px;text-align:center;">
-            <h2 style="color:#0F172A;margin:0 0 20px;">${t('welcome')} Brain Metric!</h2>
-            <p style="color:#4a5568;">${t('hello')} ${userName},</p>
-            <p style="color:#4a5568;">${t('congratulations')}</p>
-            ${iq ? `<div style="background:#f7fafc;border:1px solid #e2e8f0;border-radius:8px;padding:20px;margin:0 0 30px;text-align:left;">
-              <h3 style="color:#0F172A;margin:0 0 10px;">🎯 ${t('yourIQResult')}: ${iq}</h3></div>` : ''}
-            <div style="background:#fff5f5;border:1px solid #fed7d7;border-radius:8px;padding:20px;margin:0 0 30px;text-align:left;">
-              <h3 style="color:#c53030;margin:0 0 15px;">🔑 ${t('loginCredentials')}</h3>
-              <p style="color:#4a5568;margin:0 0 8px;"><strong>Email:</strong> ${email}</p>
-              <p style="color:#4a5568;margin:0;"><strong>${t('password')}:</strong> ${password}</p>
-              <p style="color:#e53e3e;font-size:12px;margin:10px 0 0;">⚠️ ${t('securityWarning')}</p></div>
-            <a href="${loginUrl}" style="display:inline-block;background:linear-gradient(135deg,#0F172A,#6366F1);color:#fff;text-decoration:none;padding:16px 40px;border-radius:8px;font-weight:600;">
-              ${t('accessDashboard')}</a></td></tr>
-          <tr><td style="background:#f7fafc;padding:20px 30px;text-align:center;border-top:1px solid #e2e8f0;">
-            <p style="color:#718096;font-size:12px;margin:0;">© ${new Date().getFullYear()} Brain Metric.</p></td></tr>
-        </table></td></tr></table></body></html>`,
-    })
-    console.log('📧 [verify-pi] Email enviado a:', email)
+    const emailData = emailTemplates.loginCredentials(email, userName, password, iq, lang)
+    await sendEmail(emailData)
+    console.log('📧 [verify-pi] Email de bienvenida enviado a:', email)
   } catch (err: any) {
     console.error('❌ [verify-pi] Error enviando email:', err.message)
   }
