@@ -39,8 +39,13 @@ export async function sendEmail(options: EmailOptions) {
     console.log(`✅ Email enviado a ${options.to}: ${options.subject}`)
     return { success: true }
   } catch (error: any) {
-    console.error('❌ Error enviando email:', error)
-    return { success: false, error: error.message }
+    // Extraer el mensaje detallado de SendGrid si existe
+    const detail = error?.response?.body?.errors?.[0]?.message
+      || error?.response?.body
+      || error?.message
+      || String(error)
+    console.error('❌ Error enviando email:', detail)
+    return { success: false, error: String(detail) }
   }
 }
 
