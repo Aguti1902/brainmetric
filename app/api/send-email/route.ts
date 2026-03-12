@@ -42,20 +42,6 @@ export async function POST(request: NextRequest) {
         emailData = emailTemplates.paymentSuccess(email, userName || 'Usuario', data.iq, lang || 'es')
         break
 
-      case 'trialStarted':
-        if (!data.trialEndDate) {
-          return NextResponse.json(
-            { error: 'trialEndDate requerido' },
-            { status: 400 }
-          )
-        }
-        emailData = emailTemplates.trialStarted(email, userName || 'Usuario', data.trialEndDate, lang || 'es')
-        break
-
-      case 'trialEndingTomorrow':
-        emailData = emailTemplates.trialEndingTomorrow(email, userName || 'Usuario', lang || 'es')
-        break
-
       case 'subscriptionActivated':
         emailData = emailTemplates.subscriptionActivated(email, userName || 'Usuario', lang || 'es')
         break
