@@ -6,7 +6,7 @@ if (process.env.SENDGRID_API_KEY) {
   sgMail.setApiKey(process.env.SENDGRID_API_KEY)
 }
 
-const FROM_EMAIL = 'support@mindmetric.io'
+const FROM_EMAIL = 'no-reply@brainmetric.io'
 const FROM_NAME = 'Brain Metric'
 
 export interface EmailOptions {
