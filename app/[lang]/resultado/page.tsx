@@ -213,137 +213,147 @@ function ResultadoContent() {
     // Importar jsPDF dinámicamente para evitar problemas con SSR
     const { jsPDF } = await import('jspdf')
     
-    const doc = new jsPDF({
-      orientation: 'landscape',
-      unit: 'mm',
-      format: 'a4'
-    })
-    
-    // Colores corporativos
-    const greenColor: [number, number, number] = [33, 139, 142] // #6366F1
-    const blueColor: [number, number, number] = [3, 28, 67] // #0F172A
-    
-    // Fondo degradado (simulado con rectángulos)
-    doc.setFillColor(240, 250, 250)
+    const doc = new jsPDF({ orientation: 'landscape', unit: 'mm', format: 'a4' })
+
+    // ── Colores corporativos ──────────────────────────────────────────────────
+    const darkBg:    [number, number, number] = [15,  23,  42]  // #0F172A
+    const darkCard:  [number, number, number] = [30,  27,  75]  // #1E1B4B
+    const indigo:    [number, number, number] = [99, 102, 241]  // #6366F1
+    const indigoLt:  [number, number, number] = [165,180,252]   // #A5B4FC
+    const white:     [number, number, number] = [255,255,255]
+    const grayLt:    [number, number, number] = [203,213,225]   // #CBD5E1
+
+    // ── Fondo oscuro completo ─────────────────────────────────────────────────
+    doc.setFillColor(...darkBg)
     doc.rect(0, 0, 297, 210, 'F')
-    
-    // Borde decorativo
-    doc.setLineWidth(2)
-    doc.setDrawColor(...greenColor)
-    doc.rect(10, 10, 277, 190)
-    
-    doc.setLineWidth(0.5)
-    doc.setDrawColor(...greenColor)
-    doc.rect(12, 12, 273, 186)
-    
-    // Cargar y añadir el logo (isotipo de Brain Metric)
+
+    // Franja de acento superior
+    doc.setFillColor(...darkCard)
+    doc.rect(0, 0, 297, 48, 'F')
+
+    // Borde exterior indigo sutil
+    doc.setLineWidth(0.8)
+    doc.setDrawColor(...indigo)
+    doc.rect(6, 6, 285, 198)
+
+    // ── Cargar logo blanco ────────────────────────────────────────────────────
     try {
-      const logoImg = new Image()
-      logoImg.src = '/images/BRAINMETRIC/LOGO.png'
-      await new Promise((resolve, reject) => {
+      const logoImg = new window.Image()
+      logoImg.crossOrigin = 'anonymous'
+      logoImg.src = '/images/BRAINMETRIC/Logo_blanco.png'
+      await new Promise((resolve) => {
         logoImg.onload = resolve
-        logoImg.onerror = reject
+        logoImg.onerror = resolve  // continuar aunque falle
       })
-      
-      // Añadir logo centrado arriba - más grande
-      const logoWidth = 25
-      const logoHeight = 25
-      doc.addImage(logoImg, 'PNG', 136, 18, logoWidth, logoHeight)
-    } catch (error) {
-      console.error('Error loading logo:', error)
-    }
-    
-    // Título del certificado (traducido)
-    doc.setFontSize(26)
-    doc.setTextColor(...blueColor)
+      if (logoImg.complete && logoImg.naturalWidth > 0) {
+        // Logo centrado en la franja superior - proporcional
+        const logoH = 18
+        const logoW = (logoImg.naturalWidth / logoImg.naturalHeight) * logoH
+        doc.addImage(logoImg, 'PNG', 148.5 - logoW / 2, 15, logoW, logoH)
+      }
+    } catch { /* continuar sin logo */ }
+
+    // ── Línea separadora bajo franja ──────────────────────────────────────────
+    doc.setLineWidth(0.4)
+    doc.setDrawColor(...indigo)
+    doc.line(30, 49, 267, 49)
+
+    // ── Título certificado ────────────────────────────────────────────────────
+    doc.setFontSize(22)
+    doc.setTextColor(...white)
     doc.setFont('helvetica', 'bold')
     const certificateTitle = t.certificate?.title || 'INTELLIGENCE CERTIFICATE'
-    doc.text(certificateTitle, 148.5, 55, { align: 'center' })
-    
-    // Línea decorativa
-    doc.setLineWidth(0.5)
-    doc.setDrawColor(...greenColor)
-    doc.line(60, 68, 237, 68)
-    
-    // Texto "Se certifica que" (traducido)
-    doc.setFontSize(14)
-    doc.setTextColor(80, 80, 80)
+    doc.text(certificateTitle.toUpperCase(), 148.5, 63, { align: 'center' })
+
+    // ── "Se certifica que" ────────────────────────────────────────────────────
+    doc.setFontSize(11)
+    doc.setTextColor(...grayLt)
     doc.setFont('helvetica', 'normal')
     const certifyText = t.certificate?.certifies || 'This certifies that'
-    doc.text(certifyText, 148.5, 80, { align: 'center' })
-    
-    // Nombre del usuario
-    doc.setFontSize(24)
-    doc.setTextColor(...greenColor)
+    doc.text(certifyText, 148.5, 74, { align: 'center' })
+
+    // ── Nombre del usuario ────────────────────────────────────────────────────
+    doc.setFontSize(26)
+    doc.setTextColor(...indigoLt)
     doc.setFont('helvetica', 'bold')
-    doc.text(userName, 148.5, 93, { align: 'center' })
-    
-    // Texto descriptivo (traducido)
-    doc.setFontSize(12)
-    doc.setTextColor(80, 80, 80)
+    doc.text(userName, 148.5, 86, { align: 'center' })
+
+    // Línea bajo el nombre
+    doc.setLineWidth(0.3)
+    doc.setDrawColor(...indigo)
+    doc.line(80, 90, 217, 90)
+
+    // ── Textos descriptivos ───────────────────────────────────────────────────
+    doc.setFontSize(10.5)
+    doc.setTextColor(...grayLt)
     doc.setFont('helvetica', 'normal')
     const completedText = t.certificate?.completed || 'has successfully completed the intelligence test'
-    const obtainedText = t.certificate?.obtained || 'obtaining an Intelligence Quotient of'
-    doc.text(completedText, 148.5, 103, { align: 'center' })
-    doc.text(obtainedText, 148.5, 111, { align: 'center' })
-    
-    // IQ Score - Grande y destacado
-    doc.setFontSize(60)
-    doc.setTextColor(...blueColor)
+    const obtainedText  = t.certificate?.obtained  || 'obtaining an Intelligence Quotient of'
+    doc.text(completedText, 148.5, 99, { align: 'center' })
+    doc.text(obtainedText,  148.5, 107, { align: 'center' })
+
+    // ── IQ Score grande ───────────────────────────────────────────────────────
+    // Fondo pill para el IQ
+    doc.setFillColor(...darkCard)
+    doc.roundedRect(108, 111, 81, 36, 5, 5, 'F')
+    doc.setLineWidth(0.5)
+    doc.setDrawColor(...indigo)
+    doc.roundedRect(108, 111, 81, 36, 5, 5, 'S')
+
+    doc.setFontSize(52)
+    doc.setTextColor(...white)
     doc.setFont('helvetica', 'bold')
-    doc.text(userIQ.toString(), 148.5, 135, { align: 'center' })
-    
-    // Categoría (traducido)
-    doc.setFontSize(16)
-    doc.setTextColor(...greenColor)
+    doc.text(userIQ.toString(), 148.5, 138, { align: 'center' })
+
+    // ── Categoría ─────────────────────────────────────────────────────────────
+    doc.setFontSize(13)
+    doc.setTextColor(...indigo)
     doc.setFont('helvetica', 'bold')
     const categoryLabel = t.certificate?.category || 'Category'
-    doc.text(`${categoryLabel}: ${category}`, 148.5, 150, { align: 'center' })
-    
-    // Estadísticas (traducido)
-    doc.setFontSize(11)
-    doc.setTextColor(100, 100, 100)
+    doc.text(`${categoryLabel}: ${category}`, 148.5, 155, { align: 'center' })
+
+    // ── Estadísticas ──────────────────────────────────────────────────────────
+    doc.setFontSize(9.5)
+    doc.setTextColor(...grayLt)
     doc.setFont('helvetica', 'normal')
-    const correctLabel = t.certificate?.correctAnswers || 'correct answers'
-    const percentileLabel = t.certificate?.percentile || 'Percentile'
-    doc.text(`${correctAnswers}/${questions.length} ${correctLabel} (${percentageCorrect}%)`, 148.5, 160, { align: 'center' })
-    doc.text(`${percentileLabel}: ${percentile}`, 148.5, 167, { align: 'center' })
-    
-    // Fecha (traducido según idioma)
-    doc.setFontSize(10)
-    doc.setTextColor(120, 120, 120)
-    const localeMap: { [key: string]: string } = {
-      'es': 'es-ES',
-      'en': 'en-US',
-      'fr': 'fr-FR',
-      'de': 'de-DE',
-      'it': 'it-IT',
-      'pt': 'pt-PT',
-      'sv': 'sv-SE',
-      'no': 'no-NO',
-      'uk': 'uk-UA'
+    const correctLabel   = t.certificate?.correctAnswers || 'correct answers'
+    const percentileLabel = t.certificate?.percentile    || 'Percentile'
+    doc.text(`${correctAnswers}/${questions.length} ${correctLabel} (${percentageCorrect}%)`, 148.5, 163, { align: 'center' })
+    doc.text(`${percentileLabel}: ${percentile}th`, 148.5, 170, { align: 'center' })
+
+    // ── Fecha ─────────────────────────────────────────────────────────────────
+    const localeMap: Record<string, string> = {
+      es:'es-ES', en:'en-US', fr:'fr-FR', de:'de-DE',
+      it:'it-IT', pt:'pt-PT', sv:'sv-SE', no:'no-NO', uk:'uk-UA'
     }
-    const fecha = new Date().toLocaleDateString(localeMap[lang] || 'en-US', { 
-      year: 'numeric', 
-      month: 'long', 
-      day: 'numeric' 
+    const fecha = new Date().toLocaleDateString(localeMap[lang] || 'en-US', {
+      year:'numeric', month:'long', day:'numeric'
     })
     const dateLabel = t.certificate?.issueDate || 'Issue date'
-    doc.text(`${dateLabel}: ${fecha}`, 148.5, 178, { align: 'center' })
-    
-    // Línea de firma decorativa
-    doc.setLineWidth(0.3)
-    doc.setDrawColor(...greenColor)
-    doc.line(105, 188, 192, 188)
-    
-    // Texto de firma
     doc.setFontSize(9)
-    doc.setTextColor(100, 100, 100)
-    const footerText = t.certificate?.footer || 'Brain Metric - Professional Intelligence Test'
+    doc.setTextColor(...grayLt)
+    doc.text(`${dateLabel}: ${fecha}`, 148.5, 178, { align: 'center' })
+
+    // ── Footer ────────────────────────────────────────────────────────────────
+    doc.setFillColor(...darkCard)
+    doc.rect(0, 184, 297, 26, 'F')
+
+    doc.setLineWidth(0.3)
+    doc.setDrawColor(...indigo)
+    doc.line(30, 184, 267, 184)
+
+    doc.setFontSize(8)
+    doc.setTextColor(...indigoLt)
+    doc.setFont('helvetica', 'bold')
+    const footerText = t.certificate?.footer || 'Brain Metric · Professional Intelligence Assessment'
     doc.text(footerText, 148.5, 193, { align: 'center' })
-    doc.text('brainmetric.io', 148.5, 198, { align: 'center' })
-    
-    // Guardar el PDF
+
+    doc.setFontSize(7.5)
+    doc.setTextColor(...grayLt)
+    doc.setFont('helvetica', 'normal')
+    doc.text('brainmetric.io', 148.5, 200, { align: 'center' })
+
+    // ── Guardar ───────────────────────────────────────────────────────────────
     const fileName = t.certificate?.fileName || 'Certificate_IQ'
     doc.save(`${fileName}_${userName.replace(/\s+/g, '_')}_${userIQ}.pdf`)
   }
