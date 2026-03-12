@@ -79,20 +79,22 @@ export async function GET(request: NextRequest) {
       console.log('✅ [verify-pi] Usuario creado:', email)
     }
 
-    // 3. Enviar email de bienvenida ANTES de responder (Vercel corta el proceso al hacer return)
+    // 3. Crear suscripción en Stripe (AWAIT — Vercel mata el proceso tras el return)
+    const hasSubscription = !!existingUser.subscriptionId
+    if (!hasSubscription && customerId && priceId) {
+      await createSubscriptionAsync(stripe, customerId, priceId, trialDays, pi, existingUser.id)
+    } else {
+      if (!customerId) console.warn('⚠️ [verify-pi] customerId vacío — no se puede crear suscripción')
+      if (!priceId)    console.warn('⚠️ [verify-pi] priceId vacío — verifica variables de entorno')
+    }
+
+    // 4. Enviar email de bienvenida (AWAIT — mismo motivo)
     if (isNew && plainPassword) {
       await sendWelcomeEmailAsync(email, userName, iq, lang, plainPassword)
     }
 
-    // 4. Generar token y responder
+    // 5. Generar token y responder
     const token = generateToken(existingUser.id, existingUser.email)
-
-    // 5. Crear suscripción en background DESPUÉS de haber respondido (se ejecuta en Railway/server)
-    //    En Vercel usamos un pequeño hack: la llamamos pero no esperamos
-    const hasSubscription = !!existingUser.subscriptionId
-    if (!hasSubscription && customerId && priceId) {
-      createSubscriptionAsync(stripe, customerId, priceId, trialDays, pi, existingUser.id)
-    }
 
     return NextResponse.json({
       success: true,
