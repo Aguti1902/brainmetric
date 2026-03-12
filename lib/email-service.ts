@@ -128,7 +128,7 @@ export const emailTemplates = {
                       © ${new Date().getFullYear()} Brain Metric. ${lang === 'es' ? 'Todos los derechos reservados.' : 'All rights reserved.'}
                     </p>
                     <p style="color: #718096; font-size: 12px; margin: 0;">
-                      info@brainmetric.io
+                      support@mindmetric.io
                     </p>
                   </td>
                 </tr>
@@ -228,7 +228,7 @@ export const emailTemplates = {
                       © ${new Date().getFullYear()} Brain Metric. ${lang === 'es' ? 'Todos los derechos reservados.' : 'All rights reserved.'}
                     </p>
                     <p style="color: #718096; font-size: 12px; margin: 0;">
-                      info@brainmetric.io
+                      support@mindmetric.io
                     </p>
                   </td>
                 </tr>
@@ -331,7 +331,7 @@ export const emailTemplates = {
                       © ${new Date().getFullYear()} Brain Metric. ${lang === 'es' ? 'Todos los derechos reservados.' : 'All rights reserved.'}
                     </p>
                     <p style="color: #718096; font-size: 12px; margin: 0;">
-                      info@brainmetric.io
+                      support@mindmetric.io
                     </p>
                   </td>
                 </tr>
@@ -344,212 +344,7 @@ export const emailTemplates = {
     `
   }),
 
-  // 4. Trial iniciado
-  trialStarted: (email: string, userName: string, trialEndDate: string, lang: string) => ({
-    to: email,
-    subject: lang === 'es'
-      ? '¡Bienvenido a Premium! 🚀'
-      : 'Welcome to Premium! 🚀',
-    html: `
-      <!DOCTYPE html>
-      <html>
-      <head>
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>${lang === 'es' ? 'Premium Activado' : 'Premium Activated'}</title>
-      </head>
-      <body style="margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif; background-color: #f5f5f5;">
-        <table role="presentation" style="width: 100%; border-collapse: collapse;">
-          <tr>
-            <td align="center" style="padding: 40px 20px;">
-              <table role="presentation" style="max-width: 600px; background-color: #ffffff; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
-                <!-- Header -->
-                <tr>
-                  <td style="background: linear-gradient(135deg, #0F172A 0%, #6366F1 100%); padding: 40px 30px; text-align: center;">
-                    <img src="https://www.brainmetric.io/images/BRAINMETRIC/Logo_blanco.png" alt="Brain Metric" style="height: 32px; width: auto; margin: 0 auto 20px auto; display: block;" />
-                    <h1 style="color: #ffffff; margin: 0; font-size: 32px; font-weight: 700;">
-                      🚀 ${lang === 'es' ? '¡Premium Activado!' : 'Premium Activated!'}
-                    </h1>
-                  </td>
-                </tr>
-                
-                <!-- Content -->
-                <tr>
-                  <td style="padding: 40px 30px;">
-                    <h2 style="color: #0F172A; margin: 0 0 20px 0; font-size: 24px; font-weight: 600;">
-                      ${lang === 'es' ? 'Hola' : 'Hello'}, ${userName}! 👋
-                    </h2>
-                    
-                    <p style="color: #4a5568; font-size: 16px; line-height: 1.6; margin: 0 0 20px 0;">
-                      ${lang === 'es'
-                        ? '¡Tu periodo de prueba premium de 2 días ha comenzado! Ahora tienes acceso a todas las funciones avanzadas.'
-                        : 'Your 2-day premium trial period has started! You now have access to all advanced features.'}
-                    </p>
-                    
-                    <div style="background-color: #e6f5f5; border-left: 4px solid #6366F1; padding: 20px; margin: 30px 0; border-radius: 4px;">
-                      <h3 style="color: #6366F1; margin: 0 0 15px 0; font-size: 18px; font-weight: 600;">
-                        ✨ ${lang === 'es' ? '¿Qué puedes hacer ahora?' : 'What can you do now?'}
-                      </h3>
-                      <ul style="color: #2d3748; margin: 0; padding-left: 20px; line-height: 1.8;">
-                        <li>${lang === 'es' ? 'Tests ilimitados' : 'Unlimited tests'}</li>
-                        <li>${lang === 'es' ? 'Análisis comparativos detallados' : 'Detailed comparative analysis'}</li>
-                        <li>${lang === 'es' ? 'Seguimiento de progreso' : 'Progress tracking'}</li>
-                        <li>${lang === 'es' ? 'Historial completo de resultados' : 'Complete results history'}</li>
-                        <li>${lang === 'es' ? 'Exportación de datos' : 'Data export'}</li>
-                      </ul>
-                    </div>
-                    
-                    <div style="background-color: #fff3cd; border: 2px solid #ffc107; border-radius: 8px; padding: 20px; margin: 30px 0;">
-                      <p style="color: #856404; font-size: 16px; margin: 0 0 10px 0; font-weight: 600;">
-                        ⏰ ${lang === 'es' ? 'Tu trial termina' : 'Your trial ends'}
-                      </p>
-                      <p style="color: #856404; font-size: 18px; margin: 0; font-weight: 700;">
-                        ${trialEndDate}
-                      </p>
-                      <p style="color: #856404; font-size: 14px; margin: 10px 0 0 0; line-height: 1.6;">
-                        ${lang === 'es'
-                          ? 'Después se cobrará 9,99€/mes automáticamente. Puedes cancelar en cualquier momento antes de que termine el trial.'
-                          : 'After that, €9.99/month will be charged automatically. You can cancel anytime before the trial ends.'}
-                      </p>
-                    </div>
-                    
-                    <div style="text-align: center; margin: 30px 0;">
-                      <a href="https://brainmetric.io/${lang}/cuenta" style="display: inline-block; background: linear-gradient(135deg, #0F172A 0%, #6366F1 100%); color: #ffffff; text-decoration: none; padding: 16px 40px; border-radius: 8px; font-weight: 600; font-size: 18px;">
-                        ${lang === 'es' ? 'Acceder a Mi Dashboard' : 'Access My Dashboard'}
-                      </a>
-                    </div>
-                    
-                    <p style="color: #718096; font-size: 14px; margin: 30px 0 0 0; line-height: 1.6;">
-                      ${lang === 'es'
-                        ? '¿Necesitas ayuda? Responde a este email y te ayudaremos encantados.'
-                        : 'Need help? Reply to this email and we\'ll be happy to help.'}
-                    </p>
-                  </td>
-                </tr>
-                
-                <!-- Footer -->
-                <tr>
-                  <td style="background-color: #f7fafc; padding: 30px; text-align: center; border-top: 1px solid #e2e8f0;">
-                    <p style="color: #718096; font-size: 12px; margin: 0 0 10px 0;">
-                      © ${new Date().getFullYear()} Brain Metric. ${lang === 'es' ? 'Todos los derechos reservados.' : 'All rights reserved.'}
-                    </p>
-                    <p style="color: #718096; font-size: 12px; margin: 0;">
-                      info@brainmetric.io
-                    </p>
-                  </td>
-                </tr>
-              </table>
-            </td>
-          </tr>
-        </table>
-      </body>
-      </html>
-    `
-  }),
-
-  // 5. Trial termina mañana
-  trialEndingTomorrow: (email: string, userName: string, lang: string) => ({
-    to: email,
-    subject: lang === 'es'
-      ? '⏰ Tu trial premium termina mañana'
-      : '⏰ Your premium trial ends tomorrow',
-    html: `
-      <!DOCTYPE html>
-      <html>
-      <head>
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>${lang === 'es' ? 'Trial Termina Mañana' : 'Trial Ends Tomorrow'}</title>
-      </head>
-      <body style="margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif; background-color: #f5f5f5;">
-        <table role="presentation" style="width: 100%; border-collapse: collapse;">
-          <tr>
-            <td align="center" style="padding: 40px 20px;">
-              <table role="presentation" style="max-width: 600px; background-color: #ffffff; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
-                <!-- Header -->
-                <tr>
-                  <td style="background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%); padding: 40px 30px; text-align: center;">
-                    <img src="https://www.brainmetric.io/images/BRAINMETRIC/Logo_blanco.png" alt="Brain Metric" style="height: 32px; width: auto; margin: 0 auto 20px auto; display: block;" />
-                    <h1 style="color: #ffffff; margin: 0; font-size: 32px; font-weight: 700;">
-                      ⏰ ${lang === 'es' ? 'Trial Termina Mañana' : 'Trial Ends Tomorrow'}
-                    </h1>
-                  </td>
-                </tr>
-                
-                <!-- Content -->
-                <tr>
-                  <td style="padding: 40px 30px;">
-                    <h2 style="color: #0F172A; margin: 0 0 20px 0; font-size: 24px; font-weight: 600;">
-                      ${lang === 'es' ? 'Hola' : 'Hello'}, ${userName} 👋
-                    </h2>
-                    
-                    <p style="color: #4a5568; font-size: 16px; line-height: 1.6; margin: 0 0 20px 0;">
-                      ${lang === 'es'
-                        ? 'Tu periodo de prueba premium termina MAÑANA. Si no cancelas antes, se cobrará automáticamente 9,99€/mes.'
-                        : 'Your premium trial period ends TOMORROW. If you don\'t cancel before, €9.99/month will be charged automatically.'}
-                    </p>
-                    
-                    <div style="background-color: #fff3cd; border: 2px solid #ffc107; border-radius: 8px; padding: 20px; margin: 30px 0;">
-                      <p style="color: #856404; font-size: 16px; margin: 0 0 10px 0; font-weight: 600;">
-                        ${lang === 'es' ? '💳 Próximo cobro' : '💳 Next charge'}
-                      </p>
-                      <p style="color: #856404; font-size: 24px; margin: 0; font-weight: 700;">
-                        9,99€
-                      </p>
-                      <p style="color: #856404; font-size: 14px; margin: 10px 0 0 0; line-height: 1.6;">
-                        ${lang === 'es'
-                          ? 'Se cobrará automáticamente mañana si no cancelas antes.'
-                          : 'Will be charged automatically tomorrow if you don\'t cancel before.'}
-                      </p>
-                    </div>
-                    
-                    <p style="color: #4a5568; font-size: 16px; line-height: 1.6; margin: 30px 0 20px 0;">
-                      ${lang === 'es'
-                        ? '¿Quieres continuar con Premium? ¡Genial! No hagas nada y mañana tendrás acceso completo.'
-                        : 'Do you want to continue with Premium? Great! Do nothing and tomorrow you\'ll have full access.'}
-                    </p>
-                    
-                    <p style="color: #4a5568; font-size: 16px; line-height: 1.6; margin: 0 0 20px 0;">
-                      ${lang === 'es'
-                        ? '¿Prefieres cancelar? No hay problema, puedes hacerlo ahora mismo y seguirás teniendo acceso hasta que termine tu trial.'
-                        : 'Do you prefer to cancel? No problem, you can do it right now and you\'ll still have access until your trial ends.'}
-                    </p>
-                    
-                    <div style="text-align: center; margin: 30px 0;">
-                      <a href="https://brainmetric.io/${lang}/cuenta" style="display: inline-block; background: linear-gradient(135deg, #0F172A 0%, #6366F1 100%); color: #ffffff; text-decoration: none; padding: 16px 40px; border-radius: 8px; font-weight: 600; font-size: 18px; margin: 0;">
-                        ${lang === 'es' ? 'Gestionar Suscripción' : 'Manage Subscription'}
-                      </a>
-                    </div>
-                    
-                    <p style="color: #718096; font-size: 14px; margin: 30px 0 0 0; line-height: 1.6;">
-                      ${lang === 'es'
-                        ? '¿Tienes preguntas? Responde a este email y te ayudaremos encantados.'
-                        : 'Have questions? Reply to this email and we\'ll be happy to help.'}
-                    </p>
-                  </td>
-                </tr>
-                
-                <!-- Footer -->
-                <tr>
-                  <td style="background-color: #f7fafc; padding: 30px; text-align: center; border-top: 1px solid #e2e8f0;">
-                    <p style="color: #718096; font-size: 12px; margin: 0 0 10px 0;">
-                      © ${new Date().getFullYear()} Brain Metric. ${lang === 'es' ? 'Todos los derechos reservados.' : 'All rights reserved.'}
-                    </p>
-                    <p style="color: #718096; font-size: 12px; margin: 0;">
-                      info@brainmetric.io
-                    </p>
-                  </td>
-                </tr>
-              </table>
-            </td>
-          </tr>
-        </table>
-      </body>
-      </html>
-    `
-  }),
-
-  // 6. Suscripción activada
+  // 4. Suscripción activada
   subscriptionActivated: (email: string, userName: string, lang: string) => ({
     to: email,
     subject: lang === 'es'
@@ -633,7 +428,7 @@ export const emailTemplates = {
                       © ${new Date().getFullYear()} Brain Metric. ${lang === 'es' ? 'Todos los derechos reservados.' : 'All rights reserved.'}
                     </p>
                     <p style="color: #718096; font-size: 12px; margin: 0;">
-                      info@brainmetric.io
+                      support@mindmetric.io
                     </p>
                   </td>
                 </tr>
@@ -646,7 +441,7 @@ export const emailTemplates = {
     `
   }),
 
-  // 7. Pago mensual exitoso
+  // 5. Pago mensual exitoso
   monthlyPaymentSuccess: (email: string, userName: string, amount: number, lang: string) => ({
     to: email,
     subject: lang === 'es'
@@ -727,7 +522,7 @@ export const emailTemplates = {
                       © ${new Date().getFullYear()} Brain Metric. ${lang === 'es' ? 'Todos los derechos reservados.' : 'All rights reserved.'}
                     </p>
                     <p style="color: #718096; font-size: 12px; margin: 0;">
-                      info@brainmetric.io
+                      support@mindmetric.io
                     </p>
                   </td>
                 </tr>
@@ -740,7 +535,7 @@ export const emailTemplates = {
     `
   }),
 
-  // 8. Pago fallido
+  // 6. Pago fallido
   paymentFailed: (email: string, userName: string, attempt: number, lang: string) => ({
     to: email,
     subject: lang === 'es'
@@ -833,7 +628,7 @@ export const emailTemplates = {
                       © ${new Date().getFullYear()} Brain Metric. ${lang === 'es' ? 'Todos los derechos reservados.' : 'All rights reserved.'}
                     </p>
                     <p style="color: #718096; font-size: 12px; margin: 0;">
-                      info@brainmetric.io
+                      support@mindmetric.io
                     </p>
                   </td>
                 </tr>
@@ -846,7 +641,7 @@ export const emailTemplates = {
     `
   }),
 
-  // 9. Cancelación de suscripción
+  // 7. Cancelación de suscripción
   subscriptionCancelled: (email: string, userName: string, accessUntil: string, lang: string) => ({
     to: email,
     subject: lang === 'es'
@@ -935,7 +730,7 @@ export const emailTemplates = {
                       © ${new Date().getFullYear()} Brain Metric. ${lang === 'es' ? 'Todos los derechos reservados.' : 'All rights reserved.'}
                     </p>
                     <p style="color: #718096; font-size: 12px; margin: 0;">
-                      info@brainmetric.io
+                      support@mindmetric.io
                     </p>
                   </td>
                 </tr>
@@ -948,7 +743,7 @@ export const emailTemplates = {
     `
   }),
 
-  // 10. Credenciales de acceso (después del pago)
+  // 8. Credenciales de acceso (después del pago)
   loginCredentials: (email: string, userName: string, password: string, iq: number, lang: string) => ({
     to: email,
     subject: lang === 'es'
@@ -1068,7 +863,7 @@ export const emailTemplates = {
                       © ${new Date().getFullYear()} Brain Metric. ${lang === 'es' ? 'Todos los derechos reservados.' : 'All rights reserved.'}
                     </p>
                     <p style="color: #718096; font-size: 12px; margin: 0;">
-                      info@brainmetric.io
+                      support@mindmetric.io
                     </p>
                   </td>
                 </tr>

@@ -3,12 +3,15 @@
 import { useState } from 'react'
 import { useRouter, useParams } from 'next/navigation'
 import { useTranslations } from '@/hooks/useTranslations'
+import Link from 'next/link'
 import Header from '@/components/Header'
 import Footer from '@/components/Footer'
+import { FaLock, FaEnvelope, FaEye, FaEyeSlash } from 'react-icons/fa'
 
 export default function LoginPage() {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
+  const [showPassword, setShowPassword] = useState(false)
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
   const [showForgotPassword, setShowForgotPassword] = useState(false)
@@ -36,21 +39,16 @@ export default function LoginPage() {
       const data = await response.json()
 
       if (response.ok) {
-        // Guardar token en localStorage
         localStorage.setItem('auth_token', data.token)
         localStorage.setItem('user_data', JSON.stringify(data.user))
-        
-        // También guardar en formato antiguo para compatibilidad
         localStorage.setItem('userEmail', data.user.email)
         localStorage.setItem('paymentCompleted', 'true')
-        
-        // Redirigir a cuenta/dashboard
         router.push(`/${lang}/cuenta`)
       } else {
-        setError(data.error || t.login?.errorLogin || 'Error al iniciar sesión')
+        setError(data.error || t?.login?.errorLogin || 'Error al iniciar sesión')
       }
-    } catch (error) {
-      setError(t.login?.errorConnection || 'Error de conexión. Inténtalo de nuevo.')
+    } catch {
+      setError(t?.login?.errorConnection || 'Error de conexión. Inténtalo de nuevo.')
     } finally {
       setLoading(false)
     }
@@ -71,176 +69,185 @@ export default function LoginPage() {
       const data = await response.json()
 
       if (response.ok) {
-        setForgotPasswordMessage(t.login?.resetSent || 'Se ha enviado un enlace de recuperación a tu email.')
+        setForgotPasswordMessage(t?.login?.resetSent || 'Se ha enviado un enlace de recuperación a tu email.')
         setShowForgotPassword(false)
         setForgotPasswordEmail('')
       } else {
-        setForgotPasswordMessage(data.error || t.login?.resetError || 'Error al enviar el email de recuperación.')
+        setForgotPasswordMessage(data.error || t?.login?.resetError || 'Error al enviar el email de recuperación.')
       }
-    } catch (error) {
-      setForgotPasswordMessage(t.login?.errorConnection || 'Error de conexión. Inténtalo de nuevo.')
+    } catch {
+      setForgotPasswordMessage(t?.login?.errorConnection || 'Error de conexión. Inténtalo de nuevo.')
     } finally {
       setForgotPasswordLoading(false)
     }
   }
 
-  if (!t) {
-    return (
-      <>
-        <Header />
-        <div className="min-h-screen bg-gray-50 flex items-center justify-center">
-          <div className="text-center">
-            <div className="animate-spin rounded-full h-16 w-16 border-b-2 border-primary-600 mx-auto mb-4"></div>
-            <p className="text-gray-600">Loading...</p>
-          </div>
-        </div>
-        <Footer />
-      </>
-    )
-  }
-
   return (
     <>
       <Header />
-      <div className="min-h-screen bg-gray-50 py-12">
-        <div className="max-w-md mx-auto bg-white rounded-lg shadow-md p-8">
+      <div className="min-h-screen bg-secondary-950 neural-bg flex items-center justify-center py-16 px-4">
+        <div className="w-full max-w-md">
+          {/* Logo */}
           <div className="text-center mb-8">
-            <h1 className="text-3xl font-bold text-gray-900 mb-2">
-              {t.login?.title || 'Iniciar Sesión'}
+            <div className="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-primary-600/20 border border-primary-500/30 mb-4">
+              <FaLock className="text-2xl text-primary-400" />
+            </div>
+            <h1 className="text-3xl font-bold text-white mb-2">
+              {t?.login?.title || 'Iniciar Sesión'}
             </h1>
-            <p className="text-gray-600">
-              {t.login?.subtitle || 'Accede a tu dashboard personal'}
+            <p className="text-gray-400">
+              {t?.login?.subtitle || 'Accede a tu dashboard personal'}
             </p>
           </div>
 
-          {error && (
-            <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded mb-4">
-              {error}
-            </div>
-          )}
+          {/* Card */}
+          <div className="bg-white/5 backdrop-blur-sm border border-white/10 rounded-2xl p-8">
 
-          {forgotPasswordMessage && (
-            <div className={`border px-4 py-3 rounded mb-4 ${
-              forgotPasswordMessage.includes('enviado') 
-                ? 'bg-green-50 border-green-200 text-green-700'
-                : 'bg-red-50 border-red-200 text-red-700'
-            }`}>
-              {forgotPasswordMessage}
-            </div>
-          )}
-
-          {!showForgotPassword ? (
-            <form onSubmit={handleLogin} className="space-y-6">
-              <div>
-                <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-2">
-                  {t.login?.email || 'Email'}
-                </label>
-                <input
-                  type="email"
-                  id="email"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  required
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent"
-                  placeholder={t.login?.emailPlaceholder || 'tu@email.com'}
-                />
+            {error && (
+              <div className="bg-red-500/10 border border-red-500/30 text-red-400 px-4 py-3 rounded-xl mb-6 text-sm">
+                {error}
               </div>
+            )}
 
-              <div>
-                <label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-2">
-                  {t.login?.password || 'Contraseña'}
-                </label>
-                <input
-                  type="password"
-                  id="password"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  required
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent"
-                  placeholder={t.login?.passwordPlaceholder || 'Tu contraseña'}
-                />
+            {forgotPasswordMessage && (
+              <div className={`border px-4 py-3 rounded-xl mb-6 text-sm ${
+                forgotPasswordMessage.includes('enviado') || forgotPasswordMessage.includes('sent')
+                  ? 'bg-green-500/10 border-green-500/30 text-green-400'
+                  : 'bg-red-500/10 border-red-500/30 text-red-400'
+              }`}>
+                {forgotPasswordMessage}
               </div>
+            )}
 
-              <button
-                type="submit"
-                disabled={loading}
-                className="w-full bg-primary-600 text-white py-2 px-4 rounded-md hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed"
-              >
-                {loading ? (
-                  <div className="flex items-center justify-center">
-                    <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2"></div>
-                    {t.login?.loggingIn || 'Iniciando sesión...'}
+            {!showForgotPassword ? (
+              <form onSubmit={handleLogin} className="space-y-5">
+                <div>
+                  <label className="block text-sm font-medium text-gray-300 mb-2">
+                    {t?.login?.email || 'Email'}
+                  </label>
+                  <div className="relative">
+                    <FaEnvelope className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-500 text-sm" />
+                    <input
+                      type="email"
+                      value={email}
+                      onChange={(e) => setEmail(e.target.value)}
+                      required
+                      className="w-full pl-11 pr-4 py-3 bg-white/5 border border-white/10 rounded-xl text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent transition"
+                      placeholder={t?.login?.emailPlaceholder || 'tu@email.com'}
+                    />
                   </div>
-                ) : (
-                  t.login?.loginButton || 'Iniciar Sesión'
-                )}
-              </button>
+                </div>
 
-              <div className="text-center">
-                <button
-                  type="button"
-                  onClick={() => setShowForgotPassword(true)}
-                  className="text-primary-600 hover:text-primary-700 text-sm"
-                >
-                  {t.login?.forgotPassword || '¿Has olvidado tu contraseña?'}
-                </button>
-              </div>
-            </form>
-          ) : (
-            <form onSubmit={handleForgotPassword} className="space-y-6">
-              <div>
-                <label htmlFor="forgotEmail" className="block text-sm font-medium text-gray-700 mb-2">
-                  {t.login?.forgotEmailLabel || 'Email'}
-                </label>
-                <input
-                  type="email"
-                  id="forgotEmail"
-                  value={forgotPasswordEmail}
-                  onChange={(e) => setForgotPasswordEmail(e.target.value)}
-                  required
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent"
-                  placeholder={t.login?.emailPlaceholder || 'tu@email.com'}
-                />
-              </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-300 mb-2">
+                    {t?.login?.password || 'Contraseña'}
+                  </label>
+                  <div className="relative">
+                    <FaLock className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-500 text-sm" />
+                    <input
+                      type={showPassword ? 'text' : 'password'}
+                      value={password}
+                      onChange={(e) => setPassword(e.target.value)}
+                      required
+                      className="w-full pl-11 pr-12 py-3 bg-white/5 border border-white/10 rounded-xl text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent transition"
+                      placeholder={t?.login?.passwordPlaceholder || 'Tu contraseña'}
+                    />
+                    <button
+                      type="button"
+                      onClick={() => setShowPassword(!showPassword)}
+                      className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-300 transition"
+                    >
+                      {showPassword ? <FaEyeSlash /> : <FaEye />}
+                    </button>
+                  </div>
+                </div>
 
-              <div className="flex space-x-3">
+                <div className="text-right">
+                  <button
+                    type="button"
+                    onClick={() => setShowForgotPassword(true)}
+                    className="text-primary-400 hover:text-primary-300 text-sm transition"
+                  >
+                    {t?.login?.forgotPassword || '¿Has olvidado tu contraseña?'}
+                  </button>
+                </div>
+
                 <button
                   type="submit"
-                  disabled={forgotPasswordLoading}
-                  className="flex-1 bg-primary-600 text-white py-2 px-4 rounded-md hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed"
+                  disabled={loading}
+                  className="w-full btn-primary py-3 text-base font-semibold disabled:opacity-50 disabled:cursor-not-allowed"
                 >
-                  {forgotPasswordLoading ? (
-                    <div className="flex items-center justify-center">
-                      <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2"></div>
-                      {t.login?.sending || 'Enviando...'}
+                  {loading ? (
+                    <div className="flex items-center justify-center gap-2">
+                      <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white"></div>
+                      {t?.login?.loggingIn || 'Iniciando sesión...'}
                     </div>
                   ) : (
-                    t.login?.sendReset || 'Enviar enlace'
+                    t?.login?.loginButton || 'Iniciar Sesión'
                   )}
                 </button>
+              </form>
+            ) : (
+              <form onSubmit={handleForgotPassword} className="space-y-5">
+                <div>
+                  <h3 className="text-white font-semibold mb-1">{t?.login?.forgotPassword || '¿Olvidaste tu contraseña?'}</h3>
+                  <p className="text-gray-400 text-sm mb-4">
+                    {lang === 'es' ? 'Te enviaremos un enlace para restablecerla.' : 'We\'ll send you a link to reset it.'}
+                  </p>
+                  <label className="block text-sm font-medium text-gray-300 mb-2">
+                    {t?.login?.forgotEmailLabel || 'Email'}
+                  </label>
+                  <div className="relative">
+                    <FaEnvelope className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-500 text-sm" />
+                    <input
+                      type="email"
+                      value={forgotPasswordEmail}
+                      onChange={(e) => setForgotPasswordEmail(e.target.value)}
+                      required
+                      className="w-full pl-11 pr-4 py-3 bg-white/5 border border-white/10 rounded-xl text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent transition"
+                      placeholder={t?.login?.emailPlaceholder || 'tu@email.com'}
+                    />
+                  </div>
+                </div>
 
-                <button
-                  type="button"
-                  onClick={() => {
-                    setShowForgotPassword(false)
-                    setForgotPasswordEmail('')
-                    setForgotPasswordMessage('')
-                  }}
-                  className="flex-1 bg-gray-300 text-gray-700 py-2 px-4 rounded-md hover:bg-gray-400 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2"
-                >
-                  {t.login?.cancel || 'Cancelar'}
-                </button>
-              </div>
-            </form>
-          )}
+                <div className="flex gap-3">
+                  <button
+                    type="submit"
+                    disabled={forgotPasswordLoading}
+                    className="flex-1 btn-primary py-3 font-semibold disabled:opacity-50"
+                  >
+                    {forgotPasswordLoading ? (
+                      <div className="flex items-center justify-center gap-2">
+                        <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white"></div>
+                        {t?.login?.sending || 'Enviando...'}
+                      </div>
+                    ) : (
+                      t?.login?.sendReset || 'Enviar enlace'
+                    )}
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setShowForgotPassword(false)
+                      setForgotPasswordEmail('')
+                      setForgotPasswordMessage('')
+                    }}
+                    className="flex-1 bg-white/5 border border-white/10 text-gray-300 hover:text-white hover:bg-white/10 py-3 rounded-xl font-semibold transition"
+                  >
+                    {t?.login?.cancel || 'Cancelar'}
+                  </button>
+                </div>
+              </form>
+            )}
 
-          <div className="mt-6 text-center">
-            <p className="text-sm text-gray-600">
-              {t.login?.noAccount || '¿No tienes cuenta?'}{' '}
-              <span className="text-primary-600">
-                {t.login?.contactSupport || 'Contacta con soporte'}
-              </span>
-            </p>
+            <div className="mt-6 pt-6 border-t border-white/10 text-center">
+              <p className="text-sm text-gray-500">
+                {t?.login?.noAccount || '¿No tienes cuenta?'}{' '}
+                <Link href={`/${lang}/test`} className="text-primary-400 hover:text-primary-300 transition font-medium">
+                  {lang === 'es' ? 'Realiza el test' : 'Take the test'}
+                </Link>
+              </p>
+            </div>
           </div>
         </div>
       </div>

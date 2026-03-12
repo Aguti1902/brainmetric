@@ -105,9 +105,17 @@ export default function Header() {
                 )}
               </div>
             ) : (
-              <Link href={`/${lang}/test`} className="btn-primary text-sm py-2.5 px-6">
-                {t.nav.startTest}
-              </Link>
+              <div className="flex items-center gap-3">
+                <Link
+                  href={`/${lang}/login`}
+                  className="text-gray-300 hover:text-white text-sm font-medium transition-colors"
+                >
+                  {t.nav.login || 'Iniciar sesión'}
+                </Link>
+                <Link href={`/${lang}/test`} className="btn-primary text-sm py-2.5 px-6">
+                  {t.nav.startTest}
+                </Link>
+              </div>
             )}
           </div>
 
@@ -153,13 +161,22 @@ export default function Header() {
                 </button>
               </>
             ) : (
-              <Link
-                href={`/${lang}/test`}
-                className="block btn-primary text-center"
-                onClick={() => setIsMenuOpen(false)}
-              >
-                {t.nav.startTest}
-              </Link>
+              <div className="space-y-3">
+                <Link
+                  href={`/${lang}/login`}
+                  className="block text-center text-gray-300 hover:text-white font-medium transition-colors py-2"
+                  onClick={() => setIsMenuOpen(false)}
+                >
+                  {t.nav.login || 'Iniciar sesión'}
+                </Link>
+                <Link
+                  href={`/${lang}/test`}
+                  className="block btn-primary text-center"
+                  onClick={() => setIsMenuOpen(false)}
+                >
+                  {t.nav.startTest}
+                </Link>
+              </div>
             )}
           </div>
         )}
