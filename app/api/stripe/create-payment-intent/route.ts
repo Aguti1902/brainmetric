@@ -77,6 +77,9 @@ export async function POST(request: NextRequest) {
       currency: 'eur',
       customer: customer.id,
       automatic_payment_methods: { enabled: true },
+      // setup_future_usage guarda el método de pago para cobrar la suscripción tras el trial
+      // es requerido también para Apple Pay / Google Pay en pagos recurrentes
+      setup_future_usage: 'off_session',
       metadata: meta,
       receipt_email: email,
     })
