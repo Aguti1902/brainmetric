@@ -1,7 +1,6 @@
 'use client'
 
 import Link from 'next/link'
-import Image from 'next/image'
 import { useParams } from 'next/navigation'
 
 interface MinimalHeaderProps {
@@ -17,13 +16,11 @@ export default function MinimalHeader({ email }: MinimalHeaderProps) {
       <div className="container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
           <Link href={`/${lang}`} className="flex items-center">
-            <Image
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
               src="/images/BRAINMETRIC/LOGO.png"
               alt="Brain Metric"
-              width={140}
-              height={38}
               className="h-8 w-auto object-contain"
-              priority
             />
           </Link>
 

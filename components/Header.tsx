@@ -1,7 +1,6 @@
 'use client'
 
 import Link from 'next/link'
-import Image from 'next/image'
 import { useState, useEffect } from 'react'
 import { FaBars, FaTimes, FaUser, FaSignOutAlt } from 'react-icons/fa'
 import LanguageSelector from './LanguageSelector'
@@ -58,13 +57,11 @@ export default function Header() {
       <nav className="container-custom py-4">
         <div className="flex justify-between items-center">
           <Link href={`/${lang}`} className="flex items-center">
-            <Image
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
               src="/images/BRAINMETRIC/LOGO.png"
               alt="Brain Metric"
-              width={160}
-              height={44}
               className="h-9 w-auto object-contain"
-              priority
             />
           </Link>
 

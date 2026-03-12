@@ -1,7 +1,6 @@
 'use client'
 
 import Link from 'next/link'
-import Image from 'next/image'
 import { FaFacebook, FaTwitter, FaInstagram } from 'react-icons/fa'
 import { useTranslations } from '@/hooks/useTranslations'
 
@@ -16,11 +15,10 @@ export default function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
           <div className="col-span-1 md:col-span-2">
             <div className="mb-4">
-              <Image
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
                 src="/images/BRAINMETRIC/LOGO.png"
                 alt="Brain Metric"
-                width={150}
-                height={42}
                 className="h-9 w-auto object-contain"
               />
             </div>

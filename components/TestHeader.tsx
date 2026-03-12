@@ -1,6 +1,5 @@
 'use client'
 
-import Image from 'next/image'
 import { FaClock } from 'react-icons/fa'
 
 interface TestHeaderProps {
@@ -29,13 +28,11 @@ export default function TestHeader({
       <div className="container mx-auto max-w-7xl px-4">
         <div className="flex items-center justify-between py-3">
           <div className="flex items-center">
-            <Image
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
               src="/images/BRAINMETRIC/LOGO.png"
               alt="Brain Metric"
-              width={130}
-              height={36}
               className="h-7 w-auto object-contain hidden sm:block"
-              priority
             />
           </div>
           
