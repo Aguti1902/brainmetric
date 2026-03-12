@@ -1,9 +1,14 @@
 import { NextRequest, NextResponse } from 'next/server'
 import Stripe from 'stripe'
 import { db } from '@/lib/database-postgres'
-import { sendEmail } from '@/lib/email-service'
+import { sendEmail, emailTemplates } from '@/lib/email-service'
 import { getEmailTranslation } from '@/lib/email-translations'
 import bcrypt from 'bcryptjs'
+
+// Envía email en background sin bloquear la respuesta del webhook
+function sendEmailSafe(emailData: Parameters<typeof sendEmail>[0]) {
+  sendEmail(emailData).catch(err => console.error('❌ [webhook] Error enviando email:', err.message))
+}
 
 export const dynamic = 'force-dynamic'
 
@@ -28,13 +33,24 @@ async function getStripeWithSecret(): Promise<{ stripe: Stripe; webhookSecret: s
   }
 }
 
-async function getCustomerEmail(stripe: Stripe, customerId: string): Promise<string> {
+interface CustomerInfo {
+  email: string
+  lang: string
+  userName: string
+}
+
+async function getCustomerInfo(stripe: Stripe, customerId: string): Promise<CustomerInfo> {
   try {
     const customer = await stripe.customers.retrieve(customerId)
-    if ((customer as Stripe.DeletedCustomer).deleted) return ''
-    return (customer as Stripe.Customer).email || ''
+    if ((customer as Stripe.DeletedCustomer).deleted) return { email: '', lang: 'es', userName: '' }
+    const c = customer as Stripe.Customer
+    return {
+      email: c.email || '',
+      lang: (c.metadata?.lang as string) || 'es',
+      userName: (c.metadata?.userName as string) || '',
+    }
   } catch {
-    return ''
+    return { email: '', lang: 'es', userName: '' }
   }
 }
 
@@ -208,14 +224,15 @@ export async function POST(request: NextRequest) {
 
       case 'customer.subscription.updated': {
         const subscription = event.data.object as Stripe.Subscription
-        const email = await getCustomerEmail(stripe, subscription.customer as string)
+        const { email, lang, userName } = await getCustomerInfo(stripe, subscription.customer as string)
 
         if (!email) {
-          console.warn('⚠️ [webhook] No se pudo obtener email para suscripción:', subscription.id)
+          console.warn('⚠️ [webhook] No se pudo obtener info para suscripción:', subscription.id)
           break
         }
 
         if (subscription.status === 'active') {
+          const wasTrialing = (event.data.previous_attributes as any)?.status === 'trialing'
           const accessUntil = new Date()
           accessUntil.setDate(accessUntil.getDate() + 30)
           const user = await db.getUserByEmail(email)
@@ -225,6 +242,13 @@ export async function POST(request: NextRequest) {
               accessUntil: accessUntil.toISOString(),
             })
             console.log('✅ [webhook] Suscripción activada para:', email)
+
+            // Email: suscripción activada (solo cuando pasa de trial → active)
+            if (wasTrialing) {
+              const name = userName || user.userName
+              sendEmailSafe(emailTemplates.subscriptionActivated(email, name, lang))
+              console.log('📧 [webhook] Email "suscripción activada" enviado a:', email)
+            }
           }
         }
 
@@ -252,29 +276,40 @@ export async function POST(request: NextRequest) {
 
       case 'customer.subscription.deleted': {
         const subscription = event.data.object as Stripe.Subscription
-        const email = await getCustomerEmail(stripe, subscription.customer as string)
+        const { email, lang, userName } = await getCustomerInfo(stripe, subscription.customer as string)
 
         if (!email) {
-          console.warn('⚠️ [webhook] No se pudo obtener email para suscripción eliminada:', subscription.id)
+          console.warn('⚠️ [webhook] No se pudo obtener info para suscripción eliminada:', subscription.id)
           break
         }
 
         const user = await db.getUserByEmail(email)
         if (user) {
+          // Calcular hasta cuándo tenía acceso
+          const accessDate = user.accessUntil
+            ? new Date(user.accessUntil).toLocaleDateString('es-ES', { day: 'numeric', month: 'long', year: 'numeric' })
+            : new Date().toLocaleDateString('es-ES', { day: 'numeric', month: 'long', year: 'numeric' })
+
           await db.updateUser(user.id, {
             subscriptionStatus: 'cancelled',
             subscriptionId: null as any,
           })
           console.log('✅ [webhook] Suscripción eliminada para:', email)
+
+          // Email: suscripción cancelada
+          const name = userName || user.userName
+          sendEmailSafe(emailTemplates.subscriptionCancelled(email, name, accessDate, lang))
+          console.log('📧 [webhook] Email "suscripción cancelada" enviado a:', email)
         }
         break
       }
 
       case 'invoice.payment_succeeded': {
         const invoice = event.data.object as Stripe.Invoice
+        const billingReason = (invoice as any).billing_reason
 
-        // El primer pago del trial no activa la suscripción — solo procesar renovaciones
-        if ((invoice as any).billing_reason === 'subscription_create') break
+        // subscription_create = primer cobro al salir del trial → ya gestionado en subscription.updated
+        if (billingReason === 'subscription_create') break
 
         const customerEmail = invoice.customer_email || ''
         if (!customerEmail) break
@@ -289,6 +324,14 @@ export async function POST(request: NextRequest) {
             accessUntil: accessUntil.toISOString(),
           })
           console.log('✅ [webhook] Renovación procesada para:', customerEmail)
+
+          // Email: pago mensual recibido (solo renovaciones, no trial)
+          if (billingReason === 'subscription_cycle') {
+            const { lang: customerLang } = await getCustomerInfo(stripe, invoice.customer as string)
+            const amountPaid = (invoice.amount_paid || 0) / 100
+            sendEmailSafe(emailTemplates.monthlyPaymentSuccess(customerEmail, user.userName, amountPaid, customerLang))
+            console.log('📧 [webhook] Email "pago mensual" enviado a:', customerEmail)
+          }
         }
         break
       }
@@ -364,14 +407,20 @@ export async function POST(request: NextRequest) {
       case 'invoice.payment_failed': {
         const invoice = event.data.object as Stripe.Invoice
         const customerEmail = invoice.customer_email || ''
+        const attemptCount = (invoice as any).attempt_count || 1
 
-        console.warn(`⚠️ [webhook] Pago fallido para: ${customerEmail} | invoice: ${invoice.id}`)
+        console.warn(`⚠️ [webhook] Pago fallido para: ${customerEmail} | intent: ${attemptCount} | invoice: ${invoice.id}`)
 
         if (customerEmail) {
           const user = await db.getUserByEmail(customerEmail)
           if (user) {
             await db.updateUser(user.id, { subscriptionStatus: 'expired' })
             console.log('⚠️ [webhook] Usuario marcado como pago pendiente:', customerEmail)
+
+            // Email: pago fallido
+            const { lang } = await getCustomerInfo(stripe, invoice.customer as string)
+            sendEmailSafe(emailTemplates.paymentFailed(customerEmail, user.userName, attemptCount, lang))
+            console.log('📧 [webhook] Email "pago fallido" enviado a:', customerEmail)
           }
         }
         break
