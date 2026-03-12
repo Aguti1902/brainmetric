@@ -341,6 +341,13 @@ export async function POST(request: NextRequest) {
           }
         }
 
+        // Verificar si el usuario ya fue creado por verify-payment-intent
+        const existingUserCheck = await db.getUserByEmail(piEmail)
+        if (existingUserCheck?.subscriptionId) {
+          console.log('ℹ️ [webhook] Usuario ya tiene suscripción, omitiendo creación duplicada:', piEmail)
+          break
+        }
+
         const { user, isNew, password } = await createOrUpdateUser(
           piEmail, piUserName, piIQ, piLang,
           customerId, subscriptionId

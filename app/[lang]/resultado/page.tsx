@@ -50,7 +50,7 @@ function ResultadoContent() {
     loadResults()
   }, [router, lang, searchParams])
 
-  const verifyPaymentIntent = async (paymentIntentId: string, attempt = 0) => {
+  const verifyPaymentIntent = async (paymentIntentId: string) => {
     try {
       const response = await fetch(`/api/stripe/verify-payment-intent?payment_intent=${paymentIntentId}`)
       const data = await response.json()
@@ -64,12 +64,6 @@ function ResultadoContent() {
           return
         }
         router.push(`/${lang}/resultado-estimado`)
-        return
-      }
-
-      // El usuario aún no fue creado por el webhook, reintentar hasta 5 veces
-      if (!data.userCreated && attempt < 5) {
-        setTimeout(() => verifyPaymentIntent(paymentIntentId, attempt + 1), 2000)
         return
       }
 
@@ -358,10 +352,10 @@ function ResultadoContent() {
     return (
       <>
         <MinimalHeader email={userEmail} />
-        <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+        <div className="min-h-screen bg-secondary-950 flex items-center justify-center">
           <div className="text-center">
-            <div className="animate-spin rounded-full h-16 w-16 border-b-2 border-primary-600 mx-auto mb-4"></div>
-            <p className="text-gray-600">
+            <div className="w-16 h-16 border-4 border-primary-500 border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
+            <p className="text-gray-300">
               {verifyingPayment ? 'Verificando pago...' : 'Cargando...'}
             </p>
           </div>
@@ -435,21 +429,21 @@ function ResultadoContent() {
     <>
       <MinimalHeader email={userEmail} />
       
-      <div className="min-h-screen bg-gradient-to-br from-primary-50 to-white py-12">
+      <div className="min-h-screen bg-secondary-950 neural-bg py-12">
         <div className="container-custom max-w-7xl">
-          {/* Success Banner - Más compacto */}
-          <div className="bg-gradient-to-r from-green-50 to-emerald-50 border-2 border-green-300 rounded-xl p-4 mb-6 text-center animate-fadeIn shadow-md">
+          {/* Success Banner */}
+          <div className="bg-gradient-to-r from-green-900/40 to-emerald-900/40 border border-green-500/40 rounded-xl p-4 mb-6 text-center animate-fadeIn shadow-md backdrop-blur-sm">
             <div className="text-3xl mb-2">🎉</div>
-            <h2 className="text-xl font-bold text-green-900 mb-1">
+            <h2 className="text-xl font-bold text-green-300 mb-1">
               {t.result.congratulations}, {userName}!
             </h2>
-            <p className="text-green-700 text-sm">
-              {t.result.analysisComplete} <strong>{userEmail}</strong>
+            <p className="text-green-400 text-sm">
+              {t.result.analysisComplete} <strong className="text-green-200">{userEmail}</strong>
             </p>
           </div>
 
           {/* Main IQ Score Card - Hero */}
-          <div className="bg-white rounded-3xl shadow-2xl overflow-hidden mb-8 animate-fadeIn">
+          <div className="bg-white/5 backdrop-blur-xl border border-white/10 rounded-3xl shadow-2xl overflow-hidden mb-8 animate-fadeIn">
             {/* Gradient Header */}
             <div className="bg-gradient-to-r from-[#6366F1] via-[#4F46E5] to-[#0F172A] p-6 md:p-12 text-white text-center relative overflow-hidden">
               {/* Decorative circles */}
@@ -499,12 +493,12 @@ function ResultadoContent() {
 
             {/* Description Card */}
             <div className="p-8 md:p-12">
-              <div className="bg-gradient-to-br from-[#e6f5f5] to-white rounded-2xl p-8 border-2 border-[#6366F1]/20">
-                <h3 className="text-2xl font-bold text-gray-900 mb-4 flex items-center gap-3">
+              <div className="bg-white/5 rounded-2xl p-8 border border-white/10">
+                <h3 className="text-2xl font-bold text-white mb-4 flex items-center gap-3">
                   <span className="text-3xl">📊</span>
                   {t.result.analysisTitle}
               </h3>
-                <p className="text-gray-700 leading-relaxed text-lg">
+                <p className="text-gray-300 leading-relaxed text-lg">
                 {description}
               </p>
               </div>
@@ -512,12 +506,12 @@ function ResultadoContent() {
           </div>
 
           {/* Cognitive Categories Analysis */}
-          <div className="bg-white rounded-3xl shadow-2xl p-4 md:p-8 lg:p-12 mb-8">
-            <h2 className="text-xl md:text-2xl lg:text-3xl font-bold text-gray-900 mb-2 md:mb-3 text-center flex items-center justify-center gap-2 md:gap-3">
+          <div className="bg-white/5 backdrop-blur-xl border border-white/10 rounded-3xl shadow-2xl p-4 md:p-8 lg:p-12 mb-8">
+            <h2 className="text-xl md:text-2xl lg:text-3xl font-bold text-white mb-2 md:mb-3 text-center flex items-center justify-center gap-2 md:gap-3">
               <span className="text-2xl md:text-3xl lg:text-4xl">🧠</span>
               {t.result.cognitiveTitle}
             </h2>
-            <p className="text-sm md:text-base text-gray-600 text-center mb-4 md:mb-8">
+            <p className="text-sm md:text-base text-gray-400 text-center mb-4 md:mb-8">
               {t.result.cognitiveSubtitle}
             </p>
             
@@ -531,13 +525,13 @@ function ResultadoContent() {
                                       FaBolt;
                 
                 return (
-                  <div key={index} className="bg-gradient-to-br from-gray-50 to-white rounded-xl p-4 md:p-6 border-2 border-gray-100 hover:border-[#6366F1] transition-all duration-300">
+                  <div key={index} className="bg-white/5 rounded-xl p-4 md:p-6 border border-white/10 hover:border-[#6366F1]/60 transition-all duration-300">
                     <div className="flex items-center justify-between mb-3 md:mb-4">
                       <IconComponent className="text-2xl md:text-3xl lg:text-4xl text-[#6366F1]" />
                       <span className="text-xl md:text-2xl lg:text-3xl font-bold text-[#6366F1]">{cat.score}%</span>
                     </div>
-                    <h4 className="font-bold text-gray-900 mb-2 text-sm md:text-base">{cat.name}</h4>
-                    <div className="w-full bg-gray-200 rounded-full h-2 md:h-3">
+                    <h4 className="font-bold text-white mb-2 text-sm md:text-base">{cat.name}</h4>
+                    <div className="w-full bg-white/10 rounded-full h-2 md:h-3">
                       <div 
                         className="bg-gradient-to-r from-[#6366F1] to-[#4F46E5] h-2 md:h-3 rounded-full transition-all duration-1000"
                         style={{ width: `${cat.score}%` }}
@@ -552,11 +546,11 @@ function ResultadoContent() {
           {/* Charts Section */}
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 md:gap-8 mb-8">
               {/* Distribution Chart */}
-            <div className="bg-white rounded-3xl shadow-xl p-4 md:p-8">
-              <h3 className="text-lg md:text-xl lg:text-2xl font-bold text-gray-900 mb-2 text-center">
+            <div className="bg-white/5 backdrop-blur-xl border border-white/10 rounded-3xl shadow-xl p-4 md:p-8">
+              <h3 className="text-lg md:text-xl lg:text-2xl font-bold text-white mb-2 text-center">
                   {t.result.distributionTitle}
                 </h3>
-              <p className="text-gray-600 text-center mb-4 md:mb-6 text-xs md:text-sm">
+              <p className="text-gray-400 text-center mb-4 md:mb-6 text-xs md:text-sm">
                 {t.result.distributionSubtitle}
               </p>
               <ResponsiveContainer width="100%" height={280}>
@@ -578,30 +572,30 @@ function ResultadoContent() {
                     <Tooltip />
                   </PieChart>
                 </ResponsiveContainer>
-              <div className="mt-6 space-y-3 bg-gray-50 rounded-xl p-4">
+              <div className="mt-6 space-y-3 bg-white/5 rounded-xl p-4">
                   {distributionData.map((item, index) => (
                   <div 
                     key={index} 
                     className={`flex items-center justify-between p-2 rounded ${
-                      userIQ >= parseInt(item.range.replace(/[<>]/g, '').split('-')[0] || '0') ? 'bg-[#6366F1]/10 font-semibold' : ''
+                      userIQ >= parseInt(item.range.replace(/[<>]/g, '').split('-')[0] || '0') ? 'bg-[#6366F1]/20 font-semibold' : ''
                     }`}
                   >
                     <div className="flex items-center gap-3">
                       <div className="w-5 h-5 rounded-full" style={{ backgroundColor: COLORS[index] }}></div>
-                      <span className="text-gray-900">{item.name}</span>
+                      <span className="text-gray-200">{item.name}</span>
                     </div>
-                    <span className="text-gray-700">{item.value}%</span>
+                    <span className="text-gray-300">{item.value}%</span>
                     </div>
                   ))}
                 </div>
               </div>
 
               {/* Performance Chart */}
-            <div className="bg-white rounded-3xl shadow-xl p-4 md:p-8">
-              <h3 className="text-lg md:text-xl lg:text-2xl font-bold text-gray-900 mb-2 text-center">
+            <div className="bg-white/5 backdrop-blur-xl border border-white/10 rounded-3xl shadow-xl p-4 md:p-8">
+              <h3 className="text-lg md:text-xl lg:text-2xl font-bold text-white mb-2 text-center">
                 {t.result.performanceTitle}
                 </h3>
-              <p className="text-gray-600 text-center mb-4 md:mb-6 text-xs md:text-sm">
+              <p className="text-gray-400 text-center mb-4 md:mb-6 text-xs md:text-sm">
                 {t.result.performanceSubtitle}
               </p>
               <ResponsiveContainer width="100%" height={280}>
@@ -609,7 +603,8 @@ function ResultadoContent() {
                   <XAxis dataKey="category" style={{ fontSize: '12px' }} />
                   <YAxis domain={[0, 8]} />
                   <Tooltip 
-                    contentStyle={{ backgroundColor: '#fff', border: '2px solid #6366F1', borderRadius: '8px' }}
+                    contentStyle={{ backgroundColor: '#1a1a2e', border: '1px solid rgba(99,102,241,0.5)', borderRadius: '8px', color: '#fff' }}
+                    labelStyle={{ color: '#e2e8f0' }}
                   />
                           <Legend wrapperStyle={{ fontSize: '12px' }} formatter={(value) => value === 'correctas' ? t.result.correct : t.result.incorrect} />
                   <Bar dataKey="correctas" fill="#6366F1" name={t.result.correct} radius={[8, 8, 0, 0]} />
@@ -618,19 +613,19 @@ function ResultadoContent() {
                 </ResponsiveContainer>
               
               {/* Summary */}
-              <div className="mt-6 bg-gray-50 rounded-xl p-4">
+              <div className="mt-6 bg-white/5 rounded-xl p-4">
                 <div className="grid grid-cols-3 gap-4 text-center">
                   <div>
-                    <div className="text-2xl font-bold text-green-600">{correctAnswers}</div>
-                    <div className="text-xs text-gray-600">{t.result.correct}</div>
+                    <div className="text-2xl font-bold text-green-400">{correctAnswers}</div>
+                    <div className="text-xs text-gray-400">{t.result.correct}</div>
                   </div>
                   <div>
-                    <div className="text-2xl font-bold text-red-600">{questions.length - correctAnswers}</div>
-                    <div className="text-xs text-gray-600">{t.result.incorrect}</div>
+                    <div className="text-2xl font-bold text-red-400">{questions.length - correctAnswers}</div>
+                    <div className="text-xs text-gray-400">{t.result.incorrect}</div>
                   </div>
                   <div>
                     <div className="text-2xl font-bold text-[#6366F1]">{percentageCorrect}%</div>
-                    <div className="text-xs text-gray-600">{t.result.accuracy}</div>
+                    <div className="text-xs text-gray-400">{t.result.accuracy}</div>
                   </div>
                 </div>
               </div>
@@ -638,24 +633,24 @@ function ResultadoContent() {
           </div>
 
           {/* Certificate Card */}
-          <div className="bg-white rounded-3xl shadow-2xl overflow-hidden mb-8">
-            <div className="bg-gradient-to-r from-[#0F172A] to-[#1E1B4B] p-6 md:p-8 text-white text-center">
+          <div className="bg-white/5 backdrop-blur-xl border border-white/10 rounded-3xl shadow-2xl overflow-hidden mb-8">
+            <div className="bg-gradient-to-r from-[#0F172A] to-[#1E1B4B] p-6 md:p-8 text-white text-center border-b border-white/10">
               <FaDownload className="text-4xl md:text-6xl mx-auto mb-3 md:mb-4" />
               <h2 className="text-xl md:text-2xl lg:text-3xl font-bold mb-2">{t.result.certificateTitle}</h2>
               <p className="text-sm md:text-base lg:text-lg opacity-90">{t.result.certificateSubtitle}</p>
             </div>
             <div className="p-4 md:p-8">
               {/* Certificate Preview */}
-              <div className="border-4 border-[#6366F1] rounded-xl p-8 bg-gradient-to-br from-white to-gray-50 mb-6">
+              <div className="border-2 border-[#6366F1]/60 rounded-xl p-8 bg-white/5 mb-6">
                 <div className="text-center">
                   <div className="text-6xl mb-4">🏆</div>
-                  <h3 className="text-2xl font-bold text-gray-900 mb-2">{t.certificate.title}</h3>
-                  <p className="text-gray-600 mb-4">{t.certificate.certifies}</p>
+                  <h3 className="text-2xl font-bold text-white mb-2">{t.certificate.title}</h3>
+                  <p className="text-gray-400 mb-4">{t.certificate.certifies}</p>
                   <p className="text-3xl font-bold text-[#6366F1] mb-4">{userName}</p>
-                  <p className="text-gray-600 mb-2">{t.certificate.completed}</p>
-                  <p className="text-gray-600 mb-4">{t.certificate.obtained}</p>
-                  <div className="text-6xl font-black text-[#0F172A] mb-4">{userIQ}</div>
-                  <p className="text-lg font-semibold text-gray-800 mb-6">{t.certificate.category}: {category}</p>
+                  <p className="text-gray-400 mb-2">{t.certificate.completed}</p>
+                  <p className="text-gray-400 mb-4">{t.certificate.obtained}</p>
+                  <div className="text-6xl font-black text-white mb-4">{userIQ}</div>
+                  <p className="text-lg font-semibold text-gray-200 mb-6">{t.certificate.category}: {category}</p>
                   <p className="text-sm text-gray-500">
                     {t.certificate.issueDate}: {new Date().toLocaleDateString(
                       lang === 'es' ? 'es-ES' : 
@@ -682,12 +677,12 @@ function ResultadoContent() {
             </div>
 
             {/* Share Section */}
-          <div className="bg-white rounded-3xl shadow-2xl p-4 md:p-8 lg:p-12 mb-8">
+          <div className="bg-white/5 backdrop-blur-xl border border-white/10 rounded-3xl shadow-2xl p-4 md:p-8 lg:p-12 mb-8">
             <div className="text-center mb-6 md:mb-8">
-              <h2 className="text-xl md:text-2xl lg:text-3xl font-bold text-gray-900 mb-2 md:mb-3">
+              <h2 className="text-xl md:text-2xl lg:text-3xl font-bold text-white mb-2 md:mb-3">
                 {t.result.shareTitle}
               </h2>
-              <p className="text-gray-600 text-sm md:text-base lg:text-lg">
+              <p className="text-gray-400 text-sm md:text-base lg:text-lg">
                 {t.result.shareSubtitle}
               </p>
             </div>
