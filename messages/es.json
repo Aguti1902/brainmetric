@@ -140,7 +140,7 @@
     "subtitle": "Simple, claro y sin sorpresas",
     "quincenal": {
       "title": "Suscripción Quincenal",
-      "price": "19.99",
+      "price": "9.99",
       "period": "/2 semanas",
       "features": [
         "Tests ilimitados de CI y personalidad",
@@ -335,7 +335,7 @@
     "free": "Gratis",
     "acceptTerms": "Acepto los",
     "termsAndConditions": "Términos y Condiciones",
-    "trialNote": "Entiendo que se activará una prueba premium de 15 días que puedo cancelar antes de que finalice para evitar cargos (desde 119,99€ quincenal o 19,99€ mensual).",
+    "trialNote": "Entiendo que se activará una prueba premium de 15 días que puedo cancelar antes de que finalice para evitar cargos (desde 19,99€ quincenal o 19,99€ mensual).",
     "paySecure": "Pagar 1,00€ de forma segura",
     "testimonial1Name": "María García",
     "testimonial1Text": "Increíble precisión. El análisis superó mis expectativas.",
