@@ -20,12 +20,8 @@ export default function GoogleAnalytics() {
         `}
       </Script>
 
-      {/* Google tag (gtag.js) - Analytics + Ads — lazyOnload para no bloquear */}
-      <Script
-        src={`https://www.googletagmanager.com/gtag/js?id=${GOOGLE_ADS_ID}`}
-        strategy="lazyOnload"
-      />
-      <Script id="google-analytics" strategy="lazyOnload">
+      {/* Google tag (gtag.js) - Analytics + Ads */}
+      <Script id="gtag-init" strategy="afterInteractive">
         {`
           window.dataLayer = window.dataLayer || [];
           function gtag(){dataLayer.push(arguments);}
@@ -34,6 +30,15 @@ export default function GoogleAnalytics() {
           gtag('config', '${GOOGLE_ADS_ID}');
         `}
       </Script>
+      <Script
+        src={`https://www.googletagmanager.com/gtag/js?id=${GOOGLE_ADS_ID}`}
+        strategy="afterInteractive"
+        onLoad={() => {
+          const w = window as any;
+          w.dataLayer = w.dataLayer || [];
+          w.gtag = w.gtag || function(){ w.dataLayer.push(arguments); };
+        }}
+      />
     </>
   )
 }
