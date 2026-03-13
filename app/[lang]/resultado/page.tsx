@@ -139,7 +139,7 @@ function ResultadoContent() {
         currency: 'EUR',
       })
       ;(window as any).gtag('event', 'conversion', {
-        send_to: 'AW-17232820139/qMCRCP_NnK4bEKvvn5lA',
+        send_to: 'AW-17232820139/qMCRCP_NnK4bEKvvn5IA',
         value: 0.50,
         currency: 'EUR',
         transaction_id: localStorage.getItem('transactionId') || '',
