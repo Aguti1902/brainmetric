@@ -14,3 +14,17 @@ export async function GET(request: NextRequest) {
     longitud: key?.length || 0,
   })
 }
+
+// Endpoint para que n8n llame aquí y veamos qué header nos manda
+export async function POST(request: NextRequest) {
+  const received = request.headers.get('x-api-key')
+  const expected = process.env.N8N_API_KEY
+
+  return NextResponse.json({
+    header_recibido: received ? `${received.substring(0, 6)}... (${received.length} chars)` : 'NADA',
+    header_esperado: expected ? `${expected.substring(0, 6)}... (${expected.length} chars)` : 'NO CONFIGURADO',
+    coinciden: received === expected,
+    raw_length_received: received?.length,
+    raw_length_expected: expected?.length,
+  })
+}
