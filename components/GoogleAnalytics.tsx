@@ -20,21 +20,17 @@ export default function GoogleAnalytics() {
         `}
       </Script>
 
-      {/* Google tag (gtag.js) - Analytics + Ads */}
+      {/* Google tag (gtag.js) - Analytics + Ads — lazyOnload para no bloquear */}
       <Script
-        src={`https://www.googletagmanager.com/gtag/js?id=${GA_MEASUREMENT_ID}`}
-        strategy="afterInteractive"
+        src={`https://www.googletagmanager.com/gtag/js?id=${GOOGLE_ADS_ID}`}
+        strategy="lazyOnload"
       />
-      <Script id="google-analytics" strategy="afterInteractive">
+      <Script id="google-analytics" strategy="lazyOnload">
         {`
           window.dataLayer = window.dataLayer || [];
           function gtag(){dataLayer.push(arguments);}
           gtag('js', new Date());
-          
-          // Google Analytics
           gtag('config', '${GA_MEASUREMENT_ID}');
-          
-          // Google Ads
           gtag('config', '${GOOGLE_ADS_ID}');
         `}
       </Script>

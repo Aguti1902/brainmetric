@@ -132,21 +132,42 @@ function ResultadoContent() {
   }
 
   const fireConversionEvents = () => {
-    if (typeof window !== 'undefined' && (window as any).gtag) {
-      ;(window as any).gtag('event', 'purchase', {
-        transaction_id: localStorage.getItem('transactionId'),
-        value: 0.50,
-        currency: 'EUR',
-      })
-      ;(window as any).gtag('event', 'conversion', {
-        send_to: 'AW-17232820139/qMCRCP_NnK4bEKvvn5IA',
-        value: 0.50,
-        currency: 'EUR',
-        transaction_id: localStorage.getItem('transactionId') || '',
-      })
+    if (typeof window === 'undefined') return
+
+    const txId = localStorage.getItem('transactionId') || ''
+
+    // Siempre empujar al dataLayer (GTM lo recoge aunque gtag no esté listo)
+    const w = window as any
+    w.dataLayer = w.dataLayer || []
+    w.dataLayer.push({
+      event: 'purchase',
+      transaction_id: txId,
+      value: 0.50,
+      currency: 'EUR',
+    })
+
+    // Función que dispara gtag cuando esté disponible
+    const fireGtag = (attempt = 0) => {
+      if (w.gtag) {
+        w.gtag('event', 'purchase', { transaction_id: txId, value: 0.50, currency: 'EUR' })
+        w.gtag('event', 'conversion', {
+          send_to: 'AW-17232820139/qMCRCP_NnK4bEKvvn5IA',
+          value: 0.50,
+          currency: 'EUR',
+          transaction_id: txId,
+        })
+        console.log('✅ Conversión Google Ads disparada')
+      } else if (attempt < 10) {
+        // Reintentar cada 500ms hasta 5 segundos
+        setTimeout(() => fireGtag(attempt + 1), 500)
+      } else {
+        console.warn('⚠️ gtag no disponible tras 5s — conversión no disparada por gtag')
+      }
     }
-    if (typeof window !== 'undefined' && (window as any).fbq) {
-      ;(window as any).fbq('track', 'Purchase', { value: 0.50, currency: 'EUR' })
+    fireGtag()
+
+    if (w.fbq) {
+      w.fbq('track', 'Purchase', { value: 0.50, currency: 'EUR' })
     }
   }
 
