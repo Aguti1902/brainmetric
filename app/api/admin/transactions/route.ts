@@ -42,17 +42,27 @@ export async function GET(req: NextRequest) {
 
     const result = await pool.query(query, params)
 
-    const formattedTransactions = result.rows.map(row => ({
-      id: row.id,
-      amount: row.subscription_status === 'trial' ? 0.50 : 9.99,
-      currency: 'EUR',
-      status: row.subscription_status,
-      customer_email: row.email,
-      customer_name: row.user_name || 'N/A',
-      has_card_token: !!row.subscription_id,
-      created: row.created_at,
-      description: row.subscription_status === 'trial' ? 'Pago inicial' : 'Suscripción mensual',
-    }))
+    // Usuarios que han pagado tienen subscription_status en: trial, active, cancelled, expired
+    // Solo 'failed' o 'pending' son pagos fallidos reales
+    const PAID_STATUSES = ['trial', 'active', 'cancelled', 'expired']
+
+    const formattedTransactions = result.rows.map(row => {
+      const hasPaid = PAID_STATUSES.includes(row.subscription_status)
+      const isActive = row.subscription_status === 'active'
+      return {
+        id: row.id,
+        amount: isActive ? 19.99 : 0.50,
+        amount_refunded: 0,
+        refunded: false,
+        currency: 'EUR',
+        status: hasPaid ? 'succeeded' : row.subscription_status,
+        customer_email: row.email,
+        customer_name: row.user_name || 'N/A',
+        has_card_token: !!row.subscription_id,
+        created: row.created_at,
+        description: isActive ? 'Suscripción mensual' : 'Pago inicial (0,50€)',
+      }
+    })
 
     return NextResponse.json({
       success: true,
