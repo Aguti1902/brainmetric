@@ -17,11 +17,11 @@ export async function GET() {
 
     const statsResult = await pool.query(`
       SELECT
-        COUNT(*) FILTER (WHERE subscription_status = 'active') as active_count,
-        COUNT(*) FILTER (WHERE subscription_status = 'trial') as trial_count,
-        COUNT(*) FILTER (WHERE subscription_status = 'cancelled' AND updated_at >= $1) as cancelled_this_month,
-        COUNT(*) FILTER (WHERE subscription_status = 'expired') as expired_count,
-        COUNT(*) as total_users
+        COUNT(*) FILTER (WHERE subscription_status = 'active' AND email NOT LIKE '%admin@brainmetric%') as active_count,
+        COUNT(*) FILTER (WHERE subscription_status = 'trial' AND email NOT LIKE '%admin@brainmetric%') as trial_count,
+        COUNT(*) FILTER (WHERE subscription_status = 'cancelled' AND updated_at >= $1 AND email NOT LIKE '%admin@brainmetric%') as cancelled_this_month,
+        COUNT(*) FILTER (WHERE subscription_status = 'expired' AND email NOT LIKE '%admin@brainmetric%') as expired_count,
+        COUNT(*) FILTER (WHERE email NOT LIKE '%admin@brainmetric%') as total_users
       FROM users
     `, [startOfMonth.toISOString()])
 
@@ -31,7 +31,7 @@ export async function GET() {
     const cancelledThisMonth = parseInt(stats.cancelled_this_month)
     const totalUsers = parseInt(stats.total_users)
 
-    const mrr = activeCount * 9.99
+    const mrr = activeCount * 19.99
     const totalTrials = trialCount + activeCount
     const conversionRate = totalTrials > 0 ? (activeCount / totalTrials) * 100 : 0
     const totalActiveAtStart = activeCount + cancelledThisMonth
@@ -40,24 +40,26 @@ export async function GET() {
     const recentUsersResult = await pool.query(`
       SELECT id, email, user_name, subscription_status, created_at, access_until, trial_end_date
       FROM users
+      WHERE email NOT LIKE '%admin@brainmetric%'
       ORDER BY created_at DESC
       LIMIT 20
     `)
 
     const recentTransactions = recentUsersResult.rows.map(row => ({
       id: row.id,
-      amount: row.subscription_status === 'trial' ? 0.50 : 9.99,
+      amount: row.subscription_status === 'active' ? 19.99 : 0.50,
       currency: 'EUR',
-      status: row.subscription_status === 'active' ? 'succeeded' : row.subscription_status,
+      status: ['active', 'trial', 'cancelled', 'expired'].includes(row.subscription_status) ? 'succeeded' : row.subscription_status,
       customer_email: row.email,
       created: row.created_at,
-      description: row.subscription_status === 'trial' ? 'Pago inicial (trial)' : 'Suscripción Premium',
+      description: row.subscription_status === 'active' ? 'Suscripción Premium' : 'Pago inicial (0,50€)',
     }))
 
     const activeSubsList = await pool.query(`
       SELECT id, email, subscription_status, access_until, trial_end_date, created_at
       FROM users
       WHERE subscription_status IN ('active', 'trial')
+        AND email NOT LIKE '%admin@brainmetric%'
       ORDER BY created_at DESC
       LIMIT 10
     `)
@@ -66,8 +68,8 @@ export async function GET() {
       id: row.id,
       customer_id: row.id,
       status: row.subscription_status,
-      plan: 'MindMetric Premium',
-      amount: 9.99,
+      plan: 'BrainMetric Premium',
+      amount: row.subscription_status === 'active' ? 19.99 : 0.50,
       current_period_end: row.access_until || row.trial_end_date,
       trial_end: row.trial_end_date,
     }))
