@@ -155,63 +155,6 @@ export default function Home() {
           </div>
         </section>
 
-        {/* Tests Disponibles */}
-        <section id="tests" className={`py-24 relative transition-all duration-700 ${visibleSections.has('tests') ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
-          <div className="container-custom">
-            <div className="text-center mb-16">
-              <h2 className="text-4xl lg:text-5xl font-bold text-white mb-4">
-                Tests de Evaluación Disponibles
-              </h2>
-              <p className="text-xl text-gray-400 max-w-2xl mx-auto">
-                Evalúa diferentes aspectos de tu mente con nuestros tests científicamente validados
-              </p>
-            </div>
-
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {[
-                { href: `/${lang}/test`, icon: <FaBrain />, title: 'Test de CI', sub: 'Coeficiente Intelectual', desc: 'Mide tu capacidad de razonamiento lógico, resolución de problemas y pensamiento abstracto.', time: '15-20 min', questions: '20 preguntas', gradient: 'from-primary-500 to-primary-600', border: 'hover:border-primary-500/50', textColor: 'text-primary-400' },
-                { href: `/${lang}/tests/personality`, icon: <FaUserFriends />, title: 'Test de Personalidad', sub: 'Big Five (OCEAN)', desc: 'Descubre los 5 rasgos fundamentales de tu personalidad.', time: '10-15 min', questions: '44 preguntas', gradient: 'from-purple-500 to-purple-600', border: 'hover:border-purple-500/50', textColor: 'text-purple-400' },
-                { href: `/${lang}/tests/adhd`, icon: <FaBrain />, title: 'Test de TDAH', sub: 'Evaluación de Atención', desc: 'Evalúa síntomas de TDAH basado en criterios DSM-5.', time: '5-8 min', questions: '18 preguntas', gradient: 'from-blue-500 to-blue-600', border: 'hover:border-blue-500/50', textColor: 'text-blue-400' },
-                { href: `/${lang}/tests/anxiety`, icon: <FaChartLine />, title: 'Test de Ansiedad', sub: 'GAD-7 Extendido', desc: 'Evaluación completa de ansiedad generalizada con escala clínica.', time: '5-7 min', questions: '20 preguntas', gradient: 'from-red-500 to-red-600', border: 'hover:border-red-500/50', textColor: 'text-red-400' },
-                { href: `/${lang}/tests/depression`, icon: <FaCheckCircle />, title: 'Test de Depresión', sub: 'PHQ-9', desc: 'Evaluación del estado de ánimo y síntomas depresivos.', time: '6-8 min', questions: '20 preguntas', gradient: 'from-slate-400 to-slate-500', border: 'hover:border-slate-400/50', textColor: 'text-slate-400' },
-                { href: `/${lang}/tests/eq`, icon: <FaChartLine />, title: 'Inteligencia Emocional', sub: 'Test EQ', desc: 'Mide tu capacidad para reconocer y gestionar emociones.', time: '8-10 min', questions: '33 preguntas', gradient: 'from-emerald-500 to-emerald-600', border: 'hover:border-emerald-500/50', textColor: 'text-emerald-400' },
-              ].map((test, idx) => (
-                <Link 
-                  key={idx}
-                  href={test.href}
-                  className={`group card hover:shadow-2xl hover:shadow-primary-500/5 transition-all duration-300 hover:-translate-y-2 ${test.border} cursor-pointer`}
-                >
-                  <div className="flex items-center gap-4 mb-4">
-                    <div className={`w-14 h-14 bg-gradient-to-br ${test.gradient} rounded-xl flex items-center justify-center text-white text-2xl flex-shrink-0 group-hover:scale-110 transition-transform`}>
-                      {test.icon}
-                    </div>
-                    <div>
-                      <h3 className="text-lg font-bold text-white">{test.title}</h3>
-                      <p className="text-sm text-gray-400">{test.sub}</p>
-                    </div>
-                  </div>
-                  <p className="text-gray-400 text-sm mb-4">{test.desc}</p>
-                  <div className="flex items-center justify-between text-xs text-gray-500">
-                    <span>⏱️ {test.time}</span>
-                    <span>📝 {test.questions}</span>
-                  </div>
-                  <div className={`mt-4 ${test.textColor} font-semibold flex items-center gap-2 group-hover:gap-3 transition-all text-sm`}>
-                    Comenzar Test <FaArrowRight className="text-xs" />
-                  </div>
-                </Link>
-              ))}
-            </div>
-
-            <div className="text-center mt-12">
-              <Link 
-                href={`/${lang}/tests`}
-                className="inline-flex items-center gap-2 text-primary-400 hover:text-primary-300 font-semibold text-lg transition-colors"
-              >
-                Ver todos los tests disponibles <FaArrowRight />
-              </Link>
-            </div>
-          </div>
-        </section>
 
         {/* Características */}
         <section id="features" className={`py-24 relative transition-all duration-700 ${visibleSections.has('features') ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
