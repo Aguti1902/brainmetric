@@ -2,7 +2,7 @@
 
 import Script from 'next/script'
 
-const GTM_ID = 'GTM-N79X6BWZ'
+const GTM_ID = 'GTM-W5M6GP45'
 const GA_MEASUREMENT_ID = 'G-ETQT995RPQ'
 const GOOGLE_ADS_ID = 'AW-17232820139'
 
