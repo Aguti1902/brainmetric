@@ -58,7 +58,7 @@ export default function TerminosPage() {
                 <li>Free completion of the 20-question test</li>
                 <li>Access to complete results through a payment of €0.50</li>
                 <li>Detailed analysis and downloadable certificate</li>
-                <li>2-day premium trial with subsequent €9.99/month subscription</li>
+                <li>2-day premium trial with subsequent €19.99/month subscription</li>
               </ul>
             </section>
 
@@ -73,7 +73,7 @@ export default function TerminosPage() {
               <h3 className="text-xl font-semibold text-gray-900 mb-2">3.2 Premium Subscription</h3>
               <p>
                 Upon making the initial €0.50 payment, a <strong>2-day free premium trial</strong> is automatically activated. 
-                If you do not cancel before the 2 days end, you will be automatically charged <strong>€9.99/month</strong> 
+                If you do not cancel before the 2 days end, you will be automatically charged <strong>€19.99/month</strong> 
                 for the continuing premium subscription.
               </p>
 
@@ -179,7 +179,7 @@ export default function TerminosPage() {
               <ul className="space-y-2 text-sm">
                 <li>• Initial payment: €0.50 to access your results</li>
                 <li>• Automatically activates a 2-day premium trial (free)</li>
-                <li>• After 2 days: €9.99/month automatically charged</li>
+                <li>• After 2 days: €19.99/month automatically charged</li>
                 <li>• You can cancel anytime during the trial to avoid monthly charges</li>
                 <li>• Results are estimates for informational purposes</li>
               </ul>
