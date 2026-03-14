@@ -151,7 +151,7 @@ function ResultadoContent() {
       if (w.gtag) {
         w.gtag('event', 'purchase', { transaction_id: txId, value: 0.50, currency: 'EUR' })
         w.gtag('event', 'conversion', {
-          send_to: 'AW-17232820139/qMCRCP_NnK4bEKvvn5IA',
+          send_to: 'AW-17232820139/qMCRCP_NnK4bEKvvn51A',
           value: 0.50,
           currency: 'EUR',
           transaction_id: txId,

@@ -5,6 +5,7 @@ import Script from 'next/script'
 const GTM_ID = 'GTM-W5M6GP45'
 const GA_MEASUREMENT_ID = 'G-ETQT995RPQ'
 const GOOGLE_ADS_ID = 'AW-17232820139'
+const GOOGLE_TAG_ID = 'GT-NGM8ZF3V'
 
 export default function GoogleAnalytics() {
   return (
@@ -20,25 +21,21 @@ export default function GoogleAnalytics() {
         `}
       </Script>
 
-      {/* Google tag (gtag.js) - Analytics + Ads */}
+      {/* Google tag - requerido por Google Ads */}
+      <Script
+        src={`https://www.googletagmanager.com/gtag/js?id=${GOOGLE_TAG_ID}`}
+        strategy="afterInteractive"
+      />
       <Script id="gtag-init" strategy="afterInteractive">
         {`
           window.dataLayer = window.dataLayer || [];
           function gtag(){dataLayer.push(arguments);}
           gtag('js', new Date());
+          gtag('config', '${GOOGLE_TAG_ID}');
           gtag('config', '${GA_MEASUREMENT_ID}');
           gtag('config', '${GOOGLE_ADS_ID}');
         `}
       </Script>
-      <Script
-        src={`https://www.googletagmanager.com/gtag/js?id=${GOOGLE_ADS_ID}`}
-        strategy="afterInteractive"
-        onLoad={() => {
-          const w = window as any;
-          w.dataLayer = w.dataLayer || [];
-          w.gtag = w.gtag || function(){ w.dataLayer.push(arguments); };
-        }}
-      />
     </>
   )
 }
