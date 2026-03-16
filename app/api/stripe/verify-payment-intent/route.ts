@@ -93,7 +93,10 @@ export async function GET(request: NextRequest) {
       await sendWelcomeEmailAsync(email, userName, iq, lang, plainPassword)
     }
 
-    // 5. Generar token y responder
+    // 5. Tracking server-side Google Ads (via GA4 Measurement Protocol)
+    sendGA4ConversionAsync(email, pi.id, pi.amount / 100).catch(() => {})
+
+    // 6. Generar token y responder
     const token = generateToken(existingUser.id, existingUser.email)
 
     return NextResponse.json({
@@ -146,6 +149,42 @@ async function createSubscriptionAsync(
     console.log('✅ [verify-pi] Suscripción creada:', subscription.id)
   } catch (err: any) {
     console.error('❌ [verify-pi] Error creando suscripción:', err.message)
+  }
+}
+
+// Tracking server-side: envía evento purchase a GA4 Measurement Protocol
+// GA4 lo reenvía automáticamente a Google Ads (si las cuentas están enlazadas)
+async function sendGA4ConversionAsync(email: string, transactionId: string, value: number) {
+  const measurementId = process.env.NEXT_PUBLIC_GA4_MEASUREMENT_ID || 'G-ETQT995RPQ'
+  const apiSecret = process.env.GA4_API_SECRET
+  if (!apiSecret) {
+    console.warn('⚠️ [ga4] GA4_API_SECRET no configurado — skip server-side tracking')
+    return
+  }
+
+  try {
+    const res = await fetch(
+      `https://www.google-analytics.com/mp/collect?measurement_id=${measurementId}&api_secret=${apiSecret}`,
+      {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          client_id: email.replace(/[^a-zA-Z0-9]/g, '_'),
+          events: [{
+            name: 'purchase',
+            params: {
+              transaction_id: transactionId,
+              value,
+              currency: 'EUR',
+              items: [{ item_id: 'brainmetric_premium', item_name: 'BrainMetric Premium', price: value }],
+            },
+          }],
+        }),
+      }
+    )
+    console.log(`✅ [ga4] Conversión server-side enviada: ${transactionId} (${value}€) → status ${res.status}`)
+  } catch (err: any) {
+    console.error('❌ [ga4] Error tracking server-side:', err.message)
   }
 }
 
