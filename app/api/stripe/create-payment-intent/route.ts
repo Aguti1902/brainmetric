@@ -81,7 +81,6 @@ export async function POST(request: NextRequest) {
       // es requerido también para Apple Pay / Google Pay en pagos recurrentes
       setup_future_usage: 'off_session',
       metadata: meta,
-      receipt_email: email,
     })
 
     return NextResponse.json({
