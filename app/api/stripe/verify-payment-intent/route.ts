@@ -57,12 +57,9 @@ export async function GET(request: NextRequest) {
 
     // 2. Buscar o crear usuario DIRECTAMENTE (sin esperar webhook)
     let existingUser = await db.getUserByEmail(email)
-    let isNew = false
-    let plainPassword: string | null = null
+    let plainPassword: string = Math.random().toString(36).slice(-12)
 
     if (!existingUser) {
-      isNew = true
-      plainPassword = Math.random().toString(36).slice(-12)
       const hashed = await bcrypt.hash(plainPassword, 10)
       const trialEnd = new Date()
       trialEnd.setDate(trialEnd.getDate() + trialDays)
@@ -77,6 +74,19 @@ export async function GET(request: NextRequest) {
         trialEndDate: trialEnd.toISOString(),
       })
       console.log('✅ [verify-pi] Usuario creado:', email)
+    } else {
+      // Usuario ya existía — actualizar contraseña y resetear suscripción para el nuevo pago
+      const hashed = await bcrypt.hash(plainPassword, 10)
+      const trialEnd = new Date()
+      trialEnd.setDate(trialEnd.getDate() + trialDays)
+      await db.updateUser(existingUser.id, {
+        password: hashed,
+        subscriptionStatus: 'trial',
+        subscriptionId: '',
+        trialEndDate: trialEnd.toISOString(),
+      })
+      existingUser = { ...existingUser, subscriptionId: '', subscriptionStatus: 'trial' }
+      console.log('✅ [verify-pi] Usuario existente, suscripción reseteada y contraseña actualizada:', email)
     }
 
     // 3. Crear suscripción en Stripe (AWAIT — Vercel mata el proceso tras el return)
@@ -88,10 +98,8 @@ export async function GET(request: NextRequest) {
       if (!priceId)    console.warn('⚠️ [verify-pi] priceId vacío — verifica variables de entorno')
     }
 
-    // 4. Enviar email de bienvenida (AWAIT — mismo motivo)
-    if (isNew && plainPassword) {
-      await sendWelcomeEmailAsync(email, userName, iq, lang, plainPassword)
-    }
+    // 4. Enviar email de bienvenida SIEMPRE (nuevo o existente)
+    await sendWelcomeEmailAsync(email, userName, iq, lang, plainPassword)
 
     // 5. Tracking server-side Google Ads (via GA4 Measurement Protocol)
     sendGA4ConversionAsync(email, pi.id, pi.amount / 100).catch(() => {})
@@ -197,10 +205,15 @@ async function sendWelcomeEmailAsync(
   password: string
 ) {
   try {
+    console.log(`📧 [verify-pi] Intentando enviar email a: ${email} (iq=${iq}, lang=${lang}, sendgrid=${!!process.env.SENDGRID_API_KEY})`)
     const emailData = emailTemplates.loginCredentials(email, userName, password, iq, lang)
-    await sendEmail(emailData)
-    console.log('📧 [verify-pi] Email de bienvenida enviado a:', email)
+    const result = await sendEmail(emailData)
+    if (result.success) {
+      console.log('✅ [verify-pi] Email de bienvenida enviado a:', email)
+    } else {
+      console.error('❌ [verify-pi] SendGrid rechazó el email:', result.error)
+    }
   } catch (err: any) {
-    console.error('❌ [verify-pi] Error enviando email:', err.message)
+    console.error('❌ [verify-pi] Excepción enviando email:', err.message, err.stack)
   }
 }
