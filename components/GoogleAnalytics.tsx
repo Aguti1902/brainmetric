@@ -3,14 +3,19 @@
 import Script from 'next/script'
 
 const GA_MEASUREMENT_ID = 'G-JH0JHYQ7MX'
-const GOOGLE_ADS_ID = 'AW-17232820139' // TODO: actualizar con nueva cuenta Google Ads
+const GOOGLE_ADS_ID = 'AW-17655739355'
 
 export default function GoogleAnalytics() {
   return (
     <>
-      {/* Google Analytics 4 + Google Ads */}
+      {/* Google Analytics 4 */}
       <Script
         src={`https://www.googletagmanager.com/gtag/js?id=${GA_MEASUREMENT_ID}`}
+        strategy="afterInteractive"
+      />
+      {/* Google Ads */}
+      <Script
+        src={`https://www.googletagmanager.com/gtag/js?id=${GOOGLE_ADS_ID}`}
         strategy="afterInteractive"
       />
       <Script id="gtag-init" strategy="afterInteractive">
