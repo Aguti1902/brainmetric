@@ -2,7 +2,7 @@
 
 import Script from 'next/script'
 
-const GA_MEASUREMENT_ID = 'G-BPS5TEVZG0'
+const GA_MEASUREMENT_ID = 'G-JH0JHYQ7MX'
 const GOOGLE_ADS_ID = 'AW-17232820139' // TODO: actualizar con nueva cuenta Google Ads
 
 export default function GoogleAnalytics() {
