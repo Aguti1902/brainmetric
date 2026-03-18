@@ -163,7 +163,7 @@ async function createSubscriptionAsync(
 // Tracking server-side: envía evento purchase a GA4 Measurement Protocol
 // GA4 lo reenvía automáticamente a Google Ads (si las cuentas están enlazadas)
 async function sendGA4ConversionAsync(email: string, transactionId: string, value: number) {
-  const measurementId = process.env.NEXT_PUBLIC_GA4_MEASUREMENT_ID || 'G-ETQT995RPQ'
+  const measurementId = process.env.NEXT_PUBLIC_GA4_MEASUREMENT_ID || 'G-BPS5TEVZG0'
   const apiSecret = process.env.GA4_API_SECRET
   if (!apiSecret) {
     console.warn('⚠️ [ga4] GA4_API_SECRET no configurado — skip server-side tracking')
