@@ -51,37 +51,55 @@ export async function POST(request: NextRequest) {
         const stripe = await getStripe()
         const amountCents = amount ? Math.round(amount * 100) : undefined
 
+        const INITIAL_PAYMENT_CENTS = 50 // 0,50€ — nunca reembolsable
+
         let chargeId: string | undefined
+        let chargeAmount: number | undefined
 
         if (transaction_id && transaction_id.startsWith('pi_')) {
           const pi = await stripe.paymentIntents.retrieve(transaction_id)
           chargeId = typeof pi.latest_charge === 'string' ? pi.latest_charge : pi.latest_charge?.id
+          chargeAmount = pi.amount
         } else if (transaction_id && transaction_id.startsWith('ch_')) {
+          const ch = await stripe.charges.retrieve(transaction_id)
           chargeId = transaction_id
+          chargeAmount = ch.amount
         } else {
-          // Sin transaction_id — buscar el último cargo del cliente por email
+          // Sin transaction_id — buscar el último cargo de suscripción (> 0,50€) por email
           const customers = await stripe.customers.list({ email, limit: 5 })
           for (const customer of customers.data) {
-            const charges = await stripe.charges.list({ customer: customer.id, limit: 5 })
-            const paid = charges.data.find(c => c.paid && !c.refunded)
-            if (paid) { chargeId = paid.id; break }
+            const charges = await stripe.charges.list({ customer: customer.id, limit: 10 })
+            const paid = charges.data.find(c => c.paid && !c.refunded && c.amount > INITIAL_PAYMENT_CENTS)
+            if (paid) { chargeId = paid.id; chargeAmount = paid.amount; break }
           }
           if (!chargeId) {
-            // Buscar directamente en PaymentIntents por metadata email
             const pis = await stripe.paymentIntents.list({ limit: 100 })
             const piMatch = pis.data.find(p =>
-              p.metadata?.email?.toLowerCase() === email.toLowerCase() && p.status === 'succeeded'
+              p.metadata?.email?.toLowerCase() === email.toLowerCase() &&
+              p.status === 'succeeded' &&
+              p.amount > INITIAL_PAYMENT_CENTS
             )
             if (piMatch) {
               chargeId = typeof piMatch.latest_charge === 'string'
                 ? piMatch.latest_charge
                 : (piMatch.latest_charge as any)?.id
+              chargeAmount = piMatch.amount
             }
           }
         }
 
         if (!chargeId) {
-          return NextResponse.json({ success: false, error: `No se encontró ningún cargo para ${email}` })
+          return NextResponse.json({ success: false, error: `No se encontró ningún cargo de suscripción para ${email}` })
+        }
+
+        // Bloquear reembolso del pago inicial de 0,50€
+        if (chargeAmount !== undefined && chargeAmount <= INITIAL_PAYMENT_CENTS) {
+          console.warn(`⛔ [n8n-refund] Intento de reembolso del pago inicial (${chargeAmount / 100}€) bloqueado para ${email}`)
+          return NextResponse.json({
+            success: false,
+            error: 'El pago inicial de 0,50€ no es reembolsable según la política de Brain Metric',
+            blocked: true,
+          })
         }
 
         const refund = await stripe.refunds.create({
