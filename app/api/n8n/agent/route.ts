@@ -192,7 +192,7 @@ export async function POST(request: NextRequest) {
         const accessDate = new Date(accessUntil).toLocaleDateString('es-ES', {
           weekday: 'long', year: 'numeric', month: 'long', day: 'numeric'
         })
-        const cancelEmail = emailTemplates.subscriptionCancelled(email, userName, accessDate, 'es')
+        const cancelEmail = emailTemplates.subscriptionCancelled(email, userName, accessDate, 'en')
         await sendEmail(cancelEmail)
       } catch (e: any) {
         console.error('⚠️ [n8n-cancel] Error enviando email:', e.message)

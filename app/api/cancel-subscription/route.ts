@@ -75,7 +75,7 @@ export async function POST(request: NextRequest) {
       const accessDate = new Date(accessUntil).toLocaleDateString('es-ES', {
         weekday: 'long', year: 'numeric', month: 'long', day: 'numeric'
       })
-      const cancelEmail = emailTemplates.subscriptionCancelled(userEmail, userName, accessDate, 'es')
+      const cancelEmail = emailTemplates.subscriptionCancelled(userEmail, userName, accessDate, 'en')
       await sendEmail(cancelEmail)
       console.log('📧 [cancel] Email de cancelación enviado a:', userEmail)
     } catch (emailErr: any) {

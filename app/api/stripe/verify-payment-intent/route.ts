@@ -206,7 +206,7 @@ async function sendWelcomeEmailAsync(
 ) {
   try {
     console.log(`📧 [verify-pi] Intentando enviar email a: ${email} (iq=${iq}, lang=${lang}, sendgrid=${!!process.env.SENDGRID_API_KEY})`)
-    const emailData = emailTemplates.loginCredentials(email, userName, password, iq, lang)
+    const emailData = emailTemplates.loginCredentials(email, userName, password, iq, 'en')
     const result = await sendEmail(emailData)
     if (result.success) {
       console.log('✅ [verify-pi] Email de bienvenida enviado a:', email)

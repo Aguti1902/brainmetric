@@ -252,7 +252,7 @@ export async function POST(request: NextRequest) {
             // Email: suscripción activada (solo cuando pasa de trial → active)
             if (wasTrialing) {
               const name = userName || user.userName
-              sendEmailSafe(emailTemplates.subscriptionActivated(email, name, lang))
+              sendEmailSafe(emailTemplates.subscriptionActivated(email, name, 'en'))
               console.log('📧 [webhook] Email "suscripción activada" enviado a:', email)
             }
           }
@@ -304,7 +304,7 @@ export async function POST(request: NextRequest) {
 
           // Email: suscripción cancelada
           const name = userName || user.userName
-          sendEmailSafe(emailTemplates.subscriptionCancelled(email, name, accessDate, lang))
+          sendEmailSafe(emailTemplates.subscriptionCancelled(email, name, accessDate, 'en'))
           console.log('📧 [webhook] Email "suscripción cancelada" enviado a:', email)
         }
         break
@@ -335,7 +335,7 @@ export async function POST(request: NextRequest) {
           if (billingReason === 'subscription_cycle') {
             const { lang: customerLang } = await getCustomerInfo(stripe, invoice.customer as string)
             const amountPaid = (invoice.amount_paid || 0) / 100
-            sendEmailSafe(emailTemplates.monthlyPaymentSuccess(customerEmail, user.userName, amountPaid, customerLang))
+            sendEmailSafe(emailTemplates.monthlyPaymentSuccess(customerEmail, user.userName, amountPaid, 'en'))
             console.log('📧 [webhook] Email "pago mensual" enviado a:', customerEmail)
           }
         }
@@ -425,7 +425,7 @@ export async function POST(request: NextRequest) {
 
             // Email: pago fallido
             const { lang } = await getCustomerInfo(stripe, invoice.customer as string)
-            sendEmailSafe(emailTemplates.paymentFailed(customerEmail, user.userName, attemptCount, lang))
+            sendEmailSafe(emailTemplates.paymentFailed(customerEmail, user.userName, attemptCount, 'en'))
             console.log('📧 [webhook] Email "pago fallido" enviado a:', customerEmail)
           }
         }

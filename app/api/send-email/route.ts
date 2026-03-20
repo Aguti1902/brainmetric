@@ -25,11 +25,11 @@ export async function POST(request: NextRequest) {
             { status: 400 }
           )
         }
-        emailData = emailTemplates.testCompleted(email, userName || 'Usuario', data.estimatedIQ, lang || 'es')
+        emailData = emailTemplates.testCompleted(email, userName || 'Usuario', data.estimatedIQ, lang || 'en')
         break
 
       case 'checkoutAbandoned':
-        emailData = emailTemplates.checkoutAbandoned(email, userName || 'Usuario', lang || 'es')
+        emailData = emailTemplates.checkoutAbandoned(email, userName || 'Usuario', lang || 'en')
         break
 
       case 'paymentSuccess':
@@ -39,11 +39,11 @@ export async function POST(request: NextRequest) {
             { status: 400 }
           )
         }
-        emailData = emailTemplates.paymentSuccess(email, userName || 'Usuario', data.iq, lang || 'es')
+        emailData = emailTemplates.paymentSuccess(email, userName || 'Usuario', data.iq, lang || 'en')
         break
 
       case 'subscriptionActivated':
-        emailData = emailTemplates.subscriptionActivated(email, userName || 'Usuario', lang || 'es')
+        emailData = emailTemplates.subscriptionActivated(email, userName || 'Usuario', lang || 'en')
         break
 
       case 'monthlyPaymentSuccess':
@@ -53,7 +53,7 @@ export async function POST(request: NextRequest) {
             { status: 400 }
           )
         }
-        emailData = emailTemplates.monthlyPaymentSuccess(email, userName || 'Usuario', data.amount, lang || 'es')
+        emailData = emailTemplates.monthlyPaymentSuccess(email, userName || 'Usuario', data.amount, lang || 'en')
         break
 
       case 'paymentFailed':
@@ -63,7 +63,7 @@ export async function POST(request: NextRequest) {
             { status: 400 }
           )
         }
-        emailData = emailTemplates.paymentFailed(email, userName || 'Usuario', data.attempt, lang || 'es')
+        emailData = emailTemplates.paymentFailed(email, userName || 'Usuario', data.attempt, lang || 'en')
         break
 
       case 'subscriptionCancelled':
@@ -73,7 +73,7 @@ export async function POST(request: NextRequest) {
             { status: 400 }
           )
         }
-        emailData = emailTemplates.subscriptionCancelled(email, userName || 'Usuario', data.accessUntil, lang || 'es')
+        emailData = emailTemplates.subscriptionCancelled(email, userName || 'Usuario', data.accessUntil, lang || 'en')
         break
 
       default:
