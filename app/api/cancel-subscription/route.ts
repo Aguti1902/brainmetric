@@ -1,9 +1,19 @@
 import { NextRequest, NextResponse } from 'next/server'
+import Stripe from 'stripe'
 import { db } from '@/lib/database-postgres'
 import { sendEmail, emailTemplates } from '@/lib/email-service'
 import { verifyToken } from '@/lib/auth'
 
 export const dynamic = 'force-dynamic'
+
+async function getStripe(): Promise<Stripe> {
+  const config = await db.getAllConfig()
+  const mode = config.payment_mode || process.env.STRIPE_MODE || 'live'
+  const secretKey = mode === 'live'
+    ? (config.stripe_live_secret_key || process.env.STRIPE_SECRET_KEY || '')
+    : (config.stripe_test_secret_key || process.env.STRIPE_SECRET_KEY || '')
+  return new Stripe(secretKey, { apiVersion: '2024-04-10' as any })
+}
 
 export async function POST(request: NextRequest) {
   try {
@@ -41,6 +51,17 @@ export async function POST(request: NextRequest) {
     }
 
     const accessUntil = user.accessUntil || user.trialEndDate || new Date().toISOString()
+
+    // Cancelar en Stripe antes de actualizar la BD
+    if (user.subscriptionId) {
+      try {
+        const stripe = await getStripe()
+        await stripe.subscriptions.cancel(user.subscriptionId)
+        console.log(`✅ [cancel] Suscripción Stripe cancelada: ${user.subscriptionId}`)
+      } catch (stripeErr: any) {
+        console.warn(`⚠️ [cancel] No se pudo cancelar en Stripe (${user.subscriptionId}): ${stripeErr.message}`)
+      }
+    }
 
     await db.updateUser(user.id, {
       subscriptionStatus: 'cancelled',
