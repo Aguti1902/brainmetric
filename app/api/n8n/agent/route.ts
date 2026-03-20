@@ -47,27 +47,47 @@ export async function POST(request: NextRequest) {
 
     // --- REFUND ---
     if (action === 'refund') {
-      if (!transaction_id) {
-        return NextResponse.json({ success: false, error: 'transaction_id requerido para reembolso' })
-      }
-
       try {
         const stripe = await getStripe()
         const amountCents = amount ? Math.round(amount * 100) : undefined
 
-        let refund: Stripe.Refund
+        let chargeId: string | undefined
 
-        if (transaction_id.startsWith('pi_')) {
-          // Payment Intent — obtener el charge asociado
+        if (transaction_id && transaction_id.startsWith('pi_')) {
           const pi = await stripe.paymentIntents.retrieve(transaction_id)
-          const chargeId = typeof pi.latest_charge === 'string' ? pi.latest_charge : pi.latest_charge?.id
-          if (!chargeId) throw new Error('No se encontró el cargo del PaymentIntent')
-          refund = await stripe.refunds.create({ charge: chargeId, ...(amountCents && { amount: amountCents }) })
-        } else if (transaction_id.startsWith('ch_')) {
-          refund = await stripe.refunds.create({ charge: transaction_id, ...(amountCents && { amount: amountCents }) })
+          chargeId = typeof pi.latest_charge === 'string' ? pi.latest_charge : pi.latest_charge?.id
+        } else if (transaction_id && transaction_id.startsWith('ch_')) {
+          chargeId = transaction_id
         } else {
-          return NextResponse.json({ success: false, error: 'transaction_id debe empezar por pi_ o ch_' })
+          // Sin transaction_id — buscar el último cargo del cliente por email
+          const customers = await stripe.customers.list({ email, limit: 5 })
+          for (const customer of customers.data) {
+            const charges = await stripe.charges.list({ customer: customer.id, limit: 5 })
+            const paid = charges.data.find(c => c.paid && !c.refunded)
+            if (paid) { chargeId = paid.id; break }
+          }
+          if (!chargeId) {
+            // Buscar directamente en PaymentIntents por metadata email
+            const pis = await stripe.paymentIntents.list({ limit: 100 })
+            const piMatch = pis.data.find(p =>
+              p.metadata?.email?.toLowerCase() === email.toLowerCase() && p.status === 'succeeded'
+            )
+            if (piMatch) {
+              chargeId = typeof piMatch.latest_charge === 'string'
+                ? piMatch.latest_charge
+                : (piMatch.latest_charge as any)?.id
+            }
+          }
         }
+
+        if (!chargeId) {
+          return NextResponse.json({ success: false, error: `No se encontró ningún cargo para ${email}` })
+        }
+
+        const refund = await stripe.refunds.create({
+          charge: chargeId,
+          ...(amountCents && { amount: amountCents }),
+        })
 
         console.log(`✅ [n8n-refund] Reembolso creado: ${refund.id} para ${email}`)
         return NextResponse.json({
@@ -132,6 +152,17 @@ export async function POST(request: NextRequest) {
       }
 
       const accessUntil = user.access_until || user.trial_end_date || new Date().toISOString()
+
+      // Cancelar suscripción en Stripe antes de borrarla de la BD
+      if (user.subscription_id) {
+        try {
+          const stripe = await getStripe()
+          await stripe.subscriptions.cancel(user.subscription_id)
+          console.log(`✅ [n8n-cancel] Suscripción Stripe cancelada: ${user.subscription_id}`)
+        } catch (stripeErr: any) {
+          console.warn(`⚠️ [n8n-cancel] No se pudo cancelar en Stripe (${user.subscription_id}): ${stripeErr.message}`)
+        }
+      }
 
       await pool.query(
         `UPDATE users SET subscription_status = 'cancelled', subscription_id = NULL, updated_at = NOW() WHERE id = $1`,
