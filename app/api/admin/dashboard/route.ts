@@ -1,5 +1,7 @@
 import { NextResponse } from 'next/server'
+import Stripe from 'stripe'
 import { Pool } from 'pg'
+import { db } from '@/lib/database-postgres'
 
 export const dynamic = 'force-dynamic'
 
@@ -9,70 +11,100 @@ function getPool() {
   return new Pool({ connectionString, ssl: { rejectUnauthorized: false }, max: 5 })
 }
 
+async function getStripe(): Promise<Stripe> {
+  const config = await db.getAllConfig()
+  const mode = config.payment_mode || process.env.STRIPE_MODE || 'live'
+  const secretKey = mode === 'live'
+    ? (config.stripe_live_secret_key || process.env.STRIPE_SECRET_KEY || '')
+    : (config.stripe_test_secret_key || process.env.STRIPE_SECRET_KEY || '')
+  return new Stripe(secretKey, { apiVersion: '2024-04-10' as any })
+}
+
 export async function GET() {
   const pool = getPool()
   try {
+    const stripe = await getStripe()
     const now = new Date()
-    const startOfMonth = new Date(now.getFullYear(), now.getMonth(), 1)
+    const startOfMonth = Math.floor(new Date(now.getFullYear(), now.getMonth(), 1).getTime() / 1000)
 
-    const statsResult = await pool.query(`
-      SELECT
-        COUNT(*) FILTER (WHERE subscription_status = 'active' AND email NOT LIKE '%admin@brainmetric%') as active_count,
-        COUNT(*) FILTER (WHERE subscription_status = 'trial' AND email NOT LIKE '%admin@brainmetric%') as trial_count,
-        COUNT(*) FILTER (WHERE subscription_status = 'cancelled' AND updated_at >= $1 AND email NOT LIKE '%admin@brainmetric%') as cancelled_this_month,
-        COUNT(*) FILTER (WHERE subscription_status = 'expired' AND email NOT LIKE '%admin@brainmetric%') as expired_count,
-        COUNT(*) FILTER (WHERE email NOT LIKE '%admin@brainmetric%') as total_users
-      FROM users
-    `, [startOfMonth.toISOString()])
+    // 1. Suscripciones activas y en trial desde Stripe
+    const [activeSubs, trialingSubs, cancelledSubs] = await Promise.all([
+      stripe.subscriptions.list({ status: 'active', limit: 100 }),
+      stripe.subscriptions.list({ status: 'trialing', limit: 100 }),
+      stripe.subscriptions.list({ status: 'canceled', limit: 100, created: { gte: startOfMonth } }),
+    ])
 
-    const stats = statsResult.rows[0]
-    const activeCount = parseInt(stats.active_count)
-    const trialCount = parseInt(stats.trial_count)
-    const cancelledThisMonth = parseInt(stats.cancelled_this_month)
-    const totalUsers = parseInt(stats.total_users)
+    const activeCount = activeSubs.data.length
+    const trialCount = trialingSubs.data.length
+    const cancelledThisMonth = cancelledSubs.data.length
 
-    const mrr = activeCount * 19.99
+    // MRR real: suma de precios de suscripciones activas
+    const mrr = activeSubs.data.reduce((sum, sub) => {
+      const amount = sub.items.data[0]?.price?.unit_amount || 0
+      return sum + amount / 100
+    }, 0)
+
+    // 2. Ingresos totales: suma de todos los charges del mes
+    const chargesThisMonth = await stripe.charges.list({
+      limit: 100,
+      created: { gte: startOfMonth },
+    })
+    const totalRevenue = chargesThisMonth.data
+      .filter(c => c.paid && !c.refunded)
+      .reduce((sum, c) => sum + c.amount / 100, 0)
+
+    const totalRefunded = chargesThisMonth.data
+      .filter(c => c.refunded || c.amount_refunded > 0)
+      .reduce((sum, c) => sum + c.amount_refunded / 100, 0)
+
+    // 3. Conversión: trial → active
     const totalTrials = trialCount + activeCount
     const conversionRate = totalTrials > 0 ? (activeCount / totalTrials) * 100 : 0
     const totalActiveAtStart = activeCount + cancelledThisMonth
     const churnRate = totalActiveAtStart > 0 ? (cancelledThisMonth / totalActiveAtStart) * 100 : 0
 
-    const recentUsersResult = await pool.query(`
-      SELECT id, email, user_name, subscription_status, created_at, access_until, trial_end_date
-      FROM users
-      WHERE email NOT LIKE '%admin@brainmetric%'
-      ORDER BY created_at DESC
-      LIMIT 20
-    `)
+    // 4. Transacciones recientes desde Stripe
+    const recentCharges = await stripe.charges.list({ limit: 20 })
+    const recentEmails = [...new Set(recentCharges.data.map(c => c.billing_details?.email || c.receipt_email || '').filter(Boolean))]
+    const userMap: Record<string, string> = {}
+    if (recentEmails.length > 0) {
+      const placeholders = recentEmails.map((_, i) => `$${i + 1}`).join(',')
+      const res = await pool.query(
+        `SELECT email, user_name FROM users WHERE LOWER(email) = ANY(ARRAY[${placeholders}])`,
+        recentEmails.map(e => e.toLowerCase())
+      )
+      res.rows.forEach(r => { userMap[r.email.toLowerCase()] = r.user_name })
+    }
 
-    const recentTransactions = recentUsersResult.rows.map(row => ({
-      id: row.id,
-      amount: row.subscription_status === 'active' ? 19.99 : 0.50,
-      currency: 'EUR',
-      status: ['active', 'trial', 'cancelled', 'expired'].includes(row.subscription_status) ? 'succeeded' : row.subscription_status,
-      customer_email: row.email,
-      created: row.created_at,
-      description: row.subscription_status === 'active' ? 'Suscripción Premium' : 'Pago inicial (0,50€)',
-    }))
+    const recentTransactions = recentCharges.data.map(c => {
+      const email = c.billing_details?.email || c.receipt_email || ''
+      return {
+        id: c.id,
+        amount: c.amount / 100,
+        currency: c.currency.toUpperCase(),
+        status: c.paid ? 'succeeded' : 'failed',
+        customer_email: email,
+        customer_name: userMap[email.toLowerCase()] || email.split('@')[0] || 'N/A',
+        created: new Date(c.created * 1000).toISOString(),
+        description: c.amount <= 50 ? 'Pago inicial (0,50€)' : 'Suscripción mensual',
+      }
+    })
 
-    const activeSubsList = await pool.query(`
-      SELECT id, email, subscription_status, access_until, trial_end_date, created_at
-      FROM users
-      WHERE subscription_status IN ('active', 'trial')
-        AND email NOT LIKE '%admin@brainmetric%'
-      ORDER BY created_at DESC
-      LIMIT 10
-    `)
-
-    const activeSubscriptionsList = activeSubsList.rows.map(row => ({
-      id: row.id,
-      customer_id: row.id,
-      status: row.subscription_status,
-      plan: 'BrainMetric Premium',
-      amount: row.subscription_status === 'active' ? 19.99 : 0.50,
-      current_period_end: row.access_until || row.trial_end_date,
-      trial_end: row.trial_end_date,
-    }))
+    // 5. Lista de suscripciones activas
+    const activeSubscriptionsList = [...activeSubs.data, ...trialingSubs.data]
+      .slice(0, 10)
+      .map(sub => {
+        const customer = sub.customer as string
+        return {
+          id: sub.id,
+          customer_id: customer,
+          status: sub.status === 'trialing' ? 'trial' : 'active',
+          plan: 'BrainMetric Premium',
+          amount: sub.items.data[0]?.price?.unit_amount ? sub.items.data[0].price.unit_amount / 100 : 19.99,
+          current_period_end: new Date(sub.current_period_end * 1000).toISOString(),
+          trial_end: sub.trial_end ? new Date(sub.trial_end * 1000).toISOString() : null,
+        }
+      })
 
     return NextResponse.json({
       success: true,
@@ -81,10 +113,10 @@ export async function GET() {
           activeSubscriptions: activeCount,
           trialingSubscriptions: trialCount,
           cancelationsThisMonth: cancelledThisMonth,
-          refundsThisMonth: 0,
+          refundsThisMonth: totalRefunded,
           mrr: Math.round(mrr * 100) / 100,
-          totalRevenue: 0,
-          totalRefunded: 0,
+          totalRevenue: Math.round(totalRevenue * 100) / 100,
+          totalRefunded: Math.round(totalRefunded * 100) / 100,
           conversionRate: Math.round(conversionRate * 10) / 10,
           churnRate: Math.round(churnRate * 10) / 10,
         },
@@ -105,11 +137,8 @@ export async function GET() {
       },
     })
   } catch (error: any) {
-    console.error('Error fetching dashboard data:', error)
-    return NextResponse.json(
-      { success: false, error: error.message },
-      { status: 500 }
-    )
+    console.error('Error fetching dashboard from Stripe:', error)
+    return NextResponse.json({ success: false, error: error.message }, { status: 500 })
   } finally {
     await pool.end().catch(() => {})
   }
