@@ -46,7 +46,7 @@ export async function GET(request: NextRequest) {
       stripe_live_webhook_secret: dbConfig.stripe_live_webhook_secret || '',
       stripe_live_price_id: dbConfig.stripe_live_price_id || '',
       // Precios y configuración
-      subscription_price: dbConfig.subscription_price || '9.99',
+      subscription_price: dbConfig.subscription_price || '14.99',
       trial_days: dbConfig.trial_days || '15',
       initial_payment: dbConfig.initial_payment || '0.50',
       admin_emails: dbConfig.admin_emails || ''

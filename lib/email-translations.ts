@@ -60,7 +60,7 @@ export const emailTranslations = {
     estimatedIQ: 'Your estimated IQ is:',
     estimatedResult: 'This is an estimated result based on correct answers. To see your EXACT result, detailed analysis and comparative charts, complete the payment of €0.50.',
     specialOffer: '💰 Special Offer',
-    specialOfferText: 'Pay only €0.50 to unlock your complete result + 2 days free premium trial. Then €9.99/month (cancel anytime).',
+    specialOfferText: 'Pay only €0.50 to unlock your complete result + 2 days free premium trial. Then €14.99/month (cancel anytime).',
     viewCompleteResult: 'View Complete Result',
     haveQuestions: 'Have questions? Reply to this email or visit our help page.',
     resultWaiting: 'Your result is waiting for you! 🎁',

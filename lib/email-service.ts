@@ -203,7 +203,7 @@ export const emailTemplates = {
                       <p style="color: #856404; font-size: 14px; margin: 10px 0 0 0; text-align: center; line-height: 1.6;">
                         ${lang === 'es'
                           ? 'Después del trial, solo 9,99€/mes. Cancela cuando quieras.'
-                          : 'After the trial, only €9.99/month. Cancel anytime.'}
+                          : 'After the trial, only €14.99/month. Cancel anytime.'}
                       </p>
                     </div>
                     
@@ -574,7 +574,7 @@ export const emailTemplates = {
                     <p style="color: #4a5568; font-size: 16px; line-height: 1.6; margin: 0 0 20px 0;">
                       ${lang === 'es'
                         ? 'Lamentablemente, no pudimos procesar tu pago mensual de 9,99€. Esto puede deberse a fondos insuficientes, tarjeta vencida o límite excedido.'
-                        : 'Unfortunately, we could not process your monthly payment of €9.99. This may be due to insufficient funds, expired card, or limit exceeded.'}
+                        : 'Unfortunately, we could not process your monthly payment of €14.99. This may be due to insufficient funds, expired card, or limit exceeded.'}
                     </p>
                     
                     ${attempt >= 3 ? `

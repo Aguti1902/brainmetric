@@ -78,7 +78,7 @@ export async function GET(req: NextRequest) {
         const status = mapStatus(sub.status)
         const amount = sub.items.data[0]?.price?.unit_amount
           ? sub.items.data[0].price.unit_amount / 100
-          : 19.99
+          : 214.99
 
         return {
           id: sub.id,

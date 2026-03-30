@@ -100,7 +100,7 @@ export async function GET() {
           customer_id: customer,
           status: sub.status === 'trialing' ? 'trial' : 'active',
           plan: 'BrainMetric Premium',
-          amount: sub.items.data[0]?.price?.unit_amount ? sub.items.data[0].price.unit_amount / 100 : 19.99,
+          amount: sub.items.data[0]?.price?.unit_amount ? sub.items.data[0].price.unit_amount / 100 : 214.99,
           current_period_end: new Date(sub.current_period_end * 1000).toISOString(),
           trial_end: sub.trial_end ? new Date(sub.trial_end * 1000).toISOString() : null,
         }

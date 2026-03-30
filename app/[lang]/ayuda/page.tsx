@@ -195,7 +195,7 @@ export default function AyudaPage() {
                       <strong>Plan Quincenal:</strong> Se renueva automáticamente cada 2 semanas por €14.99
                     </li>
                     <li>
-                      <strong>Plan Mensual:</strong> Se renueva automáticamente cada mes por €29.99
+                      <strong>Plan Mensual:</strong> Se renueva automáticamente cada mes por €214.99
                     </li>
                     <li>
                       Recibirás un correo electrónico de confirmación después de cada cargo
