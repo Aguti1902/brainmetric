@@ -493,13 +493,12 @@ function CheckoutPaymentContent() {
 
               {/* Google Reviews badge */}
               <div className="flex items-center justify-center mt-4">
-                <div className="bg-white rounded-xl px-4 py-2 inline-flex items-center">
-                  <img
-                    src="/Google-Review-Emblem.png"
-                    alt="Google Reviews 5 estrellas"
-                    className="h-8 w-auto"
-                  />
-                </div>
+                <img
+                  src="/Google-Review-Emblem.png"
+                  alt="Google Reviews 5 estrellas"
+                  className="h-10 w-auto"
+                  style={{ mixBlendMode: 'screen' }}
+                />
               </div>
             </div>
           </div>
