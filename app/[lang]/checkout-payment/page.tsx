@@ -493,11 +493,13 @@ function CheckoutPaymentContent() {
 
               {/* Google Reviews badge */}
               <div className="flex items-center justify-center mt-4">
-                <img
-                  src="/Google-Review-Emblem.png"
-                  alt="Google Reviews 5 estrellas"
-                  className="h-10 w-auto opacity-90"
-                />
+                <div className="bg-white rounded-xl px-4 py-2 inline-flex items-center">
+                  <img
+                    src="/Google-Review-Emblem.png"
+                    alt="Google Reviews 5 estrellas"
+                    className="h-8 w-auto"
+                  />
+                </div>
               </div>
             </div>
           </div>
