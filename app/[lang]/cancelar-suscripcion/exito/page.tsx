@@ -59,7 +59,7 @@ function ExitoContent() {
                   <div className="bg-white rounded-lg p-3">
                     <p className="text-xs text-gray-600 mb-1">Plan Quincenal</p>
                     <p className="text-xl font-bold text-[#0F172A]">
-                      <span className="line-through text-gray-400 text-sm">9,99€</span>
+                      <span className="line-through text-gray-400 text-sm">14,99€</span>
                       {' → '}
                       <span className="text-[#6366F1]">4,99€</span>
                     </p>
@@ -68,9 +68,9 @@ function ExitoContent() {
                   <div className="bg-white rounded-lg p-3">
                     <p className="text-xs text-gray-600 mb-1">Plan Mensual</p>
                     <p className="text-xl font-bold text-[#0F172A]">
-                      <span className="line-through text-gray-400 text-sm">19,99€</span>
+                      <span className="line-through text-gray-400 text-sm">29,99€</span>
                       {' → '}
-                      <span className="text-[#6366F1]">9,99€</span>
+                      <span className="text-[#6366F1]">14,99€</span>
                     </p>
                     <p className="text-xs text-gray-500">Ahorro: 30€ en 3 meses</p>
                   </div>

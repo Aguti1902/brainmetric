@@ -106,11 +106,11 @@ export async function GET(request: NextRequest) {
                       <h2 style="color:#0F172A;margin:0 0 20px;">${lang === 'es' ? 'Hola' : 'Hello'}, ${userName}! 👋</h2>
                       <p style="color:#4a5568;font-size:16px;line-height:1.6;margin:0 0 20px;">
                         ${lang === 'es'
-                          ? 'Tu periodo de prueba premium termina <strong>mañana</strong>. Si no cancelas antes, se cobrará automáticamente 19,99€/mes.'
-                          : 'Your premium trial ends <strong>tomorrow</strong>. If you don\'t cancel, €19.99/month will be charged automatically.'}
+                          ? 'Tu periodo de prueba premium termina <strong>mañana</strong>. Si no cancelas antes, se cobrará automáticamente 29,99€/mes.'
+                          : 'Your premium trial ends <strong>tomorrow</strong>. If you don\'t cancel, €29.99/month will be charged automatically.'}
                       </p>
                       <div style="background:#fff3cd;border:2px solid #ffc107;border-radius:8px;padding:20px;margin:30px 0;text-align:center;">
-                        <p style="color:#856404;font-size:16px;margin:0 0 8px;font-weight:600;">💳 ${lang === 'es' ? 'Próximo cobro: 19,99€' : 'Next charge: €19.99'}</p>
+                        <p style="color:#856404;font-size:16px;margin:0 0 8px;font-weight:600;">💳 ${lang === 'es' ? 'Próximo cobro: 29,99€' : 'Next charge: €29.99'}</p>
                         <p style="color:#856404;font-size:13px;margin:0;">${trialEndDate}</p>
                       </div>
                       <div style="text-align:center;margin:30px 0;">

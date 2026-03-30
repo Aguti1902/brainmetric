@@ -316,7 +316,7 @@ function CheckoutPaymentContent() {
                   <div className="flex justify-between items-start">
                     <div>
                       <span className="text-gray-300">2 días Premium gratis</span>
-                      <p className="text-xs text-gray-500 mt-0.5">Luego 19,99€/mes · Cancela cuando quieras</p>
+                      <p className="text-xs text-gray-500 mt-0.5">Luego 29,99€/mes · Cancela cuando quieras</p>
                     </div>
                     <span className="text-primary-400 font-bold ml-4 flex-shrink-0">GRATIS</span>
                   </div>
@@ -417,7 +417,7 @@ function CheckoutPaymentContent() {
                     <div>
                       <p className="text-xs text-gray-400 mb-0.5">🎉 Precio especial de lanzamiento</p>
                       <div className="flex items-baseline gap-2">
-                        <span className="text-gray-500 line-through text-base">19,99€</span>
+                        <span className="text-gray-500 line-through text-base">29,99€</span>
                         <span className="text-2xl font-black bg-clip-text text-transparent bg-gradient-to-r from-violet-300 to-fuchsia-300">
                           0,50€
                         </span>
