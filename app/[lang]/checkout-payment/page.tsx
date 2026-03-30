@@ -422,7 +422,7 @@ function CheckoutPaymentContent() {
                           0,50€
                         </span>
                       </div>
-                      <p className="text-xs text-violet-400/80 mt-0.5">Ahorra 19,49€ hoy</p>
+                      <p className="text-xs text-violet-400/80 mt-0.5">Ahorra 29,49€ hoy</p>
                     </div>
                     {/* Contador */}
                     <div className="text-center flex-shrink-0">
