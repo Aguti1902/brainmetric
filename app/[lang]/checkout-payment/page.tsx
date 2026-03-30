@@ -490,6 +490,15 @@ function CheckoutPaymentContent() {
                 <span>✅ PCI DSS</span>
                 <span>🛡️ Seguro</span>
               </div>
+
+              {/* Google Reviews badge */}
+              <div className="flex items-center justify-center mt-4">
+                <img
+                  src="/Google-Review-Emblem.png"
+                  alt="Google Reviews 5 estrellas"
+                  className="h-10 w-auto opacity-90"
+                />
+              </div>
             </div>
           </div>
         </div>
